@@ -1,0 +1,34 @@
+# Preface {.unnumbered}
+
+Welcome to the [Polars](https://www.pola.rs/) cookbook for [R](https://www.r-project.org/) users. The goal of the cookbook is to provide solutions to common tasks and problems in using Polars with R. It allows R users using their usual packages to quickly get the syntax required to use Polars with R.
+
+It is structured around side-by-side comparisons between [polars](https://rpolars.github.io/), R base, [dplyr](https://dplyr.tidyverse.org/), [tidyr](https://tidyr.tidyverse.org/) and [data.table](https://rdatatable.gitlab.io/data.table/).
+
+![](content/images/navtabs-screenshot.png){fig-alt="nav-tabs for navigating between different R syntaxes" fig-align="center"}
+
+This book is not a substitute for the official documentation of the [rpolars project](https://rpolars.github.io/) which is the definitive reference on the subject. It is simply intended to illustrate my use of Polars with R and can be a complementary to the official Polars documentation.
+
+## Run the code from this book
+
+This cookbook's website is built by GitHub Actions, which runs the code every time we make a change, ensuring code correctness and reproducibility.
+The current build status as follows:
+
+[![](https://github.com/ddotta/cookbook-rpolars/actions/workflows/quarto-render-publish.yml/badge.svg)](https://github.com/ddotta/cookbook-rpolars/actions/workflows/quarto-render-publish.yml)
+
+**To run this cookbook's code**, you can copied and pasted the code into the R command window if you want to see them in action.  
+
+## What is Polars ?
+
+Polars is a very fast and elegant dataframe library that does the same sort of thing as the main data manipulation packages in R including [dplyr](https://dplyr.tidyverse.org/) and [data.table](https://rdatatable.gitlab.io/data.table/).
+
+Most of this book is structured examples of Polars, dplyr and data.table idiomatic code, with comments on the API and performance of the three.
+
+## Who is this for?
+
+This is not a beginner's introduction to data programming, though you certainly don't need to be an expert to read it. If you have some familiarity with any dataframe library, most of the examples should make sense, but if you're familiar with dplyr or data.table they'll make even more sense because all the Polars code is accompanied by the equivalent code.
+
+For users of Python and in particular [Pandas](https://pandas.pydata.org/), you can consult [this excellent book](https://kevinheavey.github.io/modern-polars/) which was the inspiration for the one you are reading now.
+
+## Contributing
+
+This book is free and open source, so please do [open an issue](https://github.com/ddotta/cookbook-rpolars/issues/new) if you notice a problem!

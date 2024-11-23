@@ -1,0 +1,66 @@
+Below is the code used to create the fake data needed for the data processing in this document.
+Click to expand it! 👇
+
+```{r}
+#| label: load-packages-benchmarking
+#| code-fold: true
+#| message: false
+#| warning: false
+#| results: 'hide'
+library(polars)
+library(arrow)
+library(dplyr)
+library(data.table)
+library(DBI)
+library(duckdb)
+library(tictoc)
+library(microbenchmark)
+library(readr)
+library(fs)
+library(ggplot2)
+library(pryr)
+library(dbplyr)
+library(forcats)
+library(collapse)
+
+# Creation the "Datasets" folder
+dir.create(normalizePath("Datasets"))
+
+set.seed(123)
+
+# Creation of large example R data.frame
+DataMultiTypes <- data.frame(
+  colDate1 = as.POSIXct(sample(as.POSIXct("2023-01-01"):as.POSIXct("2023-06-30"),500000),origin="1970-01-01"),
+  colDate2 = as.POSIXct(sample(as.POSIXct("2023-07-01"):as.POSIXct("2023-12-31"),500000),origin="1970-01-01"),
+  colInt = sample(1:10000, 500000, replace = TRUE),
+  colNum = runif(500000),
+  colString = sample(c("A", "B", "C"), 500000, replace = TRUE),
+  colFactor = factor(sample(c("Low", "Medium", "High"), 500000, replace = TRUE))
+)
+
+DataMultiTypes_pl <- pl$DataFrame(DataMultiTypes)
+
+# Creation of large csv file
+write.csv(x = DataMultiTypes,
+          file = "Datasets/DataMultiTypes.csv",
+          row.names=FALSE)
+
+# Creation of unique parquet file
+arrow::write_parquet(x = DataMultiTypes,
+                     sink = "Datasets/DataMultiTypes.parquet")
+
+# Creation of 6 parquet file
+arrow::write_dataset(dataset = DataMultiTypes,
+                     path = "Datasets/DataMultiTypes",
+                     format = c("parquet"),
+                     partitioning = c("colFactor"))
+
+# Creation of duckdb file
+con <- dbConnect(duckdb::duckdb(),
+                 "Datasets/DataMultiTypes.duckdb")
+duckdb::dbWriteTable(con,
+                     "DataMultiTypes",
+                     DataMultiTypes,
+                     overwrite = TRUE)
+dbDisconnect(con, shutdown=TRUE)
+```
