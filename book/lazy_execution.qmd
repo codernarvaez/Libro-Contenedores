@@ -1,9 +1,0 @@
-# Lazy execution
-
-{{< include content/lazy_execution/_setup_lazy_execution.qmd >}}
-
-{{< include content/lazy_execution/_intro_lazy_mode.qmd >}}
-
-{{< include content/lazy_execution/_lazy_vs_eager_comparison.qmd >}}
-
-{{< include content/lazy_execution/_lazy_vs_eager_fight.qmd >}}

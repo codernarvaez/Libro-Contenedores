@@ -2,31 +2,31 @@ project:
   type: book
 
 book:
-  title: "Cookbook Polars for R"
-  author: "Damien Dotta"
-  favicon: logo_cookbook_rpolars.png
-  description: A side-by-side comparison of polars, R base, dplyr, tidyr and data.table packages.
-  keyword: polars, dplyr, tidyr, data.table, dataframe, performance, data science, data engineering
+  title: "Contenedores al Alcance de Todos"
+  author: "Cristian Narvaez"
+  favicon: maincover.png
+  description: Aprende Docker y Podman para Universitarios con ejemplos reales.
+  keyword: contenedores, podman, docker, swarm, kubernetes, containers, containers-cookbook
   url: https://ddotta.github.io/cookbook-rpolars/
   page-navigation: true
   sidebar: 
-    logo: logo_cookbook_rpolars.png
+    logo: maincover.png
     search: true
   repo-url: https://github.com/ddotta/cookbook-rpolars/
   repo-subdir: book
   repo-branch: main
   repo-actions: [edit, issue, source]
-  sharing: [twitter, linkedin]
+  sharing: [facebook, twitter, linkedin]
   downloads: [pdf]
-  image: polar-bear-airpods-no-background.png
+  image: maincover.png
 
   chapters:
     - index.qmd
-    - first_steps.qmd
-    - data_manipulation.qmd
-    - import_export.qmd
-    - lazy_execution.qmd
-    - benchmarking.qmd
+    - prework.qmd
+#    - data_manipulation.qmd
+#    - import_export.qmd
+#    - lazy_execution.qmd
+#    - benchmarking.qmd
 
 format:
   html:

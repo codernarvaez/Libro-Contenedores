@@ -1,14 +1,14 @@
 Package: cookbookrpolars
-Title: Cookbook for Polars with R
+Title: Contenedores al Alcance de Todos
 Authors@R:
-    c(person(given = "Damien",
-             family = "Dotta",
+    c(person(given = "Cristian",
+             family = "UNL",
              role = c("aut", "cre"),
-             email = "damien.dotta@live.fr"))
-Description: The purpose of this book is to introduce some of the features 
-    of Polars with R. It contains a side-by-side comparison between Polars, 
-    R base and the two most popular packages for data manipulation dplyr 
-    and data.table.
+             email = "cristiab.narvaez@unl.edu.ec"))
+Description: El propósito de este libro es proporcionar una guía práctica para
+    los estudiantes de Computación en la Nube y en general para cualquier profesional
+    que guste aprender a usar contenedores con cualquier tecnología, ésto representa un reto 
+    tanto en la vida profesional como en la vida personal.
 License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
