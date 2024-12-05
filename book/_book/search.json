@@ -1,0 +1,52 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Contenedores al Alcance de Todos",
+    "section": "",
+    "text": "1 Prefacio\nEste libro te enseñará a manejar y comprender contenedores con herramientas modernas como Docker y Podman. Aprenderás desde los fundamentos hasta el despliegue de aplicaciones en entornos reales, pasando por la construcción de imágenes, gestión de redes y almacenamiento, todo a través de ejemplos prácticos y proyectos aplicados. Sin embargo, este no es un manual introductorio típico. Mi objetivo es ayudarte a convertirte en un profesional capaz de utilizar contenedores no solo para ejecutar aplicaciones, sino para integrarlos en procesos de desarrollo y despliegue ágiles.\nLos capítulos del libro están organizados en torno a tres proyectos principales, diseñados para abarcar aspectos clave de Docker y Podman. Estos proyectos no solo cubren la construcción y gestión de contenedores, sino también prácticas avanzadas como la integración con CI/CD, optimización de recursos y resolución de problemas comunes. He seleccionado estos proyectos por dos razones: primero, porque representan el rango completo de funcionalidades de estas herramientas; segundo, porque están diseñados para ayudarte a abordar los desafíos reales del desarrollo y despliegue moderno de software.\nMás allá de las características técnicas, los contenedores resuelven problemas logísticos importantes en el desarrollo. Permiten crear entornos reproducibles, escalar aplicaciones de manera eficiente y minimizar errores relacionados con dependencias o configuraciones. A través de este libro, no solo aprenderás a usar Docker y Podman, sino también a integrar estas habilidades en tu trabajo como desarrollador, maximizando tu productividad y mejorando tu flujo de trabajo.\nEste libro está dirigido a los siguientes perfiles: - Estudiantes y profesionales interesados en aprender sobre contenedores desde cero. - Desarrolladores que buscan integrar prácticas modernas de DevOps y microservicios. - Ingenieros que desean optimizar procesos de despliegue y escalabilidad en la nube.\nHe diseñado este libro para que sea accesible y práctico, centrándome en conceptos aplicados y dejando de lado teorías avanzadas que pueden ser un obstáculo al inicio. Mi objetivo es proporcionarte las herramientas y el conocimiento para que puedas enfrentarte a problemas reales en el desarrollo de software.\nAprender a manejar contenedores es una habilidad esencial para cualquier profesional en tecnología hoy en día. Es como pasar de usar un sistema tradicional, donde todo está predeterminado, a un sistema donde tienes la flexibilidad y el control total para crear lo que necesitas. Como dijo Greg Snow al referirse a otro contexto, los contenedores son como un vehículo todoterreno que te llevará a lugares donde las herramientas tradicionales no pueden llegar.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Prefacio</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#convenciones-utilizadas-en-este-libro",
+    "href": "index.html#convenciones-utilizadas-en-este-libro",
+    "title": "Contenedores al Alcance de Todos",
+    "section": "1.1 Convenciones Utilizadas en Este Libro",
+    "text": "1.1 Convenciones Utilizadas en Este Libro\n\nCursiva: Indica términos nuevos, URLs y nombres de archivos.\nTexto de ancho fijo: Representa comandos, nombres de variables o elementos de código.\nTexto en negrita: Muestra comandos que deben ser escritos literalmente por el lector.\n\nPara realizar comentarios o preguntas técnicas sobre este libro, por favor abre un issue en github.com/tu-repositorio.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Prefacio</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#agradecimientos",
+    "href": "index.html#agradecimientos",
+    "title": "Contenedores al Alcance de Todos",
+    "section": "1.2 Agradecimientos",
+    "text": "1.2 Agradecimientos\nQuiero agradecer a todas las personas que me han ayudado a escribir este libro, desde mis colegas y estudiantes que han probado este contenido, hasta quienes contribuyeron con ideas y retroalimentación. También agradezco a las comunidades de Docker y Podman por proporcionar recursos invaluables y fomentar el aprendizaje continuo. Finalmente, gracias a mi familia por su apoyo incondicional durante este proceso.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Prefacio</span>"
+    ]
+  },
+  {
+    "objectID": "prework.html",
+    "href": "prework.html",
+    "title": "2  First steps with Polars",
+    "section": "",
+    "text": "2.1 Requisitos de Docker antes de instalar.\nocker destaca por su compatibilidad entre sistemas. Las máquinas virtuales o la virtualización de hardware clásica emulan un sistema operativo invitado entero, mientras que los contenedores Docker comparten el núcleo del sistema anfitrión, ejecutándose como procesos aislados en el espacio del usuario. En sus inicios, Docker se utilizaba exclusivamente en sistemas Linux o en sistemas operativos basados en Linux. Hoy en día, el software de código abierto se caracteriza por su completa independencia de los sistemas operativos. Docker utiliza el kernel local de Linux en las variantes de 64 bits de los sistemas operativos de Linux, los sistemas que no son de Linux utilizan simplemente una imagen del sistema Linux a través de un hypervisor o una máquina virtual.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>First steps with Polars</span>"
+    ]
+  },
+  {
+    "objectID": "IntroCloudComputing.html",
+    "href": "IntroCloudComputing.html",
+    "title": "4  Introducción a la Computación en la Nube.",
+    "section": "",
+    "text": "4.0.1 Capítulos a Analizar",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Introducción a la Computación en la Nube.</span>"
+    ]
+  }
+]

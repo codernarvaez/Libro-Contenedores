@@ -1,0 +1,29 @@
+{
+  "index.qmd": {
+    "index.html": "e88e5094"
+  },
+  "first_steps.qmd": {
+    "first_steps.html": "df3011c5"
+  },
+  "data_manipulation.qmd": {
+    "data_manipulation.html": "ee6d197f"
+  },
+  "import_export.qmd": {
+    "import_export.html": "a3d2c07b"
+  },
+  "lazy_execution.qmd": {
+    "lazy_execution.html": "d0e5c81d"
+  },
+  "benchmarking.qmd": {
+    "benchmarking.html": "d7c4e795"
+  },
+  "prework.qmd": {
+    "prework.html": "16d47468"
+  },
+  "parte_dockerfile.qmd": {
+    "parte_dockerfile.html": "771be0a3"
+  },
+  "IntroCloudComputing.qmd": {
+    "IntroCloudComputing.html": "13f07443"
+  }
+}
