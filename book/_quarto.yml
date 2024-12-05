@@ -23,6 +23,9 @@ book:
   chapters:
     - index.qmd
     - prework.qmd
+    - parte_dockerfile.qmd
+    #Miguel Apolo
+    - IntroCloudComputing.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
