@@ -1,0 +1,47 @@
+## Introducción a Docker
+
+### Introducción
+Docker surge como una solución innovadora al problema de la virtualización tradicional, ya que en el enfoque clásico, se utilizan máquinas virtuales (VMs), las cuales requieren de un sistema operativo completo para su creación y ejecución, además de que consumen una gran cantidad de espacio y recursos, incluso si solo se necesita ejecutar una tarea específica, por lo que este enfoque en la actualidad es ineficiente y poco flexible.
+
+Docker se centra en solucionar este problema mediante el uso de contenedores, definidos por archivos Dockerfile. Estos archivos especifican únicamente lo necesario para que una aplicación funcione, eliminando la necesidad de instalar sistemas operativos completos, basta con tener una imagen base y las dependencias necesarias; Docker optimiza el uso del espacio y acelera en gran medida el despliegue de aplicaciones.
+
+Una de las principales ventajas de Docker es su portabilidad, ya que permite que las aplicaciones se ejecuten de manera consistente en diferentes sistemas operativos y entornos, como desarrollo, pruebas y producción. Esto lo convierte en una herramienta fundamental para implementar arquitecturas modernas, como los microservicios, facilitando la gestión y escalabilidad de aplicaciones complejas.
+
+
+### ¿Qué es Docker?
+Docker es una tecnología de virtualización basada en contenedores que permite empaquetar aplicaciones junto con sus dependencias y frameworks necesarios para su ejecución, esto garantiza que las aplicaciones funcionen de manera consistente y uniforme, sin importar el entorno en el que se ejecuten, resolviendo los problemas de compatibilidad y configuración de dependencias que suelen surgir al migrar entre sistemas operativos o entornos.
+
+
+### Componente de Docker
+**Docker engine:** Es el motor de Docker y se encarga de la gestión de todos los contenedores que se ejecutan en Docker.
+
+**Docker images:** Es la plantilla donde se ecuentra la aplicación, la imagen base del sistema operativo y las dependencias necesarias para la ejecución de la aplicación, estas imágenes son reutilizables y permiten crear contenedores de manera rápida y eficiente.
+
+**Docker container:** Es la ejecución de una instancia de la imagen de Docker, donde cada contenedor opera en un entorno completamente aislado, compartiendo únicamente el kernel del sistema operativo anfitrión pero manteniendo independencia en cuanto a procesos, redes y almacenamiento. 
+
+**Redes:** Las redes sirven para la comunicación entre los contenedores, permitiendo que se comuniquen entre sí o con el host, por lo que existen diferentes modelos de red que son las redes de puente, las redes de host y las redes de superposición.
+
+**Volúmenes:** Los volúmenes sirven para almacenar los datos que se desea que persistan en el tiempo, es decir cuando el contenedorer termine de ejecutarse, se reinicie o se elimine, esto es ideal para manejar aplicaciones que requieren de una base de datos o almacenamiento persistente.
+
+**Docker Hub:** Es el repositorio central que utiliza Docker para que los desarrolladores puedan compartir y descargar imágenes tanto públicas como privadas, lo que facilita la colaboración y la reutilización de imágenes.
+
+
+### Diferencias entre Docker y Máquinas Virtuales
+
+#### Docker
+- Los contenedores de Docker solo comparten el núcleo del sistema operativo host.
+- Los contenedores son más ligeros.
+- Arrancan en segundos.
+- Son más portables y fáciles de gestionar.
+- Presentan menos sobrecarga sobre el hardware del host.
+- Permiten la ejecución de múltiples contenedores en un mismo host.
+- Son ideales para aplicaciones basadas en microservicios.
+  
+#### Máquinas Virtuales
+- Las máquinas virtuales necesitan de la virtuaización de todo el hardware del host.
+- Las máquinas virtuales ocupan gran cantidad de espacio y recursos para su creación y ejecución.
+- Su arranque es lento, por lo general tardan minutos.
+- Son más complejas de administrar y su portabilidad es compleja.
+- Presentan mayor sobrecarga sobre el hardware del host.
+- Se puede ejecutar multiples máquinas virtuales en un mismo host, pero esto requiere de más recursos.
+- Son ideales para aplicaciones con una arquitectura monolítica.

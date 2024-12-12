@@ -9,7 +9,7 @@ book:
   keyword: contenedores, podman, docker, swarm, kubernetes, containers, containers-cookbook
   url: https://ddotta.github.io/cookbook-rpolars/
   page-navigation: true
-  sidebar: 
+  sidebar:
     logo: maincover.png
     search: true
   repo-url: https://github.com/ddotta/cookbook-rpolars/
@@ -23,6 +23,7 @@ book:
   chapters:
     - index.qmd
     - prework.qmd
+    - introduccion_docker.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
@@ -53,6 +54,6 @@ format:
   #          showtabs = false,
   #          breaksymbolleft={},
   #          breaklines
-  #          % Note: setting commandchars=\\\{\} here will cause an error 
-  #       }  
+  #          % Note: setting commandchars=\\\{\} here will cause an error
+  #       }
   #   fig-pos: 'H'
