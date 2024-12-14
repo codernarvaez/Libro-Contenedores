@@ -1,0 +1,70 @@
+## VirtualBox y Contenedores Docker para el Desarrollo
+
+### Introducción
+Dentro del desarrollo de software de la actualidad se requieren entornos flexibles, escalables y consistentes. La configuración manual para cada proyecto puede ser tedioso y con tendencia a errores, en especial cuando las dependencias del sistema o sus versiones de software son críticas. Para esto, existen herramientas como VirtualBox y Docker juegan un papel importante.
+
+### VirtualBox:
+La herramienta de VirtualBox nos proporciona un software de hipervisor el cual nos permite la ejecución de máquinas virtuales dentro de un sistema host o anfitrión. Cada una de estas máquinas virtuales imitan entornos completos, incluso el de los sistemas operativos, de configuraciones y de aplicaciones que se requieren para el desarrollo. Se puede usar virtualbox para realizar pruebas de software en múltiples sistemas operativos o para poner en aislamineto un entorno de desarrollo.
+
+**Guest Additions**
+
+Dentro de los sistemas invitados como Windows y Linux, se puede instalar controladores que permitan integrar los sistemas operativos de invitado y host. Tales controladores se conocen como `Guest Additions` y se los puede bajar desde el [sitio web de VirtualBox](https://virtualbox.org). 
+
+Son instalables dentro de la máquina virtual como cualquier programa que se vaya a instalar para Windows o Linux. La integración con el host es bastante útil.
+
+
+**Instalación VirtualBox**
+
+1. Descargue VirtualBox desde el sitio web oficial.
+
+2. Instale el software utilizando el instalador proporcionado.
+
+3. Inicie VirtualBox y verifique que se esté ejecutando correctamente.
+
+
+### Contenedores Docker:
+La tecnología Docker hace el uso de contenedores ligeros para poder empaquetar aplicaciones incluidas sus dependencias utilizando un solo entorno ejecutable. En contraparte con las máquinas virtuales, los contenedores tienen compartición del núcleo del sistema operativo anfitrión, permitiendoles ser más eficientes en términos de recursos. Docker ayuda a que los desarrolladores puedan crear entornos reproducibles y escalables en cuestión de segundos, haciendo fácil y fluida la colaboración y la integración continua.
+
+**Configuración Contenedor Docker Básico**
+Docker nos proporciona una manera eficiente de empaquetar, enviar y poder ejecutar software. En esta parte, se analizaran los pasos básicos para crear un contenedor para el desarrollo.
+
+- Escribiendo el Dockerfile:
+
+Un archivo `Dockerfile` específica el entorno de configuración y todos los comandos para poder tener nuestro contenedor, ejemplo:
+
+```dockerfile
+# Usso de ina imagen oficial de PHP
+FROM php:7.4-apache
+
+# Habilitar módulos de Apache requeridos
+RUN a2enmod userdir \
+    && a2enmod php7.4
+
+# Copiar el archivo de configuración para Apache
+COPY php.conf /etc/apache2/mods-available/php7.4.conf
+
+# Definir el entry point
+ENTRYPOINT ["/entrypoint.sh"]
+```
+
+- Construyendo el Docker Image:
+
+Para crear la imagen del contenedor se hace uso del script `build.sh`, ejemplo:
+
+```bash
+#!/usr/bin/env bash
+
+# Se construye el Docker Image
+
+docker build -t chapter2 .
+```
+
+- Corriendo el Docker Container:
+
+Para lanzar el contenedor, se hace uso del script `run.sh`, ejemplo:
+
+```bash
+#!/usr/bin/env bash
+
+docker run -d --name chapter2 chapter2
+```

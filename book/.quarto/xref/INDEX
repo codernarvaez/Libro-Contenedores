@@ -28,5 +28,8 @@
   },
   "introduccion_docker.qmd": {
     "introduccion_docker.html": "17ab9484"
+  },
+  "virtualbox and docker containers for developments.qmd": {
+    "virtualbox and docker containers for developments.html": "5c124286"
   }
 }

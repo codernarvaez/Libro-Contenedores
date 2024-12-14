@@ -24,6 +24,7 @@ book:
     - index.qmd
     - prework.qmd
     - introduccion_docker.qmd
+    - virtualbox and docker containers for developments.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
