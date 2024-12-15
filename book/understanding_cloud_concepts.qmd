@@ -1,0 +1,130 @@
+# Comprendiendo la Nube
+
+El concepto de cloud computing está transformando la manera en que las empresas operan, permitiéndoles acceder a recursos de cómputo y almacenamiento bajo demanda, escalar sin límites y adoptar modelos de precios flexibles. Esta tecnología ha revolucionado tanto a empresas emergentes como a grandes corporaciones.
+
+## Ecosistema del Cloud Computing
+
+El ecosistema de cloud computing consta de tres principales actores:
+
+1. Consumidores de servicios: Usan aplicaciones y herramientas en la nube sin preocuparse por su ubicación o diseño.
+2. Proveedores de servicios: Ofrecen infraestructura, aplicaciones y herramientas basadas en la nube.
+3. Diseñadores de servicios: Construyen herramientas o aplicaciones optimizadas para ecosistemas específicos de nube.
+
+## Conceptos Fundamentales del Cloud Computing
+
+El cloud computing implica la provisión de recursos compartidos como aplicaciones, almacenamiento y plataformas de desarrollo a través de estándares y automatización. Los servicios comunes incluyen:
+
+- Automatización: Procesos gestionados automáticamente para optimizar la eficiencia.
+- Autoservicio: Permite a los usuarios aprovisionar recursos por sí mismos.
+- Elasticidad: Capacidad de ajustar automáticamente recursos según las necesidades.
+
+---
+
+## Modelos de Nube
+
+Existen diferentes modelos de despliegue en la nube, cada uno adaptado a distintas necesidades empresariales:
+
+### Nube Pública
+
+- Definición: Recursos compartidos y gestionados por un proveedor externo. Los usuarios pagan por el uso bajo demanda.
+- Características:
+  - Escalabilidad masiva y elasticidad automática.
+  - Acceso a servicios avanzados, como análisis de datos y aprendizaje automático.
+  - Disponibilidad global, ideal para empresas que requieren operaciones en múltiples regiones.
+- Casos de uso: Aplicaciones de comercio electrónico, almacenamiento masivo, pruebas y desarrollo.
+
+### Nube Privada
+
+- Definición: Recursos dedicados y gestionados por una sola organización, ya sea internamente o a través de un proveedor externo.
+- Características:
+  - Control total sobre los recursos.
+  - Mayor seguridad y personalización.
+  - Cumplimiento normativo y gobernanza específica.
+- Casos de uso: Datos sensibles, aplicaciones con requisitos legales estrictos o sistemas heredados.
+
+### Nube Híbrida
+
+- Definición: Combina nubes públicas y privadas, permitiendo la interoperabilidad y la transferencia de datos entre ambas.
+- Características:
+  - Balanceo de cargas de trabajo entre entornos.
+  - Flexibilidad para mover datos según necesidades de costo, rendimiento o seguridad.
+- Casos de uso: Migraciones graduales hacia la nube, recuperación ante desastres, análisis de datos en múltiples ubicaciones.
+
+### Multicloud
+
+- Definición: Uso simultáneo de múltiples nubes públicas para satisfacer distintas necesidades empresariales.
+- Características:
+  - Evita la dependencia de un solo proveedor.
+  - Flexibilidad para aprovechar lo mejor de cada plataforma.
+  - Gestión centralizada para controlar costos y rendimiento.
+- Casos de uso: Desarrollo de aplicaciones en plataformas específicas o maximización de servicios según región.
+
+---
+
+## Modelos de Entrega
+
+Los modelos de entrega en cloud computing son fundamentales para entender cómo se ofrecen los servicios a los usuarios. Cada uno proporciona un nivel distinto de abstracción y control:
+
+### Infraestructura como Servicio (IaaS)
+
+- Definición: Provisión de recursos básicos, como servidores virtuales, almacenamiento y redes, sobre los cuales los usuarios pueden construir sus propias aplicaciones.
+- Características:
+  - Control total sobre el sistema operativo y las aplicaciones.
+  - Alta flexibilidad para personalizar entornos según las necesidades.
+  - Pago por uso, permitiendo reducir costos operativos.
+- Ejemplos de servicios: Amazon EC2, Google Compute Engine, Microsoft Azure VMs.
+- Casos de uso: 
+  - Migración de centros de datos físicos a la nube.
+  - Escenarios de desarrollo y pruebas.
+  - Implementación de aplicaciones personalizadas.
+
+### Plataforma como Servicio (PaaS)
+- Definición: Provisión de una capa de abstracción que incluye herramientas de desarrollo, middleware y bases de datos, optimizada para la creación y despliegue de aplicaciones.
+- Características:
+  - Entorno preconfigurado para desarrollo rápido.
+  - Integración de herramientas como frameworks y APIs.
+  - Gestión automatizada de recursos y actualizaciones.
+- Ejemplos de servicios: Google App Engine, Microsoft Azure App Service, Heroku.
+- Casos de uso:
+  - Desarrollo de aplicaciones web y móviles.
+  - Creación de aplicaciones en entornos colaborativos.
+  - Escenarios donde se busca acelerar el tiempo de desarrollo.
+
+### Software como Servicio (SaaS)
+
+- Definición: Provisión de aplicaciones completas accesibles a través de internet. Los usuarios no gestionan ni la infraestructura ni las plataformas subyacentes.
+- Características:
+  - Facilidad de uso y acceso desde cualquier dispositivo.
+  - Modelos de suscripción mensual o anual.
+  - Alta disponibilidad y actualizaciones automáticas.
+- Ejemplos de servicios: Google Workspace, Salesforce, Zoom.
+- Casos de uso:
+  - Herramientas de colaboración y productividad.
+  - Gestión de relaciones con clientes (CRM).
+  - Servicios de recursos humanos y contabilidad.
+
+---
+
+## Ciclo de Vida de Recursos en la Nube
+
+En contraste con los centros de datos tradicionales, la nube permite a los usuarios:
+
+- Alquilar recursos bajo demanda.
+- Pagar únicamente por el uso real.
+- Liberar recursos automáticamente cuando ya no se necesitan.
+
+---
+
+## Gestión de Nubes Híbridas y Multicloud
+
+Una nube híbrida efectiva debe integrar múltiples entornos de forma automatizada y bien gestionada. Los entornos multicloud requieren visibilidad, control y capacidad para mover datos y cargas de trabajo según convenga.
+
+---
+
+## Cambios en el Rol del Centro de Datos
+
+Aunque los centros de datos no desaparecerán, la adopción de la nube les exige modernizarse. Las estrategias incluyen:
+
+- Virtualización: Separar software de hardware para mejorar la eficiencia.
+- Nubes privadas: Crear entornos altamente automatizados con capacidades de autoservicio.
+- Nubes híbridas: Combinar servicios en la nube con infraestructura local.
