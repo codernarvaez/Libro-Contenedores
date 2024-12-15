@@ -1,0 +1,50 @@
+## Escalado y Pruebas de Carga de Aplicaciones Docker
+
+El escalado y las pruebas de carga son esenciales para garantizar que las aplicaciones en contenedores puedan manejar el tráfico creciente de manera eficiente y continuar funcionando bajo presión. Este proceso es particularmente relevante para infraestructuras basadas en Kubernetes, donde se pueden implementar estrategias de escalado tanto manuales como automáticas.
+
+### Escalado en Kubernetes
+
+Kubernetes permite escalar las aplicaciones en dos niveles principales:  
+1. **Escalado de Pods**: Incrementar o reducir el número de réplicas de una aplicación según la demanda.  
+2. **Escalado del Clúster**: Ajustar el número de nodos disponibles en el clúster para manejar los pods adicionales cuando los recursos se limitan.
+
+Para automatizar el escalado, Kubernetes ofrece herramientas como:  
+- **Cluster Autoscaler**: Escala los nodos del clúster según la carga actual.  
+- **Horizontal Pod Autoscaler (HPA)**: Ajusta el número de pods basándose en métricas como el uso de CPU.  
+- **Vertical Pod Autoscaler (VPA)**: Modifica dinámicamente las solicitudes de CPU y memoria de los pods para optimizar los recursos.  
+
+### Pruebas de Carga
+
+Las pruebas de carga evalúan cómo responde una aplicación bajo diferentes niveles de tráfico. Estas pruebas permiten identificar cuellos de botella y garantizar que los mecanismos de escalado funcionen como se espera. Herramientas como **Apache Bench (ab)** y **k6** son comunes para realizar estas pruebas.
+
+### Ejemplo 1: Escalado Horizontal de Pods
+
+1. Configurar el HPA en Kubernetes con un comando como:
+   ```bash
+   kubectl autoscale deployment app-deployment --cpu-percent=50 --min=2 --max=10
+   ```
+   Aquí, el número de pods de la aplicación se ajustará automáticamente entre 2 y 10, según el uso de CPU.
+
+2. Ejecutar una prueba de carga con Apache Bench para simular tráfico:
+   ```bash
+   ab -n 1000 -c 50 http://app-url/
+   ```
+   Esto genera 1000 solicitudes concurrentes para evaluar si los pods adicionales se crean al aumentar el uso de CPU.
+
+### Ejemplo 2: Pruebas de Escalabilidad con k6
+
+1. Escribir un script de carga en JavaScript para simular usuarios concurrentes:
+   ```javascript
+   import http from 'k6/http';
+
+   export default function() {
+       http.get('http://app-url/');
+   }
+   ```
+2. Ejecutar el script con 50 usuarios virtuales durante 30 segundos:
+   ```bash
+   docker run --rm -i loadimpact/k6 run --vus 50 --duration 30s - < script.js
+   ```
+   Esto mide el rendimiento de la aplicación y verifica si el Cluster Autoscaler añade nodos para manejar el incremento de pods.
+
+Con estas estrategias, puedes optimizar el desempeño de aplicaciones contenedorizadas y garantizar una experiencia de usuario confiable.

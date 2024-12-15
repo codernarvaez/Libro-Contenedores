@@ -58,5 +58,15 @@
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>VirtualBox y Contenedores Docker para el Desarrollo</span>"
     ]
+  },
+  {
+    "objectID": "scaling_and_load_testing_docker_applications.html",
+    "href": "scaling_and_load_testing_docker_applications.html",
+    "title": "5  Escalado y Pruebas de Carga de Aplicaciones Docker",
+    "section": "",
+    "text": "El escalado y las pruebas de carga son esenciales para garantizar que las aplicaciones en contenedores puedan manejar el tráfico creciente de manera eficiente y continuar funcionando bajo presión. Este proceso es particularmente relevante para infraestructuras basadas en Kubernetes, donde se pueden implementar estrategias de escalado tanto manuales como automáticas.\n\n5.0.1 Escalado en Kubernetes\nKubernetes permite escalar las aplicaciones en dos niveles principales:\n1. Escalado de Pods: Incrementar o reducir el número de réplicas de una aplicación según la demanda.\n2. Escalado del Clúster: Ajustar el número de nodos disponibles en el clúster para manejar los pods adicionales cuando los recursos se limitan.\nPara automatizar el escalado, Kubernetes ofrece herramientas como:\n- Cluster Autoscaler: Escala los nodos del clúster según la carga actual.\n- Horizontal Pod Autoscaler (HPA): Ajusta el número de pods basándose en métricas como el uso de CPU.\n- Vertical Pod Autoscaler (VPA): Modifica dinámicamente las solicitudes de CPU y memoria de los pods para optimizar los recursos.\n\n\n5.0.2 Pruebas de Carga\nLas pruebas de carga evalúan cómo responde una aplicación bajo diferentes niveles de tráfico. Estas pruebas permiten identificar cuellos de botella y garantizar que los mecanismos de escalado funcionen como se espera. Herramientas como Apache Bench (ab) y k6 son comunes para realizar estas pruebas.\n\n\n5.0.3 Ejemplo 1: Escalado Horizontal de Pods\n\nConfigurar el HPA en Kubernetes con un comando como:\nkubectl autoscale deployment app-deployment --cpu-percent=50 --min=2 --max=10\nAquí, el número de pods de la aplicación se ajustará automáticamente entre 2 y 10, según el uso de CPU.\nEjecutar una prueba de carga con Apache Bench para simular tráfico:\nab -n 1000 -c 50 http://app-url/\nEsto genera 1000 solicitudes concurrentes para evaluar si los pods adicionales se crean al aumentar el uso de CPU.\n\n\n\n5.0.4 Ejemplo 2: Pruebas de Escalabilidad con k6\n\nEscribir un script de carga en JavaScript para simular usuarios concurrentes:\nimport http from 'k6/http';\n\nexport default function() {\n    http.get('http://app-url/');\n}\nEjecutar el script con 50 usuarios virtuales durante 30 segundos:\ndocker run --rm -i loadimpact/k6 run --vus 50 --duration 30s - &lt; script.js\nEsto mide el rendimiento de la aplicación y verifica si el Cluster Autoscaler añade nodos para manejar el incremento de pods.\n\nCon estas estrategias, puedes optimizar el desempeño de aplicaciones contenedorizadas y garantizar una experiencia de usuario confiable.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Escalado y Pruebas de Carga de Aplicaciones Docker</span>"
+    ]
   }
 ]

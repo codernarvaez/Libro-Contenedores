@@ -31,5 +31,8 @@
   },
   "virtualbox and docker containers for developments.qmd": {
     "virtualbox and docker containers for developments.html": "5c124286"
+  },
+  "scaling_and_load_testing_docker_applications.qmd": {
+    "scaling_and_load_testing_docker_applications.html": "94b61bac"
   }
 }
