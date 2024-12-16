@@ -1,0 +1,58 @@
+# Compartir Contenedores Usando Docker Hub
+
+Docker Hub es una plataforma centralizada que permite a los desarrolladores almacenar, compartir y gestionar imágenes de contenedores. Es el repositorio oficial de Docker, donde se pueden encontrar imágenes públicas y privadas, facilitando la colaboración y la reutilización de contenedores en diferentes entornos.
+
+## ¿Qué es Docker Hub?
+
+Docker Hub es un servicio basado en la nube que proporciona un registro de imágenes de Docker. Permite a los desarrolladores:
+
+- **Almacenar Imágenes**: Guardar imágenes de contenedores en un lugar centralizado.
+- **Compartir Imágenes**: Hacer que las imágenes estén disponibles para otros desarrolladores.
+- **Automatizar Builds**: Configurar pipelines de CI/CD para construir y desplegar imágenes automáticamente.
+- **Gestionar Repositorios**: Organizar imágenes en repositorios públicos o privados.
+
+## Beneficios de Usar Docker Hub
+
+- **Colaboración**: Facilita el trabajo en equipo al permitir compartir imágenes de contenedores fácilmente.
+- **Reutilización**: Permite reutilizar imágenes existentes, ahorrando tiempo y esfuerzo en la configuración de entornos.
+- **Distribución**: Facilita la distribución de aplicaciones y servicios en diferentes entornos y plataformas.
+
+## Pasos para Compartir Contenedores en Docker Hub
+
+1. **Crear una Cuenta en Docker Hub**: Regístrate en [Docker Hub](https://hub.docker.com/) para crear una cuenta gratuita.
+2. **Iniciar Sesión desde la Línea de Comandos**: Usa el comando `docker login` para iniciar sesión en Docker Hub desde tu terminal.
+3. **Construir una Imagen de Docker**: Crea una imagen de Docker usando un `Dockerfile` y el comando `docker build`.
+4. **Etiquetar la Imagen**: Etiqueta la imagen con tu nombre de usuario de Docker Hub y el nombre del repositorio.
+5. **Subir la Imagen a Docker Hub**: Usa el comando `docker push` para subir la imagen etiquetada a Docker Hub.
+6. **Compartir la Imagen**: Comparte el enlace del repositorio de Docker Hub con otros desarrolladores para que puedan descargar y usar la imagen.
+
+## Ejemplo Práctico
+
+A continuación, se muestra un ejemplo práctico de cómo compartir una imagen de contenedores en Docker Hub:
+
+1. **Construir la Imagen**:
+    ```sh docker build -t myapp:late  st .
+    ```
+
+2. **Etiquetar la Imagen**:
+    ```sh docker tag myapp:latest your-dockerhub-username/myapp:latest
+    ```
+
+3. **Iniciar Sesión en Docker Hub**:
+    ```sh docker login
+    ```
+
+4. **Subir la Imagen**:
+    ```sh docker push your-dockerhub-username/myapp:latest
+    ```
+
+5. **Compartir el Enlace**:
+    Comparte el enlace `https://hub.docker.com/r/your-dockerhub-username/myapp` con otros desarrolladores.
+
+## Consideraciones de Seguridad
+
+- **Imágenes Privadas**: Si no deseas que tus imágenes sean públicas, puedes configurar repositorios privados en Docker Hub.
+- **Autenticación**: Asegúrate de usar autenticación segura y gestionar tus credenciales de Docker Hub de manera adecuada.
+- **Actualizaciones**: Mantén tus imágenes actualizadas para incluir las últimas mejoras y parches de seguridad.
+
+Al finalizar este capítulo, tendrás las habilidades necesarias para compartir tus contenedores con otros desarrolladores y utilizar imágenes de contenedores de la comunidad, mejorando así tu flujo de trabajo y la colaboración en proyectos.
