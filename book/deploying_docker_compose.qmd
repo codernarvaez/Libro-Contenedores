@@ -1,0 +1,82 @@
+# Desplegar aplicaciones con Docker Compose.
+El escenario de implementación práctico más simple posible de una aplicación empaquetada con Docker implica ejecutar Docker Compose en un solo host, sin embargo, tiene algunas desventajas importantes en términos de rendimiento y disponibilidad.
+
+## Requisitos para su implementación.
+Para continuar con la implementación, necesitará una computadora que ejecute un sistema operativo Linux moderno de la misma arquitectura que su sistema de desarrollo, con suficiente memoria, procesador y capacidad de almacenamiento para ejecutar su aplicación.
+
+Deberá tener alguno de estos sistemas operativos linux que admitan Docker:\ 
+    - Red Hat \
+    - Ubuntu 16.04 o superior\
+    - Amazon Linux 2\
+    - Debian\
+o alguna distribución centrada en Docker como Container Linux o CoreOS.
+
+Además, antes de configurar el software en el host, debe asegurarse de que tenga una dirección IP estable. A veces, se las denomina direcciones IP estáticas o direcciones IP elásticas en un contexto de AWS.
+
+## Implementación mediante archivos de configuración y scripts de soporte.
+Para implementar nuestra aplicación en un servidor de producción, utilizaremos una combinación de comandos simples y scripts de soporte que inician o actualizan el conjunto de contenedores en ejecución. Comencemos por analizar en detalle los dos archivos más importantes necesarios para la implementación: Dockerfile y docker­compose.yml.
+
+Este es un ejemplo de Dockerfile basado en la producción de un juego, deberás adaptar tu Dockerfile según las necesidades de tu aplicación: 
+FROM alpine:20191114 \
+RUN apk update && \
+    apk add nodejs nodejs-npm \
+RUN addgroup -S app && adduser -S -G app app \
+RUN mkdir -p /app/public /app/server \
+ADD src/package.json* /app/ \
+WORKDIR /app \
+RUN npm -s install \
+COPY src/public/ /app/public/ \
+COPY src/server/ /app/server/ \
+COPY src/.babelrc /app/ \
+RUN npm run compile \
+USER app \
+EXPOSE 3000 \
+ENTRYPOINT ["npm", "start"] \
+
+
+Este es un ejemplo de un archivo de docker-compose:\
+version: '3' \
+services: \
+shipit-clicker-web-v2: \
+build: . \
+environment: \
+- APP_ID=shipit-clicker-v2 \
+- OPENAPI_SPEC=/api/v1/spec \
+- OPENAPI_ENABLE_RESPONSE_VALIDATION=false \
+- PORT=3000 \
+- LOG_LEVEL={LOG_LEVEL:-debug} \
+- REQUEST_LIMIT=100kb \
+- REDIS_HOST=${REDIS_HOST:-redis} \
+- REDIS_PORT=${REDIS_PORT:-6379} \
+- SESSION_SECRET=${SESSION_SECRET:-mySecret-v2} \
+
+Ahora, es necesario definir una configuración de red para el contenedor principal para luego vincularlos a los demás contenedores. Un ejemplo es: 
+ports:
+- {PORT:-3006}:3000 \
+networks:  \
+- private-redis-shipit-clicker-v2 \
+links: \
+- redis \
+depends_on: \
+- redis \
+
+Ahora bien, al ejecutar un sitio en producción, es posible que deba realizar algunas operaciones con frecuencia como reiniciarlo o actualizarlo. Para resolver esto puede agregar scripts con el objetivo de automatizar procesos, los más comunes son aquellos para reiniciar la aplicación y implementar cambios.
+
+## Implementación   
+Para iniciar los servicios en segundo plano, use el siguiente comando:
+$ docker-compose up -d
+
+Verifique que los servicios se están ejecutando con: 
+$ docker-compose ps
+
+Compruebe si los registros del sistema muestran algún error: 
+$ docker-compose logs
+
+Mientras no veas una secuencia de mensajes de error en los registros, deberías poder acceder al sitio web en la dirección IP del servidor (por ejemplo, en http://192.0.2.10)
+
+## Limitaciones de implementación en un solo host
+Si el contenedor del servidor de base de datos o el contenedor del servicio web fallan y no se pueden reiniciar automáticamente, el sitio no funcionará y será necesaria una intervención manual. La solución puede ser tan simple como conectarse por SSH y reiniciar el servidor. Pero, a veces, un solo servidor tendrá tan poca memoria que deberá reiniciarse manualmente desde una consola de nivel superior o incluso apagar y encender manualmente.
+
+Dependiendo de su proveedor de alojamiento, el sistema operativo base con el que comience y cómo estén configurados los contenedores Docker, puede experimentar inestabilidad que sea difícil de rastrear. Tal vez su host se reinicie con frecuencia debido a que la red del proveedor detecta hardware inestable o condiciones de red inestables. Tal vez haya configurado su sistema operativo para instalar actualizaciones automáticas y aplicarlas provoque períodos de interrupciones. Tal vez la aplicación crezca en la memoria hasta que provoque una falla de algún tipo.
+
+Si ha alojado su aplicación en un único servidor físico o virtual, debe asegurarse de realizar copias de seguridad del sistema con regularidad, la pérdida del host podría provocar que se pierda toda la información.

@@ -37,5 +37,8 @@
   },
   "understanding_cloud_concepts.qmd": {
     "understanding_cloud_concepts.html": "463e4429"
+  },
+  "deploying_docker_compose.qmd": {
+    "deploying_docker_compose.html": "6020ae07"
   }
 }

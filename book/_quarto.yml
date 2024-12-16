@@ -27,6 +27,7 @@ book:
     - understanding_cloud_concepts.qmd
     - virtualbox and docker containers for developments.qmd
     - scaling_and_load_testing_docker_applications.qmd
+    - deploying_docker_compose.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd

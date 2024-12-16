@@ -148,5 +148,55 @@
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Comprendiendo la Nube</span>"
     ]
+  },
+  {
+    "objectID": "deploying_docker_compose.html",
+    "href": "deploying_docker_compose.html",
+    "title": "7  Desplegar aplicaciones con Docker Compose.",
+    "section": "",
+    "text": "7.1 Requisitos para su implementación.\nEl escenario de implementación práctico más simple posible de una aplicación empaquetada con Docker implica ejecutar Docker Compose en un solo host, sin embargo, tiene algunas desventajas importantes en términos de rendimiento y disponibilidad.\nPara continuar con la implementación, necesitará una computadora que ejecute un sistema operativo Linux moderno de la misma arquitectura que su sistema de desarrollo, con suficiente memoria, procesador y capacidad de almacenamiento para ejecutar su aplicación.\nDeberá tener alguno de estos sistemas operativos linux que admitan Docker:  - Red Hat\n- Ubuntu 16.04 o superior\n- Amazon Linux 2\n- Debian\no alguna distribución centrada en Docker como Container Linux o CoreOS.\nAdemás, antes de configurar el software en el host, debe asegurarse de que tenga una dirección IP estable. A veces, se las denomina direcciones IP estáticas o direcciones IP elásticas en un contexto de AWS.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+    ]
+  },
+  {
+    "objectID": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte",
+    "href": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte",
+    "title": "7  Desplegar aplicaciones con Docker Compose",
+    "section": "7.2 Implementación mediante archivos de configuración y scripts de soporte",
+    "text": "7.2 Implementación mediante archivos de configuración y scripts de soporte\nPara implementar nuestra aplicación en un servidor de producción, utilizaremos una combinación de comandos simples y scripts de soporte que inician o actualizan el conjunto de contenedores en ejecución. Comencemos por analizar en detalle los dos archivos más importantes necesarios para la implementación: Dockerfile y docker­compose.yml.\nEste es un ejemplo de Dockerfile basado en la producción de un juego, deberás adaptar tu Dockerfile según las necesidades de tu aplicación: FROM alpine:20191114\nRUN apk update &&\napk add nodejs nodejs-npm\nRUN addgroup -S app && adduser -S -G app app\nRUN mkdir -p /app/public /app/server\nADD src/package.json* /app/\nWORKDIR /app\nRUN npm -s install\nCOPY src/public/ /app/public/\nCOPY src/server/ /app/server/\nCOPY src/.babelrc /app/\nRUN npm run compile\nUSER app\nEXPOSE 3000\nENTRYPOINT [“npm”, “start”]\n\nEste es un ejemplo de un archivo de docker-compose: version: ‘3’\nservices:\nshipit-clicker-web-v2:\nbuild: .\nenvironment:\n- APP_ID=shipit-clicker-v2\n- OPENAPI_SPEC=/api/v1/spec\n- OPENAPI_ENABLE_RESPONSE_VALIDATION=false\n- PORT=3000\n- LOG_LEVEL=\\({LOG_LEVEL:-debug} \\\n- REQUEST_LIMIT=100kb \\\n- REDIS_HOST=\\){REDIS_HOST:-redis}\n- REDIS_PORT=\\({REDIS_PORT:-6379} \\\n- SESSION_SECRET=\\){SESSION_SECRET:-mySecret-v2}\n\nAhora, es necesario definir una configuración de red para el contenedor principal para luego vincularlos a los demás contenedores. Un ejemplo es: ports: - {PORT:-3006}:3000\nnetworks:\n- private-redis-shipit-clicker-v2\nlinks:\n- redis\ndepends_on:\n- redis",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose</span>"
+    ]
+  },
+  {
+    "objectID": "deploying_docker_compose.html#implementación",
+    "href": "deploying_docker_compose.html#implementación",
+    "title": "7  Desplegar aplicaciones con Docker Compose.",
+    "section": "7.3 Implementación",
+    "text": "7.3 Implementación\nPara iniciar los servicios en segundo plano, use el siguiente comando: $ docker-compose up -d\nVerifique que los servicios se están ejecutando con: $ docker-compose ps\nCompruebe si los registros del sistema muestran algún error: $ docker-compose logs\nMientras no veas una secuencia de mensajes de error en los registros, deberías poder acceder al sitio web en la dirección IP del servidor (por ejemplo, en http://192.0.2.10)",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+    ]
+  },
+  {
+    "objectID": "deploying_docker_compose.html#limitaciones-de-implementación-en-un-solo-host",
+    "href": "deploying_docker_compose.html#limitaciones-de-implementación-en-un-solo-host",
+    "title": "7  Desplegar aplicaciones con Docker Compose.",
+    "section": "7.4 Limitaciones de implementación en un solo host",
+    "text": "7.4 Limitaciones de implementación en un solo host\nSi el contenedor del servidor de base de datos o el contenedor del servicio web fallan y no se pueden reiniciar automáticamente, el sitio no funcionará y será necesaria una intervención manual. La solución puede ser tan simple como conectarse por SSH y reiniciar el servidor. Pero, a veces, un solo servidor tendrá tan poca memoria que deberá reiniciarse manualmente desde una consola de nivel superior o incluso apagar y encender manualmente.\nDependiendo de su proveedor de alojamiento, el sistema operativo base con el que comience y cómo estén configurados los contenedores Docker, puede experimentar inestabilidad que sea difícil de rastrear. Tal vez su host se reinicie con frecuencia debido a que la red del proveedor detecta hardware inestable o condiciones de red inestables. Tal vez haya configurado su sistema operativo para instalar actualizaciones automáticas y aplicarlas provoque períodos de interrupciones. Tal vez la aplicación crezca en la memoria hasta que provoque una falla de algún tipo.\nSi ha alojado su aplicación en un único servidor físico o virtual, debe asegurarse de realizar copias de seguridad del sistema con regularidad, la pérdida del host podría provocar que se pierda toda la información.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+    ]
+  },
+  {
+    "objectID": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte.",
+    "href": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte.",
+    "title": "7  Desplegar aplicaciones con Docker Compose.",
+    "section": "7.2 Implementación mediante archivos de configuración y scripts de soporte.",
+    "text": "7.2 Implementación mediante archivos de configuración y scripts de soporte.\nPara implementar nuestra aplicación en un servidor de producción, utilizaremos una combinación de comandos simples y scripts de soporte que inician o actualizan el conjunto de contenedores en ejecución. Comencemos por analizar en detalle los dos archivos más importantes necesarios para la implementación: Dockerfile y docker­compose.yml.\nEste es un ejemplo de Dockerfile basado en la producción de un juego, deberás adaptar tu Dockerfile según las necesidades de tu aplicación: FROM alpine:20191114\nRUN apk update &&\napk add nodejs nodejs-npm\nRUN addgroup -S app && adduser -S -G app app\nRUN mkdir -p /app/public /app/server\nADD src/package.json* /app/\nWORKDIR /app\nRUN npm -s install\nCOPY src/public/ /app/public/\nCOPY src/server/ /app/server/\nCOPY src/.babelrc /app/\nRUN npm run compile\nUSER app\nEXPOSE 3000\nENTRYPOINT [“npm”, “start”]\n\nEste es un ejemplo de un archivo de docker-compose:\nversion: ‘3’\nservices:\nshipit-clicker-web-v2:\nbuild: .\nenvironment:\n- APP_ID=shipit-clicker-v2\n- OPENAPI_SPEC=/api/v1/spec\n- OPENAPI_ENABLE_RESPONSE_VALIDATION=false\n- PORT=3000\n- LOG_LEVEL={LOG_LEVEL:-debug}\n- REQUEST_LIMIT=100kb\n- REDIS_HOST=\\({REDIS_HOST:-redis} \\\n- REDIS_PORT=\\){REDIS_PORT:-6379}\n- SESSION_SECRET=${SESSION_SECRET:-mySecret-v2}\n\nAhora, es necesario definir una configuración de red para el contenedor principal para luego vincularlos a los demás contenedores. Un ejemplo es: ports: - {PORT:-3006}:3000\nnetworks:\n- private-redis-shipit-clicker-v2\nlinks:\n- redis\ndepends_on:\n- redis\n\nAhora bien, al ejecutar un sitio en producción, es posible que deba realizar algunas operaciones con frecuencia como reiniciarlo o actualizarlo. Para resolver esto puede agregar scripts con el objetivo de automatizar procesos, los más comunes son aquellos para reiniciar la aplicación y implementar cambios.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+    ]
   }
 ]
