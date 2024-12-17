@@ -1,5 +1,5 @@
 ## Escalado y Pruebas de Carga de Aplicaciones Docker
-#Comentario secunadarioooofhcgbj
+#Comentario secunadarioaefgjaefaeooofhcgbj
 El escalado y las pruebas de carga son esenciales para garantizar que las aplicaciones en contenedores puedan manejar el tráfico creciente de manera eficiente y continuar funcionando bajo presión. Este proceso es particularmente relevante para infraestructuras basadas en Kubernetes, donde se pueden implementar estrategias de escalado tanto manuales como automáticas.
 
 ### Escalado en Kubernetes
