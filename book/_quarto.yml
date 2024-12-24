@@ -29,6 +29,8 @@ book:
     - scaling_and_load_testing_docker_applications.qmd
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
+    - introduccion_container_security.qmd
+
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
