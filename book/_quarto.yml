@@ -29,6 +29,7 @@ book:
     - scaling_and_load_testing_docker_applications.qmd
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
+    - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd  #Luis Narvaez
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd

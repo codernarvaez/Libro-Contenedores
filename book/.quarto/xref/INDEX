@@ -40,5 +40,11 @@
   },
   "deploying_docker_compose.qmd": {
     "deploying_docker_compose.html": "6020ae07"
+  },
+  "sharing_containers_used_docker_hub.qmd": {
+    "sharing_containers_used_docker_hub.html": "27a0ede8"
+  },
+  "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd": {
+    "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html": "add23a18"
   }
 }
