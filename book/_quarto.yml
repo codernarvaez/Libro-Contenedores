@@ -30,6 +30,7 @@ book:
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
     - introduccion_container_security.qmd
+    - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd # Narvaez
 
 #    - data_manipulation.qmd
 #    - import_export.qmd

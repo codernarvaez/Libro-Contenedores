@@ -1,0 +1,115 @@
+# Monitoreo de Docker usando Prometheus, Grafana y Jaeger
+
+Para entender el comportamiento de una aplicación en producción, los desarrolladores y operadores confían en herramientas de registro, monitoreo y alertas, las cuales permiten identificar si el sistema funciona correctamente y facilitan la solución de problemas cuando surgen inconvenientes. Con la creciente complejidad de los sistemas, aumenta la necesidad de una observabilidad más profunda sin alterar el código, en este apartado se vera el cómo instrumentar aplicaciones y entornos para mejorar la observabilidad, incluyendo el uso de Kubernetes, CloudWatch, S3, Prometheus y Grafana para gestionar registros, métricas y alertas, así como explorar datos específicos de código y base de datos con Jaeger.
+
+## Registro de Docker y registro de tiempo de ejecución de contenedores
+
+Cada contenedor Docker, ya sea que se ejecute localmente o en la nube, produce sus propios registros los cuales se puede consultar. en el caso de Kubernetes cada contenedor Docker en un pod genera registros, que el sistema almacena temporalmente hasta 10 MB por contenedor, estos registros se pueden consultar con la herramienta kubectl logs, pero son eliminados cuando un pod se elimina o un contenedor se reinicia, lo que impide su retención permanente, esto puede dificultar la solución de problemas si los registros necesarios ya no están disponibles. Por ello, es importante considerar soluciones que superen estas limitaciones y mejoren la gestión y retención de registros.
+
+Un sistema de gestión de registros ideal debe incluir características como la visualización centralizada de mensajes, baja latencia para acceder a eventos recientes, recopilación de registros de diversas fuentes (pods, nodos, despliegues y contenedores Docker en Kubernetes), una interfaz de búsqueda intuitiva con opciones para guardar consultas, visualización de histogramas interactivos para explorar datos, alertas basadas en el contenido de los registros y la posibilidad de configurar el tiempo de retención de los mensajes.
+
+Algunos de los sistemas de gestion de registros de terceros, son:
+
+- Splunk
+- Elasticsearch
+- Loggly
+- Papertrail
+
+En cuanto a proveedores en la nube, existen:
+
+- AWS CloudWatch
+- Google Cloud Logging
+- Microsoft Azure Monitor Logs
+
+
+## Uso de las sondas de Liveness, Readiness y Startup en Kubernetes
+
+Kubernetes tiene varios tipos de controles de salud, llamados  sondas , para garantizar que los contenedores que maneja Docker están en condiciones de procesar el tráfico. Los tipos de sondas abordan inquietudes como:
+
+- **Liveness:** Determina si una aplicación puede procesar solicitudes
+- **Readiness:** Determina si un contenedor está listo para recibir tráfico real, especialmente  si depende de recursos externos que tienen que ser accesibles.
+- **Startup:** Determina si un contenedor está listo para empezar a tomar los otros dos tipos  de tráfico, destinado a aplicaciones heredadas de inicio lento para darles tiempo para iniciarse. 
+
+### Usar una sonda Liveness para ver si un contenedor puede responder
+
+A continuación, se muestra un fragmento de configuración YAML, el cual define una sonda de "liveness" para un contenedor en Kubernetes, utilizada para verificar si el contenedor está funcionando correctamente
+
+```yml
+livenessProbe:
+httpGet:
+path: /
+port: http
+```
+Una sonda de liveness es importante porque permite que Kubernetes detecte si el contenedor está en un estado no funcional. Si la sonda falla, Kubernetes reiniciará el contenedor automáticamente para intentar restaurar su funcionalidad.
+
+### Usar una sonda Readiness para garantizar que un servicio pueda recibir trafico
+
+El uso de una sonda de readiness en Kubernetes asegura que una aplicación esté completamente lista para manejar tráfico antes de ser incluida en el balanceador de carga del clúster.
+
+```yml
+readinessProbe:
+httpGet:
+path: /api/v2/games/ready
+port: http
+```
+Este fragmento de configuración YAML define una sonda de "readiness" en Kubernetes, que se utiliza para determinar si un contenedor está listo para aceptar tráfico.
+
+## Recopilación de métricas y envío de alertas con Prometheus
+Prometheus es una herramienta clave en Kubernetes para recopilar y analizar métricas del sistema. Recoge datos sobre el uso de CPU, almacenamiento y estado de las aplicaciones, entre otros, a través de endpoints como /metrics. Funciona consultando estos puntos y almacenando la información con etiquetas y marcas de tiempo para facilitar su búsqueda, también permite crear alertas y visualizar el rendimiento, ayudando a los operadores a monitorear y mejorar la salud del sistema. Si bien Prometheus puede representar gráficamente los resultados de las consultas por sí solo, los usuarios de Kubernetes suelen utilizar Grafana en conjunto con Prometheus para proporcionar gráficos más sofisticados y tableros de instrumentos.
+
+### Recopilación de métricas
+
+- **Modelo de recolección (Pull):** Prometheus utiliza un modelo de "pull" para obtener datos, es decir, periódicamente consulta endpoints HTTP expuestos por las aplicaciones y servicios para recopilar métricas.  
+***Endpoint estándar:*** Generalmente, las métricas están disponibles en el endpoint /metrics.  
+***Datos recopilados:*** Incluyen el uso de CPU, memoria, almacenamiento, estado de las aplicaciones, entre otros. 
+
+- **Instrumentación de aplicaciones**
+Las aplicaciones se instrumentan para exponer sus métricas, esto se logra utilizando bibliotecas específicas de Prometheus disponibles para varios lenguajes de programación como Python, Java, entre otros.
+
+- **Integración con Kubernetes:** En un clúster de Kubernetes:
+***Anotaciones:*** Recursos como pods y DaemonSets usan anotaciones para indicar a Prometheus qué endpoints consultar.  
+***Node Exporter:*** Un DaemonSet llamado node_exporter se ejecuta en cada nodo para exponer métricas específicas del sistema, como el uso del disco o la carga del CPU. 
+
+- **Etiquetas y almacenamiento:** Prometheus asocia cada métrica con:
+Un nombre descriptivo.
+Etiquetas en formato clave-valor
+Una marca de tiempo precisa a nivel de milisegundos.
+
+Estas características permiten almacenar métricas de manera eficiente y realizar consultas rápidas en su base de datos de series temporales. 
+
+### Envío de alertas
+ 
+- **Administrador de alertas:** Prometheus incluye Alertmanager, un componente que gestiona las alertas generadas a partir de las reglas definidas en Prometheus.  
+***Reglas de alerta:*** Se configuran en archivos YAML y definen condiciones específicas para generar alertas.  
+***Canales de notificación:*** Alertmanager puede enviar alertas a múltiples canales, como correo electrónico, Slack, Microsoft Teams o PagerDuty.
+
+- **Flujo de trabajo de alertas** Prometheus evalúa las métricas recolectadas en tiempo real según las reglas definidas, cuando una condición se cumple, Prometheus envía la alerta a Alertmanager, el cual agrupa, silencia o enruta las alertas a los destinatarios según las configuraciones definidas. 
+
+- **Visualización de métricas para prevenir alertas:** Herramientas como Grafana suelen integrarse con Prometheus para proporcionar dashboards interactivos, estos permiten monitorear tendencias y detectar posibles problemas antes de que se generen alertas.
+
+## Visualización de datos operativos con Grafana
+
+Grafana se instala y está disponible a través de un LoadBalancer en Kubernetes, que en EKS utiliza un Elastic Load Balancer de AWS. Una vez que se ingresa a la consola de Grafana, se puede explorar los paneles y consultar datos con Prometheus, aunque algunos paneles, como el de "Kubernetes All nodes", podrían no mostrar toda la información, para solucionar eso se puede agregar paneles de la comunidad con estadísticas más completas, para ello es necesario revisar el panel de "Kubernetes pods", aqui se puede ajustae el rango de tiempo para observar datos de un día o una semana, además, se puede hacer zoom en áreas específicas para analizar detalles.
+
+Grafana ofrece una variedad de paneles tanto oficiales como de la comunidad en su sitio web, para añadir uno, se puede usar la opción "Importar" e ingresar un ID de panel o una URL. Algunos paneles recomendados son:
+
+- **Cluster Monitoring para Kubernetes :** Muestra el consumo de CPU, memoria y recursos de red por los pods.
+- **Kubernetes Cluster (Prometheus) :** Presenta métricas críticas del clúster.
+- **1 Node Exporter for Prometheus Dashboard ES :** Proporciona métricas detalladas de CPU, disco y red del clúster.
+- **Node Exporter Full :** Muestra todas las métricas posibles de Prometheus.
+
+
+## Monitoreo del rendimiento de aplicaciones con Jaeger
+
+Jaeger es un marco de seguimiento de aplicaciones de código abierto que permite a los desarrolladores y operadores del sistema recopilar información de una aplicación en ejecución y determinar cómo la aplicación pasa su tiempo y cómo interactúa con otros componentes del sistema distribuido, utilizando la API OpenTracing.
+
+### Componentes de Jaeger
+Algunos de los componentes importantes que conforman el ecosistema de Jaeger son los siguientes:
+
+- Las librerías cliente disponibles como paquetes o directamente desde GitHub
+- Los agentes Jaeger, utilizados para escuchar los spans
+- El recolector, encargado de agregar los datos enviados desde los agentes
+- Jaeger query, para analizar los datos a través de una interfaz de usuario
+- El Ingester, que nos permite recopilar datos de temas Kafka y luego escribir los datos a servicios como AWS Elasticsearch.
+
+Lo que vimos anteriormente es cómo instalar Jaeger localmente, sin embargo, también es posible desplegarlo en un entorno de Kubernetes utilizando Kubernetes Operator, que es un recurso especializado para gestionar la instalación y operación de aplicaciones complejas. Para instalar Jaeger en Kubernetes, se puede seguir las instrucciones del repositorio oficial y ejecutar los comandos kubectl proporcionados. Esto incluye la creación del espacio de nombres del operador y la configuración de los permisos adecuados a través de una vinculación de roles, lo que garantiza que Jaeger funcione correctamente en todos los espacios de nombres del clúster.
