@@ -1,0 +1,30 @@
+# Introducción a la Seguridad de los Contenedores
+
+La seguridad es un tema clave cuando trabajamos con contenedores. Sí, los contenedores son geniales: son ligeros, rápidos y súper prácticos para desarrollar y desplegar aplicaciones. Pero ojo, no son mágicos ni infalibles. Si no los cuidas, pueden convertirse en un dolor de cabeza.
+
+Entonces, ¿qué debemos saber para mantener nuestros contenedores seguros? Aquí van lo    básicos:
+
+## 1. Usa Imágenes de Confianza  
+Piensa en las imágenes como los cimientos de tu contenedor. Si construyes sobre una base débil (o peor, comprometida), tu aplicación estará en peligro. Descarga imágenes solo de repositorios oficiales como [Docker Hub](https://hub.docker.com/) o crea las tuyas asegurándote de que todo lo que incluyes sea seguro.
+
+## 2. Mantén tus Imágenes Actualizadas  
+¿Sabías que las imágenes pueden tener vulnerabilidades? Por eso, es importante mantenerlas actualizadas. Un simple `docker pull` puede ahorrarte dolores de cabeza al garantizar que estás usando la versión más reciente y segura.
+
+## 3. No Ejecutes Contenedores como Root  
+Sí, es tentador porque es más fácil, pero ejecutar un contenedor con privilegios de root puede ser peligroso. Si un atacante logra acceder al contenedor, tendrá control absoluto. Mejor crea un usuario con menos permisos.
+
+## 4. Define Recursos con Límites  
+Sin límites, tus contenedores podrían usar toda la memoria o CPU de tu sistema, afectando a otras aplicaciones. Usa opciones como `--memory` y `--cpu-shares` para mantener todo bajo control.
+
+## 5. Escanea tus Imágenes  
+Herramientas como [Trivy](https://github.com/aquasecurity/trivy) o [Docker Scan](https://docs.docker.com/engine/scan/) pueden analizar tus imágenes en busca de vulnerabilidades. No cuesta nada usarlas y te pueden salvar de sorpresas.
+
+## 6. Configura Redes de Forma Segura  
+No conectes tus contenedores directamente a Internet sin una buena razón. Usa redes privadas de Docker para mantener tus servicios aislados y protegidos.
+
+## 7. Mantén Docker Actualizado  
+Docker lanza actualizaciones no solo para nuevas funcionalidades, sino también para corregir problemas de seguridad. Asegúrate de usar siempre la última versión.
+
+---
+
+Estos son solo algunos de los principios básicos para empezar. Recuerda: los contenedores no son automáticamente seguros. Pero con buenos hábitos y herramientas adecuadas, puedes mantenerlos protegidos y confiables. ¡Manos a la obra! 🚀
