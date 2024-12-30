@@ -1,0 +1,112 @@
+## CONCLUSIÓN – FIN DE EL CAMINO, PERO NO EL VIAJE
+#Autor:Cristian Yaguana
+
+El libro se destacó por tres áreas clave las cuales son:
+
+- Desarrollo
+- DevOps con monitorización
+- Seguridad
+
+### Para terminar, comencemos
+
+La tecnología se ve presente en la mayoría de empresas y proyectos de todo el mundo. Es por ello que se deben tener los conceptos básicos y conocer las diferentes herramientas que respaldan los contenedores, volviéndose más útiles. Todo esto está basado en el entorno de Docker.
+
+### Lo que aprendimos sobre el desarrollo
+
+En el primer capítulo se aprendió sobre la introducción a Docker: contenedores y el desarrollo local. Aquí se comprendieron los conceptos básicos de Docker y los contenedores, y cómo implementarlos con fines de desarrollo.
+
+Además, se abordaron temas relacionados con la virtualización y las diferencias entre los contenedores de Docker y las máquinas virtuales con fines de desarrollo.
+
+Existen herramientas como Docker Hub, que nos ayuda a almacenar nuestras imágenes de Docker y también a descargarlas.
+
+### Profundizando: patrones de diseño
+
+El hecho de utilizar contenedores no significa que se deba abandonar los patrones arquitectónicos para el desarrollo de software.
+
+Los patrones son planos reutilizables para resolver problemas arquitectónicos comunes en los proyectos. De la misma manera que los ingenieros y arquitectos en la industria de la construcción reutilizan modelos viables para construir edificios, podemos utilizar un enfoque similar para construir sistemas de software.
+
+A continuación, se describen algunos patrones de diseño:
+
+#### Un solo contenedor: la sencillez
+
+Es un patrón de diseño más simple que se puede adoptar en un entorno basado en contenedores y aplicaciones como Shiplt Clicker.
+
+#### El patrón de diseño Sidecar: útil para el registro
+
+En el libro se utilizan registros y sistemas de monitoreo de registros, los cuales son implementadores comunes de algo conocido como el Patrón Sidecar.
+
+En su forma más simple, tenemos contenedores como el de ShipIt Clicker y luego se utiliza un segundo contenedor con una herramienta de monitoreo de registros. Algunas herramientas que se mencionan en este libro son Grafana y Datadog.
+
+Este patrón de diseño es un excelente punto de partida para el desarrollo a través de un contenedor, y luego se usa otro contenedor para el procesamiento de registros. Un ejemplo que utiliza este patrón es Envoy, el cual permite crear una malla de servicios sin tener que editar directamente nuestras aplicaciones para resolver problemas de red complejos.
+
+## Líder y elecciones: añadiendo redundancia
+
+Los sistemas de alta disponibilidad son los más óptimos, y herramientas como Kubernetes pueden ayudarnos a lograr este objetivo mediante la orquestación de múltiples contenedores en pods.
+
+Un patrón de diseño común que se utiliza junto a Kubernetes es **Líder y elecciones: añadiendo redundancia**. En este patrón, los datos se pueden dividir en varios nodos para proporcionar redundancia. Por ejemplo, los datos se pueden replicar en varios contenedores.
+
+Si un contenedor falla, los otros contenedores elegirán un nuevo líder y Kubernetes creará un nuevo nodo para cubrir la brecha.
+
+## El patrón de diseño del embajador: un enfoque hacia la representación
+
+El proxy es una parte importante de muchos sistemas, especialmente en arquitecturas de microservicios. En Docker, se pueden tener varios contenedores en la misma red virtual, y a cada uno de los contenedores se les asigna un nombre, permitiendo que se comuniquen entre sí.
+
+Un ejemplo de este patrón es la comunicación entre un servicio de almacenamiento en caché del back-end, como Redis, y un conjunto de aplicaciones. En este caso, las aplicaciones se comunican con un solo nodo proxy de Redis, pero este nodo luego distribuye el tráfico entre los otros nodos de Redis en la red.
+
+Redis es un sistema de almacenamiento en caché y gestión de mensajes de código abierto en memoria. Permite almacenar una variedad de estructuras de datos en la memoria, como listas, hashes y conjuntos. Además, se puede usar como base de datos. Redis también está disponible en Docker Hub.
+
+## Patrón de diseño del adaptador: reutilización de soluciones
+
+Es importante contar con una forma consistente de comunicar información entre contenedores. Este patrón se puede utilizar para desarrollar una interfaz uniforme, recibir archivos de registro de múltiples contenedores, estandarizarlos y luego almacenar los datos en un servicio de monitoreo centralizado.
+
+En el capítulo 10, exploramos el monitoreo de Docker con Prometheus, una herramienta útil para la supervisión de contenedores. Sin embargo, Prometheus requiere una interfaz uniforme a través de API de métricas. Cuando una aplicación no expone puntos finales compatibles con Prometheus, este patrón permite implementar una interfaz que envuelve los contenedores de servicio de destino con un conjunto de puntos finales compatibles con Prometheus.
+
+## Leer más sobre patrones de diseño
+
+El uso de patrones de diseño basados en contenedores ayuda a garantizar que se utilice un modelo adecuado para el sistema, introduciendo solo la complejidad necesaria y asegurando al mismo tiempo que el sistema sea resistente y más fácil de administrar.
+
+## Próximos pasos para ampliar tus conocimientos sobre DevOps
+
+La ejecución de contenedores en producción está orientada a prácticas de DevOps como integración continua y despliegue continuo (CI/CD), orquestación de contenedores con Kubernetes y monitorización con herramientas como Jaeger.
+
+Vimos la opción más sencilla de ofrecer nuestras aplicaciones en un único host con Docker Compose. Después de esto, la experimentación con Jenkins nos proporcionó nuestra primera introducción a las herramientas de CI/CD y su implementación en Docker.
+
+## Ingeniería del caos y construcción de sistemas de producción resilientes
+
+La ingeniería del caos es una práctica que reconoce que el código y la infraestructura son inherentemente complejos, y por lo tanto, se debe abordar el proceso de ingeniería y pruebas. Existen cinco conceptos clave de ingeniería del caos que se resumen a continuación:
+
+- **Desarrollar una hipótesis en torno al comportamiento en estado estacionario**: Medir los resultados del sistema durante un período corto de tiempo para obtener una línea de base. Esta línea de base se conoce como estado estable e incluye métricas como la tasa de error, los tiempos de respuesta, la latencia y las cargas de tráfico.
+- **Probar una variedad de eventos del mundo real**: Evaluar eventos reales que podrían afectar un sistema de producción, como fallas de software, entradas alteradas, fallas de contenedores y otros eventos que podrían degradar el rendimiento.
+- **Experimentar en producción**: Aunque probar en producción puede parecer controversial, cada entorno es único, y para obtener resultados auténticos, es imprescindible realizar pruebas en producción.
+- **Minimizar el impacto, también conocido como radio de explosión**: Asegurarse de que cualquier degradación del rendimiento sea temporal y de fácil recuperación. Los experimentos deben estar bien controlados.
+- **Ejecutar experimentos automatizados de forma continua**: El uso de enfoques automatizados reduce la carga de trabajo y permite que las pruebas y experimentos se ejecuten continuamente.
+
+### Herramientas de ingeniería del caos
+
+Una de las herramientas más destacadas es **Chaos Monkey**, desarrollada por Netflix. Esta plataforma implementa la infraestructura que finaliza aleatoriamente los contenedores en un entorno de producción, con el objetivo de probar cómo se recupera el sistema de producción. Chaos Monkey también funciona con AWS y Kubernetes, permitiendo a los ingenieros ajustar el sistema para que sea más resistente.
+
+Otras herramientas para construir y probar sistemas resilientes incluyen:
+
+- **Duendecillo**: Una plataforma de ingeniería del caos compatible con Kubernetes, Mesos, ECS y Docker Swarm.
+- **Mutilar**: Una plataforma de código abierto de VMware para orquestar la ingeniería del caos, compatible con Kubernetes y Docker.
+- **Malla del caos**: Una plataforma de ingeniería del caos nativa de la nube orientada a entornos Kubernetes.
+
+## Un resumen sobre seguridad y qué hacer a continuación
+
+Los aspectos básicos de seguridad y las mejores prácticas nos brindan orientación sobre el mejor enfoque para manejar Dockerfile y crear imágenes base mínimas. Además, existen funciones de seguridad de contenedores proporcionadas por proveedores como Google, Amazon y Microsoft en la nube.
+
+### Metasploit: pruebas de penetración basadas en contenedores
+
+Las pruebas de penetración son el proceso de búsqueda de fallas de seguridad en un sistema que luego se pueden aprovechar para obtener acceso, exfiltrar datos, alterar el rendimiento o convertir el sistema comprometido en una plataforma para lanzar otros ataques.
+
+**Metasploit** es un marco de código abierto para desarrollar e implementar código de explotación de seguridad contra un objetivo remoto, como un contenedor que se ejecuta en su entorno. Metasploit está disponible en formato de contenedor en Docker Hub.
+
+Con esta herramienta, se pueden probar las vulnerabilidades encontradas en los contenedores utilizando herramientas como **Anchore**. Las vulnerabilidades pueden incluir, por ejemplo, versiones antiguas de software instaladas en un contenedor que podrían estar expuestas a ataques.
+
+### Prueba de contenedores vulnerables de terceros: Apache Struts
+
+**Apache Struts** es un popular framework creado en Java para desarrollar aplicaciones web. En 2017, se descubrió una vulnerabilidad en el framework que permitía a un atacante ejecutar código de forma remota en el servidor que lo ejecutaba. Una de las víctimas más conocidas de esta vulnerabilidad fue **Equifax**, que sufrió una catastrófica filtración de datos.
+
+### Resumen
+
+El objetivo era proporcionar una guía completa para el desarrollo de Docker, tanto localmente como en la nube. A lo largo de estos 16 capítulos, nuestro propósito fue demostrar no solo cómo desarrollar aplicaciones en contenedores, sino también cómo se pueden crear, implementar, escanear y monitorear.
