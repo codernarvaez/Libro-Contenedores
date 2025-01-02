@@ -27,6 +27,7 @@ book:
     - understanding_cloud_concepts.qmd
     - virtualbox and docker containers for developments.qmd
     - scaling_and_load_testing_docker_applications.qmd
+    - Alternatives_for_Deploying_and_Running_Containers_in_Production.qmd
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
     - introduccion_container_security.qmd
