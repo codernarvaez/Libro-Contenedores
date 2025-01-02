@@ -198,5 +198,275 @@
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
     ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "",
+    "text": "7.1 Ejecutar Docker en Producción: Muchas Rutas, Escoge Sabiamente\nIntroduce a las numerosas formas en las que se pueden desplegar aplicaciones basadas en Docker en entornos de producción. A medida que la tecnología de contenedores ha madurado, las opciones para implementarlas han crecido significativamente.\nLa ejecución de Docker en producción requiere analizar las diversas rutas disponibles, que van desde configuraciones básicas en un solo servidor hasta soluciones distribuidas con Kubernetes.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejecutar-docker-en-producción-muchas-rutas-escoge-sabiamente",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejecutar-docker-en-producción-muchas-rutas-escoge-sabiamente",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "",
+    "text": "7.1.1 Aspectos importantes\n\nOrquestación de contenedores:\n\nHerramientas como Kubernetes permiten distribuir contenedores en un clúster, aumentando la tolerancia a fallos y la escalabilidad.\nGoogle desarrolló Kubernetes basándose en su experiencia con Borg, un sistema interno de orquestación.\n\nComplejidad operativa:\n\nAunque Kubernetes y otras soluciones gestionadas simplifican la orquestación, su implementación inicial puede ser desafiante.\n\nServicios gestionados como alternativa:\n\nMuchas empresas prefieren delegar la gestión de la infraestructura a proveedores en la nube para reducir la carga operativa.\n\n\nEl despliegue de Docker en producción puede variar desde configuraciones básicas hasta sistemas distribuidos complejos. La elección depende de las necesidades y prioridades del proyecto.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#cuál-es-el-entorno-de-producción-mínimo-realista",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#cuál-es-el-entorno-de-producción-mínimo-realista",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.2 ¿Cuál es el Entorno de Producción Mínimo Realista?",
+    "text": "7.2 ¿Cuál es el Entorno de Producción Mínimo Realista?\nDescribe lo mínimo necesario para ejecutar una aplicación basada en Docker: un solo host con Docker y Docker Compose.\n\n7.2.1 Detalles clave\n\nConfiguración mínima:\n\nUn servidor físico o virtual que soporte Docker.\n\nCompatibilidad con sistemas operativos como Linux (Ubuntu, CentOS), macOS o Windows.\n\nLimitaciones:\n\nVulnerabilidad a fallos de hardware o conectividad.\nMenor tolerancia a fallos y escalabilidad limitada.\n\nRecomendaciones:\n\nImplementar monitoreo externo.\nTener un plan de respaldo y restauración para mitigar riesgos.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#servicios-gestionados-en-la-nube",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#servicios-gestionados-en-la-nube",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.3 Servicios Gestionados en la Nube",
+    "text": "7.3 Servicios Gestionados en la Nube\nLos servicios gestionados en la nube ofrecen soluciones completas para ejecutar contenedores sin preocuparse por la infraestructura subyacente.\n\n7.3.1 Opciones destacadas\n\nGoogle Kubernetes Engine (GKE):\n\nKubernetes gestionado con soporte de Google.\nCosto competitivo y buena integración con servicios de Google Cloud.\n\nAWS Elastic Beanstalk y EKS:\n\nBeanstalk es una solución simple para principiantes, mientras que EKS es más robusto y adecuado para cargas pesadas.\n\nAzure Kubernetes Service (AKS):\n\nIntegración profunda con herramientas de Microsoft como Visual Studio Code.\n\nDigitalOcean Docker Swarm:\n\nUna solución más simple, aunque su futuro soporte es incierto.\n\n\n\n\n7.3.2 Ventajas de los servicios gestionados\n\nEscalabilidad automática.\nAlta disponibilidad.\nReducción de la complejidad operativa.\n\n\n\n7.3.3 Desafíos\n\nDependencia tecnológica (vendor lock-in).\nCostos recurrentes mayores comparados con configuraciones locales.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejecutar-tu-propio-clúster-de-kubernetes",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejecutar-tu-propio-clúster-de-kubernetes",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.4 Ejecutar tu Propio Clúster de Kubernetes",
+    "text": "7.4 Ejecutar tu Propio Clúster de Kubernetes\nPara empresas que buscan mayor personalización o control, ejecutar Kubernetes en infraestructura propia es una opción viable.\n\n7.4.1 Beneficios\n\nControl completo sobre actualizaciones y configuraciones.\nIntegración con soluciones híbridas o privadas como OpenStack o VMware Tanzu.\nPosibilidad de ejecutar Kubernetes en entornos especializados (bare-metal o Raspberry Pi).\n\n\n\n7.4.2 Desafíos\n\nComplejidad técnica y operativa significativa.\nRequiere mayor inversión inicial y habilidades avanzadas.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#decidiendo-la-configuración-de-producción-más-adecuada",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#decidiendo-la-configuración-de-producción-más-adecuada",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.5 Decidiendo la Configuración de Producción Más Adecuada",
+    "text": "7.5 Decidiendo la Configuración de Producción Más Adecuada\nEsta sección proporciona una guía para elegir la mejor estrategia de despliegue según factores clave.\n\n7.5.1 Factores a considerar\n\nFacilidad de configuración:\n\nQué tan rápido se puede implementar desde un entorno de desarrollo local.\n\nCostos:\n\nCostos iniciales y recurrentes.\n\nElasticidad:\n\nCapacidad para escalar de manera automática o manual según la demanda.\n\nSoporte:\n\nAcceso a asistencia técnica, ya sea comercial o comunitaria.\n\nDisponibilidad:\n\nRobustez frente a fallos de hardware, red o servicio.\n\nAdhesividad:\n\nFacilidad para cambiar la infraestructura a otra solución si es necesario.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejemplo-de-aplicación-shipit-clicker",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejemplo-de-aplicación-shipit-clicker",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.6 Ejemplo de Aplicación: ShipIt Clicker",
+    "text": "7.6 Ejemplo de Aplicación: ShipIt Clicker\nEl prototipo del juego “ShipIt Clicker” sirve como ejemplo práctico para experimentar con Docker y Docker Compose.\n\n7.6.1 Componentes del juego\n\nFrontend: Una interfaz simple basada en HTML.\nBackend: Un servidor Node.js con Express.\nBase de datos: Redis para manejar datos.\n\n\n\n7.6.2 Tareas sugeridas\n\nEjecutar docker-compose up para probarlo en un entorno local.\nIdentificar mejoras para optimizar su despliegue en producción.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejercicios-propuestos",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#ejercicios-propuestos",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.7 Ejercicios Propuestos",
+    "text": "7.7 Ejercicios Propuestos\n\n7.7.1 Evaluar Alternativas Razonables de Despliegue\nComparar configuraciones iniciales con soluciones más avanzadas, estimar costos y beneficios a corto y largo plazo.\n\n\n7.7.2 Evaluar Dockerfile y docker-compose.yml\nRevisar configuraciones actuales para optimizar la aplicación, ajustando la base del contenedor (FROM) y mejorando escalabilidad y seguridad.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#conclusion",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#conclusion",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.8 Conclusion",
+    "text": "7.8 Conclusion\n\nLas estrategias de despliegue tienen compensaciones entre costos, complejidad y capacidades.\nLas configuraciones mínimas son útiles para comenzar, pero deben evolucionar con el tiempo.\nComprender las ventajas y desventajas de cada solución es esencial para elegir la estrategia adecuada.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#tema-de-la-exposición-qué-es-docker-swarm",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#tema-de-la-exposición-qué-es-docker-swarm",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.9 Tema de la exposición, ¿Qué es Docker Swarm?",
+    "text": "7.9 Tema de la exposición, ¿Qué es Docker Swarm?\nDocker Swarm es una herramienta de orquestación de contenedores que permite gestionar y escalar aplicaciones distribuidas en varios nodos mediante la creación de clústeres. Sus características principales incluyen:\n\nAlta disponibilidad y tolerancia a fallos.\nEscalabilidad vertical y horizontal.\nBalanceo de carga para distribuir el tráfico uniformemente.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#arquitectura",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#arquitectura",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.10 Arquitectura",
+    "text": "7.10 Arquitectura\n\n7.10.1 Clúster\nConjunto de nodos que trabajan juntos.\n\n\n7.10.2 Nodos\n\nManager: Coordina servicios y gestiona configuraciones.\nWorker: Ejecuta tareas asignadas.\n\n\n\n7.10.3 Servicios\nDefinen las aplicaciones y políticas de estado.\n\n\n7.10.4 Tareas\nInstancias de servicios ejecutadas en nodos.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#comandos-básicos",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#comandos-básicos",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.11 Comandos básicos",
+    "text": "7.11 Comandos básicos\n\n7.11.1 Crear un clúster\ndocker swarm init --advertise-addr &lt;IP-del-host&gt;\n\n\n7.11.2 Agregar nodos al clúster\ndocker swarm join --token &lt;token&gt; &lt;IP-del-host&gt;\n\n\n7.11.3 Revisar nodos\ndocker node ls\n\n\n7.11.4 Desplegar servicios\ndocker service create --name &lt;nombre_servicio&gt; --replicas &lt;número&gt; -p &lt;puerto:puerto&gt; &lt;imagen&gt;\n\n\n7.11.5 Gestionar máquinas virtuales con Docker Machine\n\nCrear nodos virtuales:\ndocker-machine create --driver virtualbox &lt;nombre_nodo&gt;\nConectar a nodos:\ndocker-machine ssh &lt;nombre_nodo&gt;\nSalir del nodo:\nexit",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#comparativa-docker-swarm-vs.-kubernetes",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#comparativa-docker-swarm-vs.-kubernetes",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.12 Comparativa Docker Swarm vs. Kubernetes",
+    "text": "7.12 Comparativa Docker Swarm vs. Kubernetes\n\n\n\n\n\n\n\n\nCaracterística\nKubernetes\nDocker Swarm\n\n\n\n\nEscalabilidad\nAlta\nMedia\n\n\nFacilidad de uso\nComplejo, amplio soporte\nSencillo y fácil\n\n\nGestión de despliegues\nAvanzada\nBásica\n\n\nGestión de redes\nComplejo, con plugins\nBásica\n\n\nIntegración con ecosistema\nAmplia\nIntegrada con Docker\n\n\nActualizaciones\nSoporte avanzado\nLimitado",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#casos-de-uso",
+    "href": "Alternatives_for_Deploying_and_Running_Containers_in_Production.html#casos-de-uso",
+    "title": "7  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "7.13 Casos de uso",
+    "text": "7.13 Casos de uso\n\nAplicaciones web: Despliegue escalable y tolerante a fallos.\nMicroservicios: Gestión de aplicaciones complejas.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html",
+    "href": "introduccion_container_security.html",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "",
+    "text": "10.1 1. Usa Imágenes de Confianza\nLa seguridad es un tema clave cuando trabajamos con contenedores. Sí, los contenedores son geniales: son ligeros, rápidos y súper prácticos para desarrollar y desplegar aplicaciones. Pero ojo, no son mágicos ni infalibles. Si no los cuidas, pueden convertirse en un dolor de cabeza.\nEntonces, ¿qué debemos saber para mantener nuestros contenedores seguros? Aquí van lo básicos:\nPiensa en las imágenes como los cimientos de tu contenedor. Si construyes sobre una base débil (o peor, comprometida), tu aplicación estará en peligro. Descarga imágenes solo de repositorios oficiales como Docker Hub o crea las tuyas asegurándote de que todo lo que incluyes sea seguro.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#mantén-tus-imágenes-actualizadas",
+    "href": "introduccion_container_security.html#mantén-tus-imágenes-actualizadas",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.2 2. Mantén tus Imágenes Actualizadas",
+    "text": "10.2 2. Mantén tus Imágenes Actualizadas\n¿Sabías que las imágenes pueden tener vulnerabilidades? Por eso, es importante mantenerlas actualizadas. Un simple docker pull puede ahorrarte dolores de cabeza al garantizar que estás usando la versión más reciente y segura.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#no-ejecutes-contenedores-como-root",
+    "href": "introduccion_container_security.html#no-ejecutes-contenedores-como-root",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.3 3. No Ejecutes Contenedores como Root",
+    "text": "10.3 3. No Ejecutes Contenedores como Root\nSí, es tentador porque es más fácil, pero ejecutar un contenedor con privilegios de root puede ser peligroso. Si un atacante logra acceder al contenedor, tendrá control absoluto. Mejor crea un usuario con menos permisos.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#define-recursos-con-límites",
+    "href": "introduccion_container_security.html#define-recursos-con-límites",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.4 4. Define Recursos con Límites",
+    "text": "10.4 4. Define Recursos con Límites\nSin límites, tus contenedores podrían usar toda la memoria o CPU de tu sistema, afectando a otras aplicaciones. Usa opciones como --memory y --cpu-shares para mantener todo bajo control.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#escanea-tus-imágenes",
+    "href": "introduccion_container_security.html#escanea-tus-imágenes",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.5 5. Escanea tus Imágenes",
+    "text": "10.5 5. Escanea tus Imágenes\nHerramientas como Trivy o Docker Scan pueden analizar tus imágenes en busca de vulnerabilidades. No cuesta nada usarlas y te pueden salvar de sorpresas.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#configura-redes-de-forma-segura",
+    "href": "introduccion_container_security.html#configura-redes-de-forma-segura",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.6 6. Configura Redes de Forma Segura",
+    "text": "10.6 6. Configura Redes de Forma Segura\nNo conectes tus contenedores directamente a Internet sin una buena razón. Usa redes privadas de Docker para mantener tus servicios aislados y protegidos.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "introduccion_container_security.html#mantén-docker-actualizado",
+    "href": "introduccion_container_security.html#mantén-docker-actualizado",
+    "title": "10  Introducción a la Seguridad de los Contenedores",
+    "section": "10.7 7. Mantén Docker Actualizado",
+    "text": "10.7 7. Mantén Docker Actualizado\nDocker lanza actualizaciones no solo para nuevas funcionalidades, sino también para corregir problemas de seguridad. Asegúrate de usar siempre la última versión.\n\nEstos son solo algunos de los principios básicos para empezar. Recuerda: los contenedores no son automáticamente seguros. Pero con buenos hábitos y herramientas adecuadas, puedes mantenerlos protegidos y confiables. ¡Manos a la obra! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introducción a la Seguridad de los Contenedores</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "",
+    "text": "11.1 Registro de Docker y registro de tiempo de ejecución de contenedores\nPara entender el comportamiento de una aplicación en producción, los desarrolladores y operadores confían en herramientas de registro, monitoreo y alertas, las cuales permiten identificar si el sistema funciona correctamente y facilitan la solución de problemas cuando surgen inconvenientes. Con la creciente complejidad de los sistemas, aumenta la necesidad de una observabilidad más profunda sin alterar el código, en este apartado se vera el cómo instrumentar aplicaciones y entornos para mejorar la observabilidad, incluyendo el uso de Kubernetes, CloudWatch, S3, Prometheus y Grafana para gestionar registros, métricas y alertas, así como explorar datos específicos de código y base de datos con Jaeger.\nCada contenedor Docker, ya sea que se ejecute localmente o en la nube, produce sus propios registros los cuales se puede consultar. en el caso de Kubernetes cada contenedor Docker en un pod genera registros, que el sistema almacena temporalmente hasta 10 MB por contenedor, estos registros se pueden consultar con la herramienta kubectl logs, pero son eliminados cuando un pod se elimina o un contenedor se reinicia, lo que impide su retención permanente, esto puede dificultar la solución de problemas si los registros necesarios ya no están disponibles. Por ello, es importante considerar soluciones que superen estas limitaciones y mejoren la gestión y retención de registros.\nUn sistema de gestión de registros ideal debe incluir características como la visualización centralizada de mensajes, baja latencia para acceder a eventos recientes, recopilación de registros de diversas fuentes (pods, nodos, despliegues y contenedores Docker en Kubernetes), una interfaz de búsqueda intuitiva con opciones para guardar consultas, visualización de histogramas interactivos para explorar datos, alertas basadas en el contenido de los registros y la posibilidad de configurar el tiempo de retención de los mensajes.\nAlgunos de los sistemas de gestion de registros de terceros, son:\nEn cuanto a proveedores en la nube, existen:",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#registro-de-docker-y-registro-de-tiempo-de-ejecución-de-contenedores",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#registro-de-docker-y-registro-de-tiempo-de-ejecución-de-contenedores",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "",
+    "text": "Splunk\nElasticsearch\nLoggly\nPapertrail\n\n\n\nAWS CloudWatch\nGoogle Cloud Logging\nMicrosoft Azure Monitor Logs",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#uso-de-las-sondas-de-liveness-readiness-y-startup-en-kubernetes",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#uso-de-las-sondas-de-liveness-readiness-y-startup-en-kubernetes",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "11.2 Uso de las sondas de Liveness, Readiness y Startup en Kubernetes",
+    "text": "11.2 Uso de las sondas de Liveness, Readiness y Startup en Kubernetes\nKubernetes tiene varios tipos de controles de salud, llamados sondas , para garantizar que los contenedores que maneja Docker están en condiciones de procesar el tráfico. Los tipos de sondas abordan inquietudes como:\n\nLiveness: Determina si una aplicación puede procesar solicitudes\nReadiness: Determina si un contenedor está listo para recibir tráfico real, especialmente si depende de recursos externos que tienen que ser accesibles.\nStartup: Determina si un contenedor está listo para empezar a tomar los otros dos tipos de tráfico, destinado a aplicaciones heredadas de inicio lento para darles tiempo para iniciarse.\n\n\n11.2.1 Usar una sonda Liveness para ver si un contenedor puede responder\nA continuación, se muestra un fragmento de configuración YAML, el cual define una sonda de “liveness” para un contenedor en Kubernetes, utilizada para verificar si el contenedor está funcionando correctamente\nlivenessProbe:\nhttpGet:\npath: /\nport: http\nUna sonda de liveness es importante porque permite que Kubernetes detecte si el contenedor está en un estado no funcional. Si la sonda falla, Kubernetes reiniciará el contenedor automáticamente para intentar restaurar su funcionalidad.\n\n\n11.2.2 Usar una sonda Readiness para garantizar que un servicio pueda recibir trafico\nEl uso de una sonda de readiness en Kubernetes asegura que una aplicación esté completamente lista para manejar tráfico antes de ser incluida en el balanceador de carga del clúster.\nreadinessProbe:\nhttpGet:\npath: /api/v2/games/ready\nport: http\nEste fragmento de configuración YAML define una sonda de “readiness” en Kubernetes, que se utiliza para determinar si un contenedor está listo para aceptar tráfico.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#recopilación-de-métricas-y-envío-de-alertas-con-prometheus",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#recopilación-de-métricas-y-envío-de-alertas-con-prometheus",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "11.3 Recopilación de métricas y envío de alertas con Prometheus",
+    "text": "11.3 Recopilación de métricas y envío de alertas con Prometheus\nPrometheus es una herramienta clave en Kubernetes para recopilar y analizar métricas del sistema. Recoge datos sobre el uso de CPU, almacenamiento y estado de las aplicaciones, entre otros, a través de endpoints como /metrics. Funciona consultando estos puntos y almacenando la información con etiquetas y marcas de tiempo para facilitar su búsqueda, también permite crear alertas y visualizar el rendimiento, ayudando a los operadores a monitorear y mejorar la salud del sistema. Si bien Prometheus puede representar gráficamente los resultados de las consultas por sí solo, los usuarios de Kubernetes suelen utilizar Grafana en conjunto con Prometheus para proporcionar gráficos más sofisticados y tableros de instrumentos.\n\n11.3.1 Recopilación de métricas\n\nModelo de recolección (Pull): Prometheus utiliza un modelo de “pull” para obtener datos, es decir, periódicamente consulta endpoints HTTP expuestos por las aplicaciones y servicios para recopilar métricas.\nEndpoint estándar: Generalmente, las métricas están disponibles en el endpoint /metrics.\nDatos recopilados: Incluyen el uso de CPU, memoria, almacenamiento, estado de las aplicaciones, entre otros.\nInstrumentación de aplicaciones Las aplicaciones se instrumentan para exponer sus métricas, esto se logra utilizando bibliotecas específicas de Prometheus disponibles para varios lenguajes de programación como Python, Java, entre otros.\nIntegración con Kubernetes: En un clúster de Kubernetes: Anotaciones: Recursos como pods y DaemonSets usan anotaciones para indicar a Prometheus qué endpoints consultar.\nNode Exporter: Un DaemonSet llamado node_exporter se ejecuta en cada nodo para exponer métricas específicas del sistema, como el uso del disco o la carga del CPU.\nEtiquetas y almacenamiento: Prometheus asocia cada métrica con: Un nombre descriptivo. Etiquetas en formato clave-valor Una marca de tiempo precisa a nivel de milisegundos.\n\nEstas características permiten almacenar métricas de manera eficiente y realizar consultas rápidas en su base de datos de series temporales.\n\n\n11.3.2 Envío de alertas\n\nAdministrador de alertas: Prometheus incluye Alertmanager, un componente que gestiona las alertas generadas a partir de las reglas definidas en Prometheus.\nReglas de alerta: Se configuran en archivos YAML y definen condiciones específicas para generar alertas.\nCanales de notificación: Alertmanager puede enviar alertas a múltiples canales, como correo electrónico, Slack, Microsoft Teams o PagerDuty.\nFlujo de trabajo de alertas Prometheus evalúa las métricas recolectadas en tiempo real según las reglas definidas, cuando una condición se cumple, Prometheus envía la alerta a Alertmanager, el cual agrupa, silencia o enruta las alertas a los destinatarios según las configuraciones definidas.\nVisualización de métricas para prevenir alertas: Herramientas como Grafana suelen integrarse con Prometheus para proporcionar dashboards interactivos, estos permiten monitorear tendencias y detectar posibles problemas antes de que se generen alertas.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#visualización-de-datos-operativos-con-grafana",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#visualización-de-datos-operativos-con-grafana",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "11.4 Visualización de datos operativos con Grafana",
+    "text": "11.4 Visualización de datos operativos con Grafana\nGrafana se instala y está disponible a través de un LoadBalancer en Kubernetes, que en EKS utiliza un Elastic Load Balancer de AWS. Una vez que se ingresa a la consola de Grafana, se puede explorar los paneles y consultar datos con Prometheus, aunque algunos paneles, como el de “Kubernetes All nodes”, podrían no mostrar toda la información, para solucionar eso se puede agregar paneles de la comunidad con estadísticas más completas, para ello es necesario revisar el panel de “Kubernetes pods”, aqui se puede ajustae el rango de tiempo para observar datos de un día o una semana, además, se puede hacer zoom en áreas específicas para analizar detalles.\nGrafana ofrece una variedad de paneles tanto oficiales como de la comunidad en su sitio web, para añadir uno, se puede usar la opción “Importar” e ingresar un ID de panel o una URL. Algunos paneles recomendados son:\n\nCluster Monitoring para Kubernetes : Muestra el consumo de CPU, memoria y recursos de red por los pods.\nKubernetes Cluster (Prometheus) : Presenta métricas críticas del clúster.\n1 Node Exporter for Prometheus Dashboard ES : Proporciona métricas detalladas de CPU, disco y red del clúster.\nNode Exporter Full : Muestra todas las métricas posibles de Prometheus.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#monitoreo-del-rendimiento-de-aplicaciones-con-jaeger",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#monitoreo-del-rendimiento-de-aplicaciones-con-jaeger",
+    "title": "11  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "11.5 Monitoreo del rendimiento de aplicaciones con Jaeger",
+    "text": "11.5 Monitoreo del rendimiento de aplicaciones con Jaeger\nJaeger es un marco de seguimiento de aplicaciones de código abierto que permite a los desarrolladores y operadores del sistema recopilar información de una aplicación en ejecución y determinar cómo la aplicación pasa su tiempo y cómo interactúa con otros componentes del sistema distribuido, utilizando la API OpenTracing.\n\n11.5.1 Componentes de Jaeger\nAlgunos de los componentes importantes que conforman el ecosistema de Jaeger son los siguientes:\n\nLas librerías cliente disponibles como paquetes o directamente desde GitHub\nLos agentes Jaeger, utilizados para escuchar los spans\nEl recolector, encargado de agregar los datos enviados desde los agentes\nJaeger query, para analizar los datos a través de una interfaz de usuario\nEl Ingester, que nos permite recopilar datos de temas Kafka y luego escribir los datos a servicios como AWS Elasticsearch.\n\nLo que vimos anteriormente es cómo instalar Jaeger localmente, sin embargo, también es posible desplegarlo en un entorno de Kubernetes utilizando Kubernetes Operator, que es un recurso especializado para gestionar la instalación y operación de aplicaciones complejas. Para instalar Jaeger en Kubernetes, se puede seguir las instrucciones del repositorio oficial y ejecutar los comandos kubectl proporcionados. Esto incluye la creación del espacio de nombres del operador y la configuración de los permisos adecuados a través de una vinculación de roles, lo que garantiza que Jaeger funcione correctamente en todos los espacios de nombres del clúster.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
   }
 ]
