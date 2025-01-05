@@ -52,5 +52,8 @@
   },
   "sharing_containers_used_docker_hub.qmd": {
     "sharing_containers_used_docker_hub.html": "72714ee1"
+  },
+  "Docker_Security_Fundamentals_and_Best_Practices.qmd": {
+    "Docker_Security_Fundamentals_and_Best_Practices.html": "89ceb36a"
   }
 }

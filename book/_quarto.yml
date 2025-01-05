@@ -30,8 +30,9 @@ book:
     - Alternatives_for_Deploying_and_Running_Containers_in_Production.qmd
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
-    - introduccion_container_security.qmd
     - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd # Narvaez
+    - introduccion_container_security.qmd
+    - Docker_Security_Fundamentals_and_Best_Practices.qmd
 
 #    - data_manipulation.qmd
 #    - import_export.qmd

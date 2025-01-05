@@ -1,0 +1,52 @@
+## Seguridad de Docker, Fundamentos y Mejores prácticas
+## Introducción
+
+En el desarrollo moderno de software, Docker se ha convertido en una herramienta esencial para la creación y gestión de contenedores. Su capacidad para empaquetar aplicaciones junto con sus dependencias garantiza consistencia en entornos de desarrollo, pruebas y producción. Sin embargo, el uso de contenedores plantea desafíos relacionados con la seguridad y las buenas prácticas de implementación.
+
+Este documento explora los fundamentos de la seguridad en Docker y las mejores prácticas recomendadas para garantizar la protección de las imágenes y los contenedores. Se analizarán técnicas como el uso de imágenes base mínimas, restricciones de privilegios en contenedores y herramientas como DOCKER_CONTENT_TRUST para verificar la integridad de las imágenes. Además, se destacarán métodos para minimizar riesgos durante la construcción y despliegue de contenedores.
+
+El objetivo es proporcionar una guía práctica para desarrollar y operar aplicaciones en entornos de contenedores de manera segura, optimizando el uso de Docker en escenarios reales.
+
+## Fundamentos de la Seguridad en Docker 
+La seguridad en Docker se centra en proteger tanto las imágenes como los contenedores. Las imágenes son la base de los contenedores y, por lo tanto, su seguridad es primordial. Se recomienda utilizar imágenes base mínimas y firmadas para reducir la superficie de ataque. Docker Hub, como repositorio de imágenes, ofrece imágenes certificadas que han sido revisadas para garantizar su autenticidad. Sin embargo, es crucial que los desarrolladores verifiquen la fuente de las imágenes y estén atentos a las alertas de seguridad.
+
+
+1. **Seguridad de Imágenes de Docker**  
+   Las imágenes son el pilar sobre el cual se construyen los contenedores en Docker. Garantizar la seguridad de estas imágenes es esencial para evitar problemas de seguridad.
+   **Prácticas recomendadas:**
+   1. **Verificación de Imágenes:**Usar imágenes oficiales y certificadas de Docker Hub reduce la probabilidad de descargar imágenes comprometidas. En el pasado, se han identificado imágenes maliciosas que explotaban vulnerabilidades como el "cryptojacking".
+      - **Riesgos comunes:** Las imágenes en Docker Hub pueden contener malware si no se validan. Ejemplo: en 2018, se detectaron imágenes maliciosas destinadas al cryptojacking.
+      - **Se recomienda usar imágenes firmadas:** Docker ofrece un mecanismo de firma que ayuda a verificar la autenticidad de las imágenes. Además, verificar los hashes (como sha256) de las imágenes asegura que no han sido modificadas.  
+   2. **Docker Content Trust (DCT):**Este mecanismo utiliza firmas digitales para garantizar que las imágenes no han sido alteradas. Aunque está deshabilitado por defecto, habilitar DCT asegura la autenticidad de las imágenes descargadas.
+   3. **Uso de Imágenes Base Mínimas:** A menudo, las imágenes completas incluyen muchos paquetes innecesarios que pueden contener vulnerabilidades no actualizadas. 
+      - Se recomienda usar imágenes base mínimas, como Alpine, que tienen un tamaño reducido (alrededor de 5 MB) y contienen solo lo esencial para ejecutar la aplicación. Estas imágenes son más seguras porque limitan la cantidad de código vulnerable y permiten un control más detallado sobre lo que se incluye en el contenedor.
+      
+   4. **Archivo .dockerignore:**
+      - Este archivo excluye archivos innecesarios en el proceso de construcción, como binarios y configuraciones sensibles.
+      - **Ejemplo:** Excluir claves privadas con reglas como **/*.pem o carpetas como .git.
+
+2. **Restricción de Privilegios en Contenedores**  
+   El control de privilegios dentro de un contenedor es una de las mejores maneras de mejorar la seguridad. Docker permite configurar varios parámetros para limitar los privilegios de los contenedores, reduciendo la posibilidad de explotación.
+   1. **Uso de --security-opt=no-new-privileges:**Esta opción impide que los contenedores y sus procesos obtengan privilegios adicionales, lo cual ayuda a proteger el host subyacente y evitar que los atacantes escalen privilegios.
+   2. **Sistema de archivos de solo lectura:** Configurar volúmenes en modo de solo lectura protege contra modificaciones accidentales o maliciosas dentro del contenedor.
+   3. **Usuarios y grupos específicos:** Asignar usuarios con permisos limitados en lugar de ejecutar procesos como usuario raíz.
+
+3. **Construcción Segura de Imágenes**
+   Cuando se crean imágenes personalizadas para aplicaciones, es esencial seguir ciertas prácticas para evitar posibles riesgos.  
+   1. **Uso de COPY en lugar de ADD:** Mientras que ADD permite descargar archivos remotos y descomprimirlos automáticamente, esto aumenta el riesgo de incluir contenido inseguro. COPY es más seguro y controlado.
+      - **Riesgo de ADD:** Descargar archivos desde URLs no verificadas puede comprometer la seguridad.
+   2. **Archivo .dockerignore:** Este archivo ayuda a excluir archivos sensibles, como claves privadas o tokens de API, durante el proceso de construcción.
+   3. **Copias recursivas:** Evitar incluir accidentalmente archivos sensibles al usar copias recursivas.
+      - **Solución:** Actualizar .dockerignore para excluir archivos como .env o secretos de API.
+   4. **Limitar el Tamaño de las Imágenes:** Utilizar imágenes base mínimas y eliminar paquetes o dependencias innecesarias es clave para reducir la superficie de ataque. Menos código implica menos riesgo de vulnerabilidades.
+   5. **Evitar incluir datos confidenciales:** Las claves y configuraciones sensibles deben ser gestionadas mediante herramientas externas como HashiCorp Vault o servicios en la nube.
+4. **Mitigación de Vulnerabilidades**  
+El monitoreo y la prevención son esenciales para mantener un entorno seguro:
+   1. **Auditorías regulares:** Revisar continuamente las imágenes y contenedores para identificar vulnerabilidades.
+   2. **Sistemas de detección y protección:** Utilizar herramientas como escáneres de seguridad para detectar configuraciones incorrectas o imágenes maliciosas.
+   3. **Capacidades limitadas:** Restringir las funciones del contenedor para que solo accedan a los recursos necesarios.
+
+
+## Conclusión
+
+Implementar prácticas de seguridad en Docker protege los entornos de desarrollo y producción. Verificar imágenes, limitar privilegios, y optimizar construcciones reduce la exposición a vulnerabilidades. Estas medidas, junto con la restricción de recursos, aseguran un despliegue seguro y eficiente, estableciendo una base sólida para una gestión confiable de contenedores.
