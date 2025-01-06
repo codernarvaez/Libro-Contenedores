@@ -40,5 +40,11 @@
   },
   "deploying_docker_compose.qmd": {
     "deploying_docker_compose.html": "6020ae07"
+  },
+  "composing_systems_using_containers.qmd": {
+    "composing_systems_using_containers.html": "f91d242c"
+  },
+  "sharing_containers_used_docker_hub.qmd": {
+    "sharing_containers_used_docker_hub.html": "b9519ba9"
   }
 }

@@ -26,6 +26,7 @@ book:
     - introduccion_docker.qmd
     - understanding_cloud_concepts.qmd
     - virtualbox and docker containers for developments.qmd
+    - composing_systems_using_containers.qmd
     - scaling_and_load_testing_docker_applications.qmd
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
