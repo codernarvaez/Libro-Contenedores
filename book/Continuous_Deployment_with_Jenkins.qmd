@@ -1,0 +1,65 @@
+# Continuous Deployment with Jenkins
+El despliegue continuo (CD) es necesario para garantizar la calidad y velocidad en el desarrollo de software. Este proceso automatiza la construcción, pruebas y despliegue de cambios en aplicaciones, minimizando errores humanos y conflictos dentro de los equipos. Jenkins se presenta como una herramienta ideal para implementar CD gracias a su flexibilidad, soporte para plugins y capacidad de integración con servicios populares como Docker y GitHub.
+
+## Uso de Jenkins para facilitar el despliegue continuo
+Jenkins se ha convertido en una herramienta popular por su capacidad de adaptarse a multiples casos de uso. Entre sus características principales se destacan las siguientes:
+
+* Pipeline definido por código: Los pipelines en Jenkins se describen en un archivo Jenkinsfile, lo que permite control de versiones y reproducibilidad.
+* Compatibilidad con Docker: Jenkins puede contruir imágenes Docker, subirlas a respositrios como Docker Hub y desplegarlas de manera automática.
+* Plugins extensivo: Permite integrar servicios como GitHub, Docker, y credenciales de SSH para automatizar flujos de trabajos.
+
+## Configuracion de un servidor Jenkins
+Para asegurar un funcionamiento óptimo de Jenkins, se deben seguir ciertas recomendaciones:
+
+### Lo que se debe evitar:
+
+* Ejecutar Jenkins en servidores de producción debido al riesgo de conflictos.
+* Usar estaciones de trabajo locales, ya que tienen recursos limitados y problemas de accesibilidad.
+* Configurar Jenkins como un contenedor Docker inicialmente, debido a la complejidad técnica requerida
+ 
+### Recomendaciones:
+
+* Utilizar un servidor dedicado o aprovechar uno ya existente en la organizacion.
+
+### Pasos para la configuracion 
+
+* Instalar Docker y Jenkins en un servidor adecuado.
+* Configurar el firewall para permitir trafico en los puertos 80 y 443.
+* Proteger la instalacion con HTTPS y restringir el acceso por IP.
+
+## Jenkinsfile y conectividad del host
+
+El Jenkinsfile es un script escrito en Groovy que define los pasos para construir, probar y desplegar aplicaciones. Este archivo, almacenado en un repositorio de control de versiones como GitHub, es clave para garantizar la reproducibilidad de los procesos.
+
+* Prueba básica: Crear un pipeline que ejecute un contenedor Docker y muestre "Hello, World" en la consola. Esto valida la conectividad y configuración de Jenkins con el servidor de destino.
+* Conectividad del host: Configurar Jenkins para interactuar con los servidores de producción y prueba mediante SSH, usando claves generadas específicamente para este propósito.
+
+## Cambios de configuracion a traves de Jenkins
+Jenkins facilita la gestión de cambios en entornos de producción mediante la integración con Docker y GitHub:
+
+* Construcción de imágenes Docker: Jenkins puede construir automáticamente imágenes Docker basadas en cambios en el código fuente y subirlas a Docker Hub.
+* Automatización del despliegue: Scripts en el Jenkinsfile conectan Jenkins al servidor de producción vía SSH,lo que permite desplegar cambios de manera automatizada.
+* Seguridad: Uso de credenciales seguras, como claves SSH y tokens de acceso, ayudan para proteger la interacción con servidores y repositorios.
+
+## Despliegue en múltiples entornos con varias ramas
+Para garantizar la calidad antes del despliegue en producción, se pueden configurar entornos adicionales, como staging:
+Entorno de staging: 
+
+* Replica las condiciones del entorno de producción.
+* Configuración en un servidor separado, con acceso controlado mediante SSH.
+Gestión de ramas en Git: 
+
+* Cambios en la rama staging activan despliegues automáticos en el entorno de prueba.
+* Cambios en la rama master activan despliegues en producción.
+
+Variables de entorno en Jenkins: 
+
+* Facilitan configuraciones específicas para cada entorno, reduciendo la necesidad de múltiples scripts.
+
+## Complejidad y límites al escalar despliegues
+Aunque Jenkins es adecuado para proyectos pequeños y medianos, presenta desafíos al escalar:
+
+* Gestión de múltiples entornos: Manejar más servidores o aplicaciones requiere scripts más complejos y recursos adicionales.
+* Scripts complicados: La combinación de Groovy y Bash puede dificultar la implementación para equipos sin experiencia.
+* Alternativas: Herramientas como Spinnaker, CodeFresh o Kubernetes ofrecen flujos de trabajo más optimizados para proyectos grandes o con requisitos avanzados.
+

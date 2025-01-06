@@ -20,7 +20,7 @@ book:
   downloads: [pdf]
   image: maincover.png
 
-  chapters:
+  chapters: 
     - index.qmd
     - prework.qmd
     - introduccion_docker.qmd
@@ -29,6 +29,7 @@ book:
     - scaling_and_load_testing_docker_applications.qmd
     - Alternatives_for_Deploying_and_Running_Containers_in_Production.qmd
     - deploying_docker_compose.qmd
+    - Continuous_Deployment_with_Jenkins.qmd
     - sharing_containers_used_docker_hub.qmd
     - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd # Narvaez
     - introduccion_container_security.qmd

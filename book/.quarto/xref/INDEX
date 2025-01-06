@@ -55,5 +55,8 @@
   },
   "Docker_Security_Fundamentals_and_Best_Practices.qmd": {
     "Docker_Security_Fundamentals_and_Best_Practices.html": "89ceb36a"
+  },
+  "Continuous_Deployment_with_Jenkins.qmd": {
+    "Continuous_Deployment_with_Jenkins.html": "4796e206"
   }
 }
