@@ -1,0 +1,139 @@
+# Cloud-Native Continuous Deployment Using Spinnaker
+
+## Configuración Inicial y Requisitos Técnicos
+
+### Desafíos en despliegues en Kubernetes
+- Kubernetes presenta varios retos en el despliegue de aplicaciones nativas de la nube, tales como la gestión de configuraciones específicas de cada entorno, la necesidad de balanceo de carga eficiente y la implementación de actualizaciones sin tiempo de inactividad.
+- **Solución**: Spinnaker simplifica el proceso al proporcionar un enfoque centralizado para gestionar despliegues y actualizaciones. Permite reducir errores humanos al automatizar tareas repetitivas y manejar pipelines de despliegue más sofisticados.
+
+### Herramientas necesarias
+- **Kubernetes**: Se utiliza la versión 1.15 debido a que versiones posteriores pueden no ser compatibles con Spinnaker. Este clúster actúa como la infraestructura base para desplegar contenedores Docker.
+- **AWS Elastic Kubernetes Service (EKS)**: Proporciona un entorno Kubernetes gestionado en la nube, con soporte para balanceadores de carga y escalado automático.
+- **Helm**: Facilita la gestión y despliegue de configuraciones en Kubernetes mediante Helm Charts, que empaquetan definiciones y valores de configuración.
+- **AWS CLI y `kubectl`**:
+  - **AWS CLI**: Herramienta para interactuar con los servicios de AWS, necesaria para configurar el clúster EKS y manejar permisos.
+  - **`kubectl`**: CLI de Kubernetes para interactuar con el clúster y gestionar recursos.
+- **Jenkins**: Usado para construir imágenes Docker, ejecutar pruebas y preparar artefactos para el despliegue en Spinnaker.
+
+---
+
+## Configuración y Despliegue en AWS EKS
+
+### Configuración del clúster
+- **Conexión local**:
+  - Actualiza el archivo de configuración `~/.kube/config` para incluir detalles del clúster usando `aws eks update-kubeconfig`.
+  - Verifica la conectividad al clúster con `kubectl get nodes`.
+- **Resolución de problemas**:
+  - Asegúrate de usar el perfil correcto en AWS CLI si manejas múltiples cuentas.
+  - Verifica la configuración de acceso público del clúster y la dirección IPv4 configurada en el stack de CloudFormation.
+
+### Balanceadores de carga y certificados SSL
+- **ALB Ingress Controller**:
+  - Se configura para permitir el acceso público a servicios del clúster.
+  - Integra dominios personalizados y certificados SSL para comunicaciones seguras.
+- **Gestión de dominios**:
+  - Configura subdominios en AWS Route 53 para mapear servicios específicos, como `shipit-v5.eks.example.com`.
+  - Valida los certificados SSL generados con AWS Certificate Manager (ACM) mediante DNS.
+
+### Despliegue inicial: ShipIt Clicker
+- **Transición a AWS ECR**:
+  - Migra las imágenes Docker desde Docker Hub a AWS Elastic Container Registry para aprovechar la integración nativa con AWS.
+- **Helm Charts**:
+  - Ajusta los valores de configuración en `values.yaml` para personalizar configuraciones como dominios, puertos y nombres de imágenes.
+
+---
+
+## Introducción a Spinnaker
+
+### ¿Qué es Spinnaker?
+- **Orígenes**:
+  - Netflix desarrolló Spinnaker para gestionar sus despliegues multicloud y automatizar flujos complejos. Originalmente usaba patrones de servidor inmutable (AMIs en AWS).
+- **Características principales**:
+  - Compatibilidad con múltiples nubes, como AWS, Google Cloud, y Azure.
+  - Adaptado para entornos modernos basados en contenedores (Docker y Kubernetes).
+  - Integra despliegues y pruebas en pipelines configurables.
+
+### Conceptos clave
+1. **Aplicaciones**:
+   - Representan un contenedor lógico que incluye todos los recursos asociados (clusters, grupos de servidores, etc.).
+   - Agrupan servicios, contenedores y configuraciones específicas de cada entorno.
+2. **Pipelines**:
+   - Son flujos de trabajo secuenciales o paralelos que manejan tareas como la construcción, pruebas y despliegue.
+   - Incluyen triggers que activan el pipeline automáticamente ante eventos, como un commit en GitHub.
+
+---
+
+## Configuración de Spinnaker
+
+### Instalación en AWS EKS
+- **Helm Charts**:
+  - Utiliza un Helm Chart simplificado para desplegar Spinnaker en el espacio de nombres `spinnaker`.
+  - La instalación requiere varios minutos y configura servicios como spin-deck (UI) y spin-gate (API).
+- **Exposición pública**:
+  - Configura ALB Ingress Controllers para exponer servicios de Spinnaker de forma segura mediante dominios personalizados.
+
+### Integraciones esenciales
+1. **Jenkins**:
+   - Integra Jenkins como servidor de construcción y fuente de artefactos para los pipelines de Spinnaker.
+   - Utiliza tokens de API para autenticación y creación de nuevos trabajos específicos para Spinnaker.
+2. **GitHub**:
+   - Configura acceso a repositorios mediante tokens con permisos de `repo`.
+   - Permite extraer Helm Charts y archivos de configuración directamente desde el repositorio.
+3. **Docker Hub**:
+   - Añade repositorios Docker específicos a la lista blanca para que Spinnaker pueda usarlos como fuente de imágenes.
+
+---
+
+## Creación de Pipelines con Spinnaker
+
+### Estructura del pipeline
+- **Artefactos**:
+  - `Helm.tar.gz`: Archivos comprimidos que contienen los Helm Charts necesarios para el despliegue.
+  - `values-spin.yaml`: Archivo de configuración que define parámetros específicos del entorno.
+- **Stages principales**:
+  1. **Bake (Manifest)**:
+     - Usa Helm Charts para generar manifiestos de Kubernetes.
+     - Soporta valores dinámicos para personalización avanzada.
+  2. **Deploy (Manifest)**:
+     - Despliega los manifiestos generados en el clúster de Kubernetes.
+     - Ofrece opciones para rollback automático en caso de fallos.
+
+### Automatización
+- **Triggers**:
+  - Configura disparadores basados en eventos de Jenkins o GitHub para automatizar la ejecución del pipeline.
+  - Sincroniza imágenes Docker generadas por Jenkins con el pipeline.
+
+---
+
+## Estrategias de Despliegue
+
+### Canary Deployments
+  - Envía una fracción del tráfico a la nueva versión para pruebas antes de desplegar completamente.
+- **Limitación**:
+  - No disponible directamente en Kubernetes con Spinnaker debido a restricciones del proveedor Kubernetes v2.
+
+### Red/Black Deployments
+  - Similar a Blue/Green, permite mantener dos versiones activas y alternar el tráfico según el estado de la nueva versión.
+- **Requisitos**:
+  - Usa ReplicaSets en lugar de objetos Deployment para manejar múltiples versiones.
+
+### Highlander Strategy
+  - Despliega una nueva versión y elimina la anterior una vez validada para ahorrar recursos.
+
+---
+
+## Pruebas y Rollbacks
+
+### Pruebas
+- **Opciones**:
+  1. **Manual**:
+     - Los usuarios validan la aplicación antes de exponerla al tráfico completo.
+  2. **Automatizada**:
+     - Uso de Jenkins para ejecutar pruebas integradas en el pipeline.
+
+### Rollbacks
+- **Mecanismos**:
+  - Kubernetes utiliza probes de liveness y readiness para gestionar revertir despliegues fallidos.
+  - Spinnaker admite revertir templates o artefactos desde su interfaz, aunque depende de la configuración del pipeline.
+
+---

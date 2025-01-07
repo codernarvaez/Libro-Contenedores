@@ -58,5 +58,8 @@
   },
   "Continuous_Deployment_with_Jenkins.qmd": {
     "Continuous_Deployment_with_Jenkins.html": "4796e206"
+  },
+  "Cloud-Native Continuous Deployment using Spinnaker.qmd": {
+    "Cloud-Native Continuous Deployment using Spinnaker.html": "4d729ab3"
   }
 }
