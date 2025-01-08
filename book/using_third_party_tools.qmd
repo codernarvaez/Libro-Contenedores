@@ -1,19 +1,22 @@
 ---
 title: "Escaneo, Monitoreo y Uso de Herramientas de Terceros"
-author: "[Tu Nombre]"
-date: "`r Sys.Date()`"
-output: html_document
 ---
 
-Este artículo aborda las prácticas recomendadas y herramientas clave para asegurar tus contenedores, utilizando servicios como AWS, Azure, y GCP.
+Este artículo aborda las prácticas recomendadas y herramientas clave para asegurar y monitorear tus contenedores.
 
 ## Requisitos Técnicos
 
-Para asegurar la estabilidad e integridad de un contenedor, es necesario realizar un constante monitoreo. Aunque los contenedores están diseñados para ser eficiente, no los abstiene de posibles caídas de rendimiento o de consumo innecesario de recursos. El monitoreo tambien permite identificar anomalías producto de una vulneración del sistema
+Para asegurar la estabilidad e integridad de un contenedor, es necesario realizar un monitoreo constante. Aunque los contenedores están diseñados para ser eficientes, no están exentos de posibles caídas de rendimiento o consumo innecesario de recursos. El monitoreo también permite identificar anomalías producto de una vulneración del sistema.
 
-El fín de utilizar estas herramientas para terceros es con un enfoque de seguridad. Aún despues de un escaneo de seguridad previo al despliegue, es posible no encontrar vulnerabilidades recientes. Por ello es necesario el monitoreo post despliegue.
+El fin de utilizar estas herramientas de terceros es garantizar la seguridad. Aún después de un escaneo de seguridad previo al despliegue, es posible no encontrar vulnerabilidades recientes. Por ello, es necesario el monitoreo posterior al despliegue.
 
-### Escanear vulnerabilidades usando Grype
+### Lista de requisitos:
+
+- Conocimientos básicos de Docker.
+- Acceso a servicios de la nube (AWS, Azure, GCP).
+- Herramientas de línea de comandos como `docker` y configuraciones de red básicas.
+
+### Escanear Vulnerabilidades usando Grype
 
 Grype es una herramienta popular para escanear imágenes de contenedores y evaluar vulnerabilidades en tiempo de construcción o ejecución. Proporciona capacidades avanzadas para analizar imágenes, verificando componentes como:
 
@@ -21,7 +24,7 @@ Grype es una herramienta popular para escanear imágenes de contenedores y evalu
 - Cumplimiento de políticas de seguridad específicas.
 - Identificación de componentes obsoletos o inseguros.
 
-#### Configuración básica de Grype
+#### Configuración Básica de Grype
 
 1. **Instalación**:
    Puedes instalar Grype utilizando los siguientes comandos:
@@ -30,7 +33,7 @@ Grype es una herramienta popular para escanear imágenes de contenedores y evalu
    curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
    ```
 
-2. **Escaneo de una imagen**:
+2. **Escaneo de una Imagen**:
    Para agregar una imagen y escanearla, usa los siguientes comandos:
    
    ```bash
@@ -38,97 +41,47 @@ Grype es una herramienta popular para escanear imágenes de contenedores y evalu
    ./grype docker:nginx:latest
    ```
 
-   se puede crear un archivo de log para revisar las vulnerabilidades encontradas:
+   Se puede crear un archivo de log para revisar las vulnerabilidades encontradas:
 
    ```bash
    ./grype -o table docker:practica-microservicios-express-service:latest > log.txt
    ```
-
-### Monitoreo Local utilizando Docker stats
-   Nativamente, docker permite monitorizar las estadisticas de los contenedores en ejecucion, sin embargo, estas estadisticas son breves y sirven principalmente para monitorizacion general. 
-   Docker Stats se recomienda en caso de que se requiera un despliegue aislado de contenedores en un "Sandbox" para esclarecer posibles sospechas.
-   Para acceder a Docker Stats, utiliza el comando:
-   
-   ```bash
-   docker stats <container-id>
-   ```
-
-#### Usando la API de Stats
-   Stats API otorga un conjunto de resultados mas comprensibles en formato JSON, esto lo hace ocupando el daemon de docker.
-   Sin embargo es importante mencionar que exponer la API del daemon de Docker puede ser una vulnerabilidad critica del sistema host a travez del escalamiento de privilegios. para mas informacion, vease el Capitulo 12. 
-
-### Monitoreo de contenedores utilizando cAdvisor
-   cAdvisor es una herramienta de monitoreo de contenedores desarrollada por Google que proporciona información detallada sobre el uso de recursos y el rendimiento de los contenedores en tiempo real. cAdvisor recopila, agrega, procesa y exporta información sobre el uso de recursos por contenedor, como CPU, memoria, red y disco.
-
-   podemos utilizar la demo de cAdvisor proporcionada realizando un pull desde Google Container Registry:
-   
-   ```bash
-   sudo docker run \
-   --volume=/:/rootfs:ro \
-   --volume=/var/run:/var/run:ro \
-   --volume=/sys:/sys:ro \
-   --volume=/var/lib/docker/:/var/lib/docker:ro \
-   --volume=/dev/disk/:/dev/disk:ro \
-   --publish=8080:8080 \
-   --detach=true \
-   --name=cadvisor \
-   gcr.io/google-containers/cadvisor:latest
-   ```
-
-
-3. **Revisión de resultados**:
+3. **Revisión de Resultados**:
    Los resultados mostrarán vulnerabilidades categorizadas según su gravedad (baja, media, alta, crítica) y posibles soluciones recomendadas.
 
-### Lista de requisitos:
+### Monitoreo Local utilizando Docker Stats
 
-- Conocimientos básicos de Docker.
-- Acceso a servicios de la nube (AWS, Azure, GCP).
-- Herramientas de línea de comandos como `docker` y configuraciones de red básicas.
+Nativamente, Docker permite monitorear las estadísticas de los contenedores en ejecución. Sin embargo, estas estadísticas son breves y sirven principalmente para monitoreo general. Docker Stats se recomienda en caso de que se requiera un despliegue aislado de contenedores en un "sandbox" para esclarecer posibles sospechas. 
 
-
-
-## Asegurando tus Contenedores usando AWS
-
-AWS ofrece múltiples servicios y configuraciones para garantizar la seguridad de tus contenedores, como:
-
-- **Amazon ECS**: Integración con IAM para control de acceso.
-- **Amazon EKS**: Opciones avanzadas para proteger Kubernetes en AWS.
-- **Amazon Inspector**: Escaneo automatizado para vulnerabilidades.
-
-Ejemplo de configuración básica para seguridad en AWS:
+Para acceder a Docker Stats, utiliza el comando:
 
 ```bash
-aws ecs update-service --cluster myCluster --service myService --enable-execute-command
+docker stats <container-id>
 ```
 
-## Asegurando tus Contenedores usando Azure
+#### Usando la API de Stats
 
-Con Azure, se puede fortalecer la seguridad de los contenedores mediante herramientas y servicios como:
+La API de Stats otorga un conjunto de resultados más comprensibles en formato JSON. También, a través de la configuración de una red, permite monitorear otras máquinas host. Esto lo hace exponiendo el daemon de Docker para que acepte solicitudes TCP.
 
-- **Azure Security Center**: Supervisión de la seguridad de contenedores en tiempo real.
-- **Azure Kubernetes Service (AKS)**: Integración con Azure AD.
-- **Azure Defender for Containers**: Protección avanzada para entornos híbridos.
+Sin embargo, es importante mencionar que exponer la API del daemon de Docker puede ser una vulnerabilidad crítica del sistema host a través del escalamiento de privilegios. Para más información, véase el capítulo anterior.
 
-Pasos iniciales para usar Azure Defender:
+### Monitoreo de Contenedores utilizando cAdvisor
+
+cAdvisor es una herramienta de monitoreo de contenedores desarrollada por Google que proporciona información detallada sobre el uso de recursos y el rendimiento de los contenedores en tiempo real. cAdvisor recopila, agrega, procesa y exporta información sobre el uso de recursos por contenedor, como CPU, memoria, red y disco.
+
+Podemos utilizar la demo de cAdvisor proporcionada realizando un pull desde Google Container Registry:
 
 ```bash
-az aks enable-addons --addons monitoring --resource-group myResourceGroup --name myAKSCluster
+sudo docker run \
+--volume=/:/rootfs:ro \
+--volume=/var/run:/var/run:ro \
+--volume=/sys:/sys:ro \
+--volume=/var/lib/docker/:/var/lib/docker:ro \
+--volume=/dev/disk/:/dev/disk:ro \
+--publish=8080:8080 \
+--detach=true \
+--name=cadvisor \
+gcr.io/google-containers/cadvisor:latest
 ```
 
-## Asegurando tus Contenedores usando GCP
-
-Google Cloud proporciona herramientas sólidas para asegurar contenedores:
-
-- **GKE**: Seguridad optimizada para Kubernetes.
-- **Container Analysis**: Identificación y análisis de vulnerabilidades.
-- **Cloud Security Command Center (SCC)**: Supervisión y gestión centralizada de riesgos.
-
-Ejemplo de implementación de Container Analysis:
-
-```bash
-gcloud container images list-vulnerabilities gcr.io/my-project/my-image
-```
-
-## Conclusión
-
-La implementación de estas herramientas y prácticas en servicios de nube como AWS, Azure, y GCP ayuda a mantener tus entornos de contenedores seguros y monitoreados eficientemente.
+Una vez cargado en un contenedor, podemos acceder a la aplicación por medio de la URL: [http://localhost:8080/containers/](http://localhost:8080/containers/)
