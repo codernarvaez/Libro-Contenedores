@@ -1,0 +1,209 @@
+# Componiendo sistemas utilizando contenedores.
+**Autor:** *Byron Gonzalez.*
+## Introduccion.
+En este capitulo se presenta la forma de definir y ejecutar aplicaciones multicontenedor utilizando Docker Compose, permitiendo una gestion mas sencilla de sistemas complejos de multiples servicios interconectados.
+## Problema con los scripts sh.
+Utilizar varios archivos sh para crear diferentes servicios puede causar problemas en los puertos o en la inicializacion del servicio.
+Algunos problemas comunes son:
+- Permisos Insuficientes.
+Al copiar un script al contenedor, es posible que no contenga los permisos de ejecucion. Para ello se debe otorgar los servicios con: **RUN chmod +x /path/to/script.sh**
+- Formato de archivo incorrecto
+Muchas veces los scripts creados en windows pueden contener caracteres de fin de linea  incompatibles con entornos de Unix o Linux. La forma de arreglarlo es convirtiendo el archivo a formato UNIX con **dos2unix script .sh**
+- Shell Incorrecto
+Algunos contenedores no usan bash por defecto en su lugar tienen sh. por lo que se debe asegurar de usar el shell correcto en el script (**#!/bin/sh**).
+- Variables de entorno no disponibles
+Los scripts pueden depender de variables que no estan configuradas en el contenedor, en este caso se debe declarar las variables en el *docker-compose.yml* o pasarlas como parametros al script.
+
+## Archivos de configuracion para Docker Compose.
+Estos archivos son en formato .yml los contenidos son en YAML. 
+El archivo se llama *docker-compose.yml*
+Dentro de este se deben seguir las siguientes directivas clave. Primero se define la version.
+Como parte principar se debe definir cuales de las diferentes versiones se va usar ya que en estas se pueden encontrar distintas funciones que se pueden necesitar.
+Ejemplo:
+**version: '3.9'**
+El bloque de servicios o *services* se contiene las definiciones de los servicios, estos deben poseer un nombre y configuracion especifica.
+En el caso de las directivas comunes en un servicio se empieza por el *build* que especifica el contexto para construir la imagen.
+Ejemplo:
+**build: 
+context: . 
+dockerfile: Dockerfile**
+
+La parte de *image* se especifica el imagen que el serviciio va a usar.
+ Ejemplo:
+**image: nginx:latest**
+
+En *ports* se mapean los puertos internos del contenedor a los puertos externos del host.
+Ejemplo:
+**ports: 
+-"8080:80"**
+
+La parte de *volumes* se monta los directorios o archivos del host dentro del contenedor.
+Ejemplo:
+**volumes: 
+-./data:/app/data**
+Dentro de enviroment se define las variables de entorno para el contenedor.
+Ejemplo:
+**environment: 
+-MYSQL_ROOT_PASSWORD=root**
+La definicion de *depends_on* especifica las depedencias entre servicios, garantizado que uno se inicie antes que otro.
+Ejemplo:
+**depends_on: 
+-db**
+Ejemplo de un *docker-compose* completo:
+**version: '3.9' 
+services: 
+web: 
+image: nginx:latest 
+ports: - "8080:80" (Mapea el puerto 80 del contenedor al puerto 8080 del host) 
+volumes: - ./web:/usr/share/nginx/html (Monta el directorio local) 
+./web al contenedor depends_on: - db (El servicio web depende del servicio db)
+networks: 
+-app_network 
+db: 
+image: mysql:8.0 
+environment: 
+MYSQL_ROOT_PASSWORD: root 
+MYSQL_DATABASE: myapp 
+volumes: 
+-db_data:/var/lib/mysql (Almacena datos de MySQL en un volumen) 
+networks: 
+-app_network 
+volumes: 
+db_data: (Define un volumen persistente para MySQL) 
+networks: app_network: (Define una red personalizada para conectar los servicios)
+ driver: bridge**
+Dentro del servicio web se usa la imagen oficial de nginx, se expone el puerto 8080 del host, se monta el directorio local *./web* para servir archivos HTML estaticos y depende del servicio *db*, asegurandose de que este se inicie primero.
+En la zona de *db*se usa la imagen de MYSQL, se configura la base de datos mediante las variables de entorno, se almacena los datos en un volumen persistente *db_data*.
+Dentro de la zona de los *volumenes* se permite persistir datos (como los de MYSQL) para que no se pierdan al reiniciar o en un fallo de los contenedores.
+Por ultimo en las *redes* se conectan ambos servicios a una red interna llamada *app_network*, lo que permite la comunicacion entre ellos sin exponerse todos los puertos al host.
+
+**Los comandos escenciales para gestionar el compose son:** 
+- docker-compose up (Usa el archivo docker compose.yml para construir e iniciar los servicios).
+- docker-compose up -d (Inicia los contenedores en segundo plano)
+- docker-compose ps (Verificar el estado de los contenedores activos)
+- docker-compose restart (Reinicia los servicios)
+- docker-compose down (Agrega y elimina los servicios)
+## Redes internas
+Las redes internas privadas son importantes debido a la comunicacion entre los distintos a contenedores a crear. 
+Se debe definir lel hostIp. el host de mongo y el host de redis como variables especialmente en los archivos sh. estp con el fin de ejecutarlos usando docker run ya que el DNS local de Docker no trabaja con sh. 
+Al momento de la gestion automatica de redes internas se tiene las ventajas de un red interna por defecto para los servicios evitando errores con otros contenedores o redes en el sistema, junto tambien que se evitan conflictos de puertos. Y al usar sus nombres de servicio como hostnames se evita problemas de nombres.
+Se crean diferentes partes dentro del yml. para crear redes de mejor forma como una seccion de networks. 
+Ejemplo:
+**version: '3.9' 
+services: 
+web: 
+image: nginx 
+networks: - frontend 
+db: 
+image: postgres 
+networks: - backend 
+networks: 
+frontend: 
+driver: bridge 
+backend: 
+driver: bridge**
+
+Una de las formas mas comunes es separar la redes de frontend y backend para que no se comuniquen de forma directa.
+Junto a esto se debe especificar rangos de subred.
+Ejemplo:
+
+**networks: 
+custom_network: 
+driver: bridge 
+ipam: 
+config: 
+ -subnet: "192.168.1.0/24"**
+
+Especificar los servicios necesarios que van a acceder, utilizar redes overlay para comunicar servicios distribuidos en varios nodos.
+Tener nombres claros para futuras actualizaciones o mejoras.
+## Gestion de puertos
+Se emplean estrategias para asignar los distintos puertos a los host para evitar los conflictos con los servicios ya existentes.
+El uso de mapeo para los puertos internos a los externos del host.
+En docker cada contenedor posee su propia red aislada pero muchas veces se requiere exponer servicios del contenedor al host para que accesibles desde fuera. Esto se realiza con la directiva ports.
+Ejemplo:
+**services: 
+web: 
+image: nginx:latest 
+ports: - "8080:80"** ( 8080 Puerto del host donde sera accesible el servicio y 80 puerto interno del contenedor donde esta configurado el servicio).
+**Para evitar conflictos de puerto se usa:**
+- Uso de puertos dinamicos
+Si no se requiere un puerto especifico del host, Docker puede asignar uno automaticamente.
+Ejemplo:
+**ports:
+-"80"**
+De esta forma se asigna un puerto aleatorio disponible en el host y lo enlaza con el puerto especificado (80) en el contenedor. Se usa el comando *docker ps* para saber el puerto asignado.
+- Planificacion de puertos
+Definir un rango especifico de puertos para cada servicio y asegurarse de que no entren en conflicto unos con otros mientras los de mas servicios estan en ejecucion. La herramienta como netstat o lsof se usa para visualizar los puertos ocupados en el host.
+- Asignacion de puertos por red 
+En aplicaciones con multiples contenedores, en lugar de exponer los puertos al host, permite que los contenedores se comuniquen internamente en su red.
+Ejemplo:
+**services: 
+web: 
+image: nginx:latest 
+ports: - "8080:80" 
+db: 
+image: postgres:latest 
+ports: - "5432:5432" 
+networks: 
+-backend 
+-networks: 
+-backend: 
+-driver: bridge**
+En este ejemplo el servicio web se comunica con la db internamente en la red backend, sin exponer el puerto 5432 al host.
+## Variables de entorno
+Las variables de entorno permite la parametrizacion de las configuracion para que sean reutilizables y flexibles. Dentro de estas se pueden definir los puertos, nombres de contenedores, rutas de volumenes o contraseñas.
+Tambien nos presenta al uso de archivos .env para almacenar variables sensibles o configuraciones especificas.
+
+Ejemplo:
+**MYSQL_USER=root MYSQL_PASSWORD=secret MYSQL_DB=mydatabase PORT=8080**
+
+ Estas pueden ser accedidas mediante el archivo docker-compose.yml
+Ejemplo:
+Se usa el signo de dolar junto a la variable.
+**version: '3.9' 
+services: 
+db: 
+image: mysql:latest 
+environment: 
+MYSQL_USER:{MYSQL_USER} 
+MYSQL_PASSWORD:{MYSQL_PASSWORD} 
+MYSQL_DATABASE:{MYSQL_DB] 
+ports:
+ -"${PORT}:3306"**
+ Cuando se ejecuta el comando docker-compose-up.yml se busca el archivo .env en el mismo directorio.
+Se debe mantener el archivo .env fuera del control de versiones para proteger los datos. Y utilizar distintos archivos para los distintos entornos.
+
+## Despliegue en diferentes entornos
+Configuracion de multiples archivos compose para entornos de desarrollo, pruebas y produccion.
+En aplicaciones en el mundo laboral las configuraciones varian en base al entorno. 
+Ejemplo:
+En desarrollo se usan imagenes locales, bd en contenedores y logs detallados.
+En produccion se usan imagenes optimizadas, bases de datos gestionadas y configuraciones seguras.
+Dentro de la carga puede crearse un archivo llamado docker-compose.override.yml el cual puede tener configuraciones adicionales o reemplazar distintos valores del archivo principal. Este permite mantener configuraciones especificas sin modificar el archivo docker compose, es ideal para los cambios en desarrollo como montar directorios locales o habilitar el modo de depuracion.
+
+Ejemplo:
+
+**services: 
+web: 
+volumes: 
+-./local_code:/app 
+environment: 
+DEBUG: "true"**
+
+
+
+
+## Depuracion y Monitoreo 
+
+Uso de logs para el diagnostico de problemas como al inicio o en la ejecucion de los servicios y permite la identificacion de comunicacion entre los contenedores.
+Docker-compose.logs 
+Los comandos basicos dentro de estas son:
+Docker-compose logs (Muestra los logs de los contenedores en ejecucion).
+Docker-compose logs < service-name > (Muestra los logs de un servicio en especifico).
+--tail < N > muestra solo las ultimas N lineas.
+-f o --follow sigue los logs en tiempo real.
+
+Integracion de herramientas externas para monitorear el rendimiento de los servicios. En el caso de las aplicaciones grandes se utilizan las herramientas de:
+ **Prometheus y Grafana** para tener un mejor uso de la CPU, memoria y red en contenedores.
+**Elk Stack (Elastic Search, Logstach, Kibana)** para el almacenamiento y analisis de los logs de los servicios, facilita la busqueda de errores en grandes volumenes de datos.
+**Docker Desktop** interfaz grafica para las estadisticas basicas de los contenedores.
