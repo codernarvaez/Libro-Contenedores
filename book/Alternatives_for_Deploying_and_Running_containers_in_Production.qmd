@@ -1,0 +1,217 @@
+# Alternativas para implementar y ejecutar contenedores en producción
+
+Introduce a las numerosas formas en las que se pueden desplegar aplicaciones basadas en Docker en entornos de producción. A medida que la tecnología de contenedores ha madurado, las opciones para implementarlas han crecido significativamente.
+
+- Las opciones van desde ejecutar Docker en un solo host hasta soluciones avanzadas con Kubernetes.
+- Cada estrategia implica compensaciones en términos de costos, complejidad, escalabilidad y soporte.
+
+## Ejecutar Docker en Producción: Muchas Rutas, Escoge Sabiamente
+
+La ejecución de Docker en producción requiere analizar las diversas rutas disponibles, que van desde configuraciones básicas en un solo servidor hasta soluciones distribuidas con Kubernetes.
+
+### Aspectos importantes
+
+1. **Orquestación de contenedores**:
+   - Herramientas como Kubernetes permiten distribuir contenedores en un clúster, aumentando la tolerancia a fallos y la escalabilidad.
+   - Google desarrolló Kubernetes basándose en su experiencia con Borg, un sistema interno de orquestación.
+
+2. **Complejidad operativa**:
+   - Aunque Kubernetes y otras soluciones gestionadas simplifican la orquestación, su implementación inicial puede ser desafiante.
+
+3. **Servicios gestionados como alternativa**:
+   - Muchas empresas prefieren delegar la gestión de la infraestructura a proveedores en la nube para reducir la carga operativa.
+
+El despliegue de Docker en producción puede variar desde configuraciones básicas hasta sistemas distribuidos complejos. La elección depende de las necesidades y prioridades del proyecto.
+
+## ¿Cuál es el Entorno de Producción Mínimo Realista?
+
+Describe lo mínimo necesario para ejecutar una aplicación basada en Docker: un solo host con Docker y Docker Compose.
+
+### Detalles clave
+
+- **Configuración mínima**:  
+   - Un servidor físico o virtual que soporte Docker.  
+   - Compatibilidad con sistemas operativos como Linux (Ubuntu, CentOS), macOS o Windows.
+- **Limitaciones**:  
+   - Vulnerabilidad a fallos de hardware o conectividad.
+   - Menor tolerancia a fallos y escalabilidad limitada.
+- **Recomendaciones**:
+   - Implementar monitoreo externo.
+   - Tener un plan de respaldo y restauración para mitigar riesgos.
+
+## Servicios Gestionados en la Nube
+
+Los servicios gestionados en la nube ofrecen soluciones completas para ejecutar contenedores sin preocuparse por la infraestructura subyacente.
+
+### Opciones destacadas
+
+1. **Google Kubernetes Engine (GKE)**:
+   - Kubernetes gestionado con soporte de Google.
+   - Costo competitivo y buena integración con servicios de Google Cloud.
+
+2. **AWS Elastic Beanstalk y EKS**:
+   - Beanstalk es una solución simple para principiantes, mientras que EKS es más robusto y adecuado para cargas pesadas.
+
+3. **Azure Kubernetes Service (AKS)**:
+   - Integración profunda con herramientas de Microsoft como Visual Studio Code.
+
+4. **DigitalOcean Docker Swarm**:
+   - Una solución más simple, aunque su futuro soporte es incierto.
+
+### Ventajas de los servicios gestionados
+
+- Escalabilidad automática.
+- Alta disponibilidad.
+- Reducción de la complejidad operativa.
+
+### Desafíos
+
+- Dependencia tecnológica (vendor lock-in).
+- Costos recurrentes mayores comparados con configuraciones locales.
+
+## Ejecutar tu Propio Clúster de Kubernetes
+
+Para empresas que buscan mayor personalización o control, ejecutar Kubernetes en infraestructura propia es una opción viable.
+
+### Beneficios
+
+- Control completo sobre actualizaciones y configuraciones.
+- Integración con soluciones híbridas o privadas como OpenStack o VMware Tanzu.
+- Posibilidad de ejecutar Kubernetes en entornos especializados (bare-metal o Raspberry Pi).
+
+### Desafíos
+
+- Complejidad técnica y operativa significativa.
+- Requiere mayor inversión inicial y habilidades avanzadas.
+
+## Decidiendo la Configuración de Producción Más Adecuada
+
+Esta sección proporciona una guía para elegir la mejor estrategia de despliegue según factores clave.
+
+### Factores a considerar
+
+1. **Facilidad de configuración**:  
+   - Qué tan rápido se puede implementar desde un entorno de desarrollo local.
+2. **Costos**:  
+   - Costos iniciales y recurrentes.
+3. **Elasticidad**:  
+   - Capacidad para escalar de manera automática o manual según la demanda.
+4. **Soporte**:  
+   - Acceso a asistencia técnica, ya sea comercial o comunitaria.
+5. **Disponibilidad**:  
+   - Robustez frente a fallos de hardware, red o servicio.
+6. **Adhesividad**:  
+   - Facilidad para cambiar la infraestructura a otra solución si es necesario.
+
+## Ejemplo de Aplicación: ShipIt Clicker
+
+El prototipo del juego "ShipIt Clicker" sirve como ejemplo práctico para experimentar con Docker y Docker Compose.
+
+### Componentes del juego
+
+- **Frontend**: Una interfaz simple basada en HTML.
+- **Backend**: Un servidor Node.js con Express.
+- **Base de datos**: Redis para manejar datos.
+
+### Tareas sugeridas
+
+1. Ejecutar `docker-compose up` para probarlo en un entorno local.
+2. Identificar mejoras para optimizar su despliegue en producción.
+
+## Ejercicios Propuestos
+
+### Evaluar Alternativas Razonables de Despliegue
+
+Comparar configuraciones iniciales con soluciones más avanzadas, estimar costos y beneficios a corto y largo plazo.
+
+### Evaluar Dockerfile y docker-compose.yml
+
+Revisar configuraciones actuales para optimizar la aplicación, ajustando la base del contenedor (`FROM`) y mejorando escalabilidad y seguridad.
+
+## Conclusion
+- Las estrategias de despliegue tienen compensaciones entre costos, complejidad y capacidades.
+- Las configuraciones mínimas son útiles para comenzar, pero deben evolucionar con el tiempo.
+- Comprender las ventajas y desventajas de cada solución es esencial para elegir la estrategia adecuada.
+
+## **Tema de la exposición, ¿Qué es Docker Swarm?**
+Docker Swarm es una herramienta de **orquestación de contenedores** que permite gestionar y escalar aplicaciones distribuidas en varios nodos mediante la creación de clústeres. Sus características principales incluyen:
+
+- **Alta disponibilidad** y tolerancia a fallos.
+- **Escalabilidad** vertical y horizontal.
+- **Balanceo de carga** para distribuir el tráfico uniformemente.
+
+---
+
+## **Arquitectura**
+
+### Clúster
+Conjunto de nodos que trabajan juntos.
+
+### Nodos
+- **Manager**: Coordina servicios y gestiona configuraciones.
+- **Worker**: Ejecuta tareas asignadas.
+
+### Servicios
+Definen las aplicaciones y políticas de estado.
+
+### Tareas
+Instancias de servicios ejecutadas en nodos.
+
+---
+
+## **Comandos básicos**
+
+### Crear un clúster
+```bash
+docker swarm init --advertise-addr <IP-del-host>
+```
+
+### Agregar nodos al clúster
+```bash
+docker swarm join --token <token> <IP-del-host>
+```
+
+### Revisar nodos
+```bash
+docker node ls
+```
+
+### Desplegar servicios
+```bash
+docker service create --name <nombre_servicio> --replicas <número> -p <puerto:puerto> <imagen>
+```
+
+### Gestionar máquinas virtuales con Docker Machine
+
+1. Crear nodos virtuales:
+   ```bash
+   docker-machine create --driver virtualbox <nombre_nodo>
+   ```
+2. Conectar a nodos:
+   ```bash
+   docker-machine ssh <nombre_nodo>
+   ```
+3. Salir del nodo:
+   ```bash
+   exit
+   ```
+
+---
+
+## **Comparativa Docker Swarm vs. Kubernetes**
+
+| Característica             | Kubernetes                 | Docker Swarm              |
+|----------------------------|----------------------------|---------------------------|
+| Escalabilidad              | Alta                      | Media                     |
+| Facilidad de uso           | Complejo, amplio soporte  | Sencillo y fácil          |
+| Gestión de despliegues     | Avanzada                  | Básica                    |
+| Gestión de redes           | Complejo, con plugins     | Básica                    |
+| Integración con ecosistema | Amplia                    | Integrada con Docker      |
+| Actualizaciones            | Soporte avanzado          | Limitado                  |
+
+---
+
+## **Casos de uso**
+
+- **Aplicaciones web**: Despliegue escalable y tolerante a fallos.
+- **Microservicios**: Gestión de aplicaciones complejas.
