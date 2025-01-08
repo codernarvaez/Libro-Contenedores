@@ -41,25 +41,5 @@
   "deploying_docker_compose.qmd": {
     "deploying_docker_compose.html": "6020ae07"
   },
-  "Alternatives_for_Deploying_and_Running_Containers_in_Production.qmd": {
-    "Alternatives_for_Deploying_and_Running_Containers_in_Production.html": "b30a237d"
-  },
-  "introduccion_container_security.qmd": {
-    "introduccion_container_security.html": "e4fa8ac2"
-  },
-  "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd": {
-    "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html": "e7c8c758"
-  },
-  "sharing_containers_used_docker_hub.qmd": {
-    "sharing_containers_used_docker_hub.html": "72714ee1"
-  },
-  "Docker_Security_Fundamentals_and_Best_Practices.qmd": {
-    "Docker_Security_Fundamentals_and_Best_Practices.html": "89ceb36a"
-  },
-  "Continuous_Deployment_with_Jenkins.qmd": {
-    "Continuous_Deployment_with_Jenkins.html": "4796e206"
-  },
-  "Cloud-Native Continuous Deployment using Spinnaker.qmd": {
-    "Cloud-Native Continuous Deployment using Spinnaker.html": "4d729ab3"
   }
 }

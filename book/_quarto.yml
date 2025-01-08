@@ -26,16 +26,13 @@ book:
     - introduccion_docker.qmd
     - understanding_cloud_concepts.qmd
     - virtualbox and docker containers for developments.qmd
+    - composing_systems_using_containers.qmd
     - scaling_and_load_testing_docker_applications.qmd
     - Alternatives_for_Deploying_and_Running_Containers_in_Production.qmd
     - deploying_docker_compose.qmd
     - Continuous_Deployment_with_Jenkins.qmd
     - Cloud-Native Continuous Deployment using Spinnaker.qmd
     - sharing_containers_used_docker_hub.qmd
-    - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd # Narvaez
-    - introduccion_container_security.qmd
-    - Docker_Security_Fundamentals_and_Best_Practices.qmd
-
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd

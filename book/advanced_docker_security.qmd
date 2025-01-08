@@ -1,0 +1,146 @@
+# Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas
+
+## **Introducción**
+En este capítulo, exploraremos temas avanzados de seguridad en Docker, enfocándonos en la gestión segura de datos sensibles y etiquetado de metadatos. Los temas clave incluyen:
+- Almacenamiento seguro de secrets en Docker
+- El concepto y utilidad del registro Raft
+- Cómo agregar, inspeccionar y eliminar secrets
+- Uso efectivo de etiquetas para imágenes seguras
+- Implementación de etiquetas de metadatos y el archivo `security.txt`
+
+---
+## **Requisitos Técnicos**
+Para seguir este capítulo, asegúrate de tener:
+- Acceso a una máquina Linux con Docker instalado.
+- Conocimientos básicos de Docker Swarm. 
+
+---
+
+## **Almacenamiento Seguro de Secrets en Docker**
+
+### **¿Qué son los Secrets?**
+Los secrets se refieren a datos sensibles como:
+
+- Tokens de API
+- Credenciales de bases de datos
+- Claves privadas (por ejemplo, SSH, Azure, etc)
+
+Almacenar secrets de manera segura evita que los atacantes accedan a ellos. La funcionalidad de secrets en Docker cifra estos datos y los comparte de manera segura con los contenedores en un Swarm.
+
+### **Registro Raft**
+El registro Raft asegura consenso y tolerancia a fallos entre los nodos de Swarm. Los secrets se almacenan de manera segura en este registro y se comparten entre nodos. Por ejemplo, un secret puede ser accedido a través del sistema de archivos temporal:
+```bash
+/run/secrets/<nombre_del_secret>
+```
+Se puede habilitar el bloqueo automático de Swarm para mayor seguridad con:
+```bash
+docker swarm init --autolock
+```
+
+---
+
+## **Agregar, Inspeccionar y Eliminar Secrets**
+
+### **Agregar Secrets**
+Crea un secret utilizando el siguiente comando:
+```bash
+docker secret create <nombre_del_secret> <ruta_del_archivo>
+```
+Como ejemplo de ello:
+```bash
+docker secret create my_key ./id_rsa
+```
+### **Inspeccionar Secrets**
+Lista todos los secrets:
+```bash
+docker secret ls
+```
+Inspeccionar un secret especifico:
+```bash
+docker secret inspect <nombre_del_secret>
+```
+### **Eliminar Secrets**
+Elimina un secret:
+```bash
+docker secret rm <nombre_del_secret>
+```
+Elimina un secreto de un servicio en ejecución:
+```bash
+docker service update --secret-rm <nombre_del_secret> <nombre_del_servicio>
+```
+
+## **Secrets en Acción – Ejemplo**
+### **Ejemplo de Flujo de Trabajo**
+1. Inicializa un Swarm:
+
+```bash
+docker swarm init
+```
+
+2. Crea un secret:
+
+```bash
+docker secret create ssh_key ~/.ssh/id_rsa
+```
+
+3. Verifica el secret:
+
+```bash
+docker secret ls
+```
+
+4. Usa el secret en un servicio:
+
+```bash
+docker service create --name my_service \ --secret ssh_key <nombre_de_la_imagen>
+```
+
+5. Accede al secret dentro del contenedor:
+
+```bash
+cat /run/secrets/ssh_key
+```
+
+---
+
+## **Etiquetas de Docker para Seguridad**
+Las etiquetas son esenciales para identificar y usar la imagen correcta de Docker. Para mejorar la seguridad se debe seguir los siguientes `consejos`:
+
+- Usa etiquetas específicas para cada entorno (por ejemplo, `1.0.0-dev`, `1.0.0-prod`).
+- Emplea versionado semántico.
+  
+Si no tiene conocimiento sobre versionado semantico puede acceder a [Información sobre versionado semántico](https://semver.org/).
+
+**Ejemplo de creación de un secret con etiquetas de versión:**
+```bash
+docker secret create --label env=dev --label ver=1.0.0 ssh_key ~/.ssh/id_rsa
+```
+
+---
+
+## **Uso de Etiquetas para la Aplicación de Metadatos**
+Las etiquetas anotan contenedores con metadatos para una gestión más sencilla. Agrega etiquetas en un `Dockerfile`:
+
+```dockerfile
+LABEL "version"="1.0.0"
+LABEL "description"="Contenedor de desarrollo."
+LABEL "security.txt"="https://example.com/security.txt"
+```
+Visualizar etiquetas:
+```bash
+docker inspect <id_del_contenedor>
+```
+---
+## **Resumen Final**
+En este capítulo, cubrimos:
+
+- El almacenamiento seguro y la gestión de secrets utilizando Docker Swarm.
+- El rol del registro Raft en mantener consistencia y seguridad.
+- La importancia de las etiquetas de Docker y los metadatos para la gestión eficiente y segura de imágenes.
+
+Al finalizar esta seccion deberias ser capaz de manejar los secrets de tus aplicaciones correctamente, sin embargo si deseas ampliar tu conocimiento sobre el tema tratado, se recomienda ingresar a:
+
+
+- [Documentación de Secrets de Docker](https://docs.docker.com/engine/swarm/secrets/).
+
+- [Versionado Semántico](https://semver.org/).
