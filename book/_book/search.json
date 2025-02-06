@@ -182,101 +182,481 @@
   {
     "objectID": "deploying_docker_compose.html",
     "href": "deploying_docker_compose.html",
-    "title": "8  Desplegar aplicaciones con Docker Compose.",
+    "title": "9  Desplegar aplicaciones con Docker Compose.",
     "section": "",
-    "text": "8.1 Requisitos para su implementación.\nEl escenario de implementación práctico más simple posible de una aplicación empaquetada con Docker implica ejecutar Docker Compose en un solo host, sin embargo, tiene algunas desventajas importantes en términos de rendimiento y disponibilidad.\nPara continuar con la implementación, necesitará una computadora que ejecute un sistema operativo Linux moderno de la misma arquitectura que su sistema de desarrollo, con suficiente memoria, procesador y capacidad de almacenamiento para ejecutar su aplicación.\nDeberá tener alguno de estos sistemas operativos linux que admitan Docker:  - Red Hat\n- Ubuntu 16.04 o superior\n- Amazon Linux 2\n- Debian\no alguna distribución centrada en Docker como Container Linux o CoreOS.\nAdemás, antes de configurar el software en el host, debe asegurarse de que tenga una dirección IP estable. A veces, se las denomina direcciones IP estáticas o direcciones IP elásticas en un contexto de AWS.",
+    "text": "9.1 Requisitos para su implementación.\nEl escenario de implementación práctico más simple posible de una aplicación empaquetada con Docker implica ejecutar Docker Compose en un solo host, sin embargo, tiene algunas desventajas importantes en términos de rendimiento y disponibilidad.\nPara continuar con la implementación, necesitará una computadora que ejecute un sistema operativo Linux moderno de la misma arquitectura que su sistema de desarrollo, con suficiente memoria, procesador y capacidad de almacenamiento para ejecutar su aplicación.\nDeberá tener alguno de estos sistemas operativos linux que admitan Docker:  - Red Hat\n- Ubuntu 16.04 o superior\n- Amazon Linux 2\n- Debian\no alguna distribución centrada en Docker como Container Linux o CoreOS.\nAdemás, antes de configurar el software en el host, debe asegurarse de que tenga una dirección IP estable. A veces, se las denomina direcciones IP estáticas o direcciones IP elásticas en un contexto de AWS.",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
     ]
   },
   {
     "objectID": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte.",
     "href": "deploying_docker_compose.html#implementación-mediante-archivos-de-configuración-y-scripts-de-soporte.",
-    "title": "8  Desplegar aplicaciones con Docker Compose.",
-    "section": "8.2 Implementación mediante archivos de configuración y scripts de soporte.",
-    "text": "8.2 Implementación mediante archivos de configuración y scripts de soporte.\nPara implementar nuestra aplicación en un servidor de producción, utilizaremos una combinación de comandos simples y scripts de soporte que inician o actualizan el conjunto de contenedores en ejecución. Comencemos por analizar en detalle los dos archivos más importantes necesarios para la implementación: Dockerfile y docker­compose.yml.\nEste es un ejemplo de Dockerfile basado en la producción de un juego, deberás adaptar tu Dockerfile según las necesidades de tu aplicación: FROM alpine:20191114\nRUN apk update &&\napk add nodejs nodejs-npm\nRUN addgroup -S app && adduser -S -G app app\nRUN mkdir -p /app/public /app/server\nADD src/package.json* /app/\nWORKDIR /app\nRUN npm -s install\nCOPY src/public/ /app/public/\nCOPY src/server/ /app/server/\nCOPY src/.babelrc /app/\nRUN npm run compile\nUSER app\nEXPOSE 3000\nENTRYPOINT [“npm”, “start”]\n\nEste es un ejemplo de un archivo de docker-compose:\nversion: ‘3’\nservices:\nshipit-clicker-web-v2:\nbuild: .\nenvironment:\n- APP_ID=shipit-clicker-v2\n- OPENAPI_SPEC=/api/v1/spec\n- OPENAPI_ENABLE_RESPONSE_VALIDATION=false\n- PORT=3000\n- LOG_LEVEL={LOG_LEVEL:-debug}\n- REQUEST_LIMIT=100kb\n- REDIS_HOST=\\({REDIS_HOST:-redis} \\\n- REDIS_PORT=\\){REDIS_PORT:-6379}\n- SESSION_SECRET=${SESSION_SECRET:-mySecret-v2}\n\nAhora, es necesario definir una configuración de red para el contenedor principal para luego vincularlos a los demás contenedores. Un ejemplo es: ports: - {PORT:-3006}:3000\nnetworks:\n- private-redis-shipit-clicker-v2\nlinks:\n- redis\ndepends_on:\n- redis\n\nAhora bien, al ejecutar un sitio en producción, es posible que deba realizar algunas operaciones con frecuencia como reiniciarlo o actualizarlo. Para resolver esto puede agregar scripts con el objetivo de automatizar procesos, los más comunes son aquellos para reiniciar la aplicación y implementar cambios.",
+    "title": "9  Desplegar aplicaciones con Docker Compose.",
+    "section": "9.2 Implementación mediante archivos de configuración y scripts de soporte.",
+    "text": "9.2 Implementación mediante archivos de configuración y scripts de soporte.\nPara implementar nuestra aplicación en un servidor de producción, utilizaremos una combinación de comandos simples y scripts de soporte que inician o actualizan el conjunto de contenedores en ejecución. Comencemos por analizar en detalle los dos archivos más importantes necesarios para la implementación: Dockerfile y docker­compose.yml.\nEste es un ejemplo de Dockerfile basado en la producción de un juego, deberás adaptar tu Dockerfile según las necesidades de tu aplicación: FROM alpine:20191114\nRUN apk update &&\napk add nodejs nodejs-npm\nRUN addgroup -S app && adduser -S -G app app\nRUN mkdir -p /app/public /app/server\nADD src/package.json* /app/\nWORKDIR /app\nRUN npm -s install\nCOPY src/public/ /app/public/\nCOPY src/server/ /app/server/\nCOPY src/.babelrc /app/\nRUN npm run compile\nUSER app\nEXPOSE 3000\nENTRYPOINT [“npm”, “start”]\n\nEste es un ejemplo de un archivo de docker-compose:\nversion: ‘3’\nservices:\nshipit-clicker-web-v2:\nbuild: .\nenvironment:\n- APP_ID=shipit-clicker-v2\n- OPENAPI_SPEC=/api/v1/spec\n- OPENAPI_ENABLE_RESPONSE_VALIDATION=false\n- PORT=3000\n- LOG_LEVEL={LOG_LEVEL:-debug}\n- REQUEST_LIMIT=100kb\n- REDIS_HOST=\\({REDIS_HOST:-redis} \\\n- REDIS_PORT=\\){REDIS_PORT:-6379}\n- SESSION_SECRET=${SESSION_SECRET:-mySecret-v2}\n\nAhora, es necesario definir una configuración de red para el contenedor principal para luego vincularlos a los demás contenedores. Un ejemplo es: ports: - {PORT:-3006}:3000\nnetworks:\n- private-redis-shipit-clicker-v2\nlinks:\n- redis\ndepends_on:\n- redis\n\nAhora bien, al ejecutar un sitio en producción, es posible que deba realizar algunas operaciones con frecuencia como reiniciarlo o actualizarlo. Para resolver esto puede agregar scripts con el objetivo de automatizar procesos, los más comunes son aquellos para reiniciar la aplicación y implementar cambios.",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
     ]
   },
   {
     "objectID": "deploying_docker_compose.html#implementación",
     "href": "deploying_docker_compose.html#implementación",
-    "title": "8  Desplegar aplicaciones con Docker Compose.",
-    "section": "8.3 Implementación",
-    "text": "8.3 Implementación\nPara iniciar los servicios en segundo plano, use el siguiente comando: $ docker-compose up -d\nVerifique que los servicios se están ejecutando con: $ docker-compose ps\nCompruebe si los registros del sistema muestran algún error: $ docker-compose logs\nMientras no veas una secuencia de mensajes de error en los registros, deberías poder acceder al sitio web en la dirección IP del servidor (por ejemplo, en http://192.0.2.10)",
+    "title": "9  Desplegar aplicaciones con Docker Compose.",
+    "section": "9.3 Implementación",
+    "text": "9.3 Implementación\nPara iniciar los servicios en segundo plano, use el siguiente comando: $ docker-compose up -d\nVerifique que los servicios se están ejecutando con: $ docker-compose ps\nCompruebe si los registros del sistema muestran algún error: $ docker-compose logs\nMientras no veas una secuencia de mensajes de error en los registros, deberías poder acceder al sitio web en la dirección IP del servidor (por ejemplo, en http://192.0.2.10)",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
     ]
   },
   {
     "objectID": "deploying_docker_compose.html#limitaciones-de-implementación-en-un-solo-host",
     "href": "deploying_docker_compose.html#limitaciones-de-implementación-en-un-solo-host",
-    "title": "8  Desplegar aplicaciones con Docker Compose.",
-    "section": "8.4 Limitaciones de implementación en un solo host",
-    "text": "8.4 Limitaciones de implementación en un solo host\nSi el contenedor del servidor de base de datos o el contenedor del servicio web fallan y no se pueden reiniciar automáticamente, el sitio no funcionará y será necesaria una intervención manual. La solución puede ser tan simple como conectarse por SSH y reiniciar el servidor. Pero, a veces, un solo servidor tendrá tan poca memoria que deberá reiniciarse manualmente desde una consola de nivel superior o incluso apagar y encender manualmente.\nDependiendo de su proveedor de alojamiento, el sistema operativo base con el que comience y cómo estén configurados los contenedores Docker, puede experimentar inestabilidad que sea difícil de rastrear. Tal vez su host se reinicie con frecuencia debido a que la red del proveedor detecta hardware inestable o condiciones de red inestables. Tal vez haya configurado su sistema operativo para instalar actualizaciones automáticas y aplicarlas provoque períodos de interrupciones. Tal vez la aplicación crezca en la memoria hasta que provoque una falla de algún tipo.\nSi ha alojado su aplicación en un único servidor físico o virtual, debe asegurarse de realizar copias de seguridad del sistema con regularidad, la pérdida del host podría provocar que se pierda toda la información.",
+    "title": "9  Desplegar aplicaciones con Docker Compose.",
+    "section": "9.4 Limitaciones de implementación en un solo host",
+    "text": "9.4 Limitaciones de implementación en un solo host\nSi el contenedor del servidor de base de datos o el contenedor del servicio web fallan y no se pueden reiniciar automáticamente, el sitio no funcionará y será necesaria una intervención manual. La solución puede ser tan simple como conectarse por SSH y reiniciar el servidor. Pero, a veces, un solo servidor tendrá tan poca memoria que deberá reiniciarse manualmente desde una consola de nivel superior o incluso apagar y encender manualmente.\nDependiendo de su proveedor de alojamiento, el sistema operativo base con el que comience y cómo estén configurados los contenedores Docker, puede experimentar inestabilidad que sea difícil de rastrear. Tal vez su host se reinicie con frecuencia debido a que la red del proveedor detecta hardware inestable o condiciones de red inestables. Tal vez haya configurado su sistema operativo para instalar actualizaciones automáticas y aplicarlas provoque períodos de interrupciones. Tal vez la aplicación crezca en la memoria hasta que provoque una falla de algún tipo.\nSi ha alojado su aplicación en un único servidor físico o virtual, debe asegurarse de realizar copias de seguridad del sistema con regularidad, la pérdida del host podría provocar que se pierda toda la información.",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Desplegar aplicaciones con Docker Compose.</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html",
     "href": "sharing_containers_used_docker_hub.html",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
     "section": "",
-    "text": "9.1 ¿Qué es Docker Hub?\nDocker Hub es una plataforma centralizada que permite a los desarrolladores almacenar, compartir y gestionar imágenes de contenedores. Es el repositorio oficial de Docker, donde se pueden encontrar imágenes públicas y privadas, facilitando la colaboración y la reutilización de contenedores en diferentes entornos.\nDocker Hub es un servicio basado en la nube que proporciona un registro de imágenes de Docker. Permite a los desarrolladores:",
+    "text": "10.1 ¿Qué es Docker Hub?\nDocker Hub es una plataforma centralizada que permite a los desarrolladores almacenar, compartir y gestionar imágenes de contenedores. Es el repositorio oficial de Docker, donde se pueden encontrar imágenes públicas y privadas, facilitando la colaboración y la reutilización de contenedores en diferentes entornos.\nDocker Hub es un servicio basado en la nube que proporciona un registro de imágenes de Docker. Permite a los desarrolladores:",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html#qué-es-docker-hub",
     "href": "sharing_containers_used_docker_hub.html#qué-es-docker-hub",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
     "section": "",
     "text": "Almacenar Imágenes: Guardar imágenes de contenedores en un lugar centralizado.\nCompartir Imágenes: Hacer que las imágenes estén disponibles para otros desarrolladores.\nAutomatizar Builds: Configurar pipelines de CI/CD para construir y desplegar imágenes automáticamente.\nGestionar Repositorios: Organizar imágenes en repositorios públicos o privados.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html#beneficios-de-usar-docker-hub",
     "href": "sharing_containers_used_docker_hub.html#beneficios-de-usar-docker-hub",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
-    "section": "9.2 Beneficios de Usar Docker Hub",
-    "text": "9.2 Beneficios de Usar Docker Hub\n\nColaboración: Facilita el trabajo en equipo al permitir compartir imágenes de contenedores fácilmente.\nReutilización: Permite reutilizar imágenes existentes, ahorrando tiempo y esfuerzo en la configuración de entornos.\nDistribución: Facilita la distribución de aplicaciones y servicios en diferentes entornos y plataformas.",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
+    "section": "10.2 Beneficios de Usar Docker Hub",
+    "text": "10.2 Beneficios de Usar Docker Hub\n\nColaboración: Facilita el trabajo en equipo al permitir compartir imágenes de contenedores fácilmente.\nReutilización: Permite reutilizar imágenes existentes, ahorrando tiempo y esfuerzo en la configuración de entornos.\nDistribución: Facilita la distribución de aplicaciones y servicios en diferentes entornos y plataformas.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html#pasos-para-compartir-contenedores-en-docker-hub",
     "href": "sharing_containers_used_docker_hub.html#pasos-para-compartir-contenedores-en-docker-hub",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
-    "section": "9.3 Pasos para Compartir Contenedores en Docker Hub",
-    "text": "9.3 Pasos para Compartir Contenedores en Docker Hub\n\nCrear una Cuenta en Docker Hub: Regístrate en Docker Hub para crear una cuenta gratuita.\nIniciar Sesión desde la Línea de Comandos: Usa el comando docker login para iniciar sesión en Docker Hub desde tu terminal.\nConstruir una Imagen de Docker: Crea una imagen de Docker usando un Dockerfile y el comando docker build.\nEtiquetar la Imagen: Etiqueta la imagen con tu nombre de usuario de Docker Hub y el nombre del repositorio.\nSubir la Imagen a Docker Hub: Usa el comando docker push para subir la imagen etiquetada a Docker Hub.\nCompartir la Imagen: Comparte el enlace del repositorio de Docker Hub con otros desarrolladores para que puedan descargar y usar la imagen.",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
+    "section": "10.3 Pasos para Compartir Contenedores en Docker Hub",
+    "text": "10.3 Pasos para Compartir Contenedores en Docker Hub\n\nCrear una Cuenta en Docker Hub: Regístrate en Docker Hub para crear una cuenta gratuita.\nIniciar Sesión desde la Línea de Comandos: Usa el comando docker login para iniciar sesión en Docker Hub desde tu terminal.\nConstruir una Imagen de Docker: Crea una imagen de Docker usando un Dockerfile y el comando docker build.\nEtiquetar la Imagen: Etiqueta la imagen con tu nombre de usuario de Docker Hub y el nombre del repositorio.\nSubir la Imagen a Docker Hub: Usa el comando docker push para subir la imagen etiquetada a Docker Hub.\nCompartir la Imagen: Comparte el enlace del repositorio de Docker Hub con otros desarrolladores para que puedan descargar y usar la imagen.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html#ejemplo-práctico",
     "href": "sharing_containers_used_docker_hub.html#ejemplo-práctico",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
-    "section": "9.4 Ejemplo Práctico",
-    "text": "9.4 Ejemplo Práctico\nA continuación, se muestra un ejemplo práctico de cómo compartir una imagen de contenedores en Docker Hub:\n\nConstruir la Imagen: sh docker build -t myapp:late  st .\nEtiquetar la Imagen: sh docker tag myapp:latest your-dockerhub-username/myapp:latest\nIniciar Sesión en Docker Hub: sh docker login\nSubir la Imagen: sh docker push your-dockerhub-username/myapp:latest\nCompartir el Enlace: Comparte el enlace https://hub.docker.com/r/your-dockerhub-username/myapp con otros desarrolladores.",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
+    "section": "10.4 Ejemplo Práctico",
+    "text": "10.4 Ejemplo Práctico\nA continuación, se muestra un ejemplo práctico de cómo compartir una imagen de contenedores en Docker Hub:\n\nConstruir la Imagen: sh docker build -t myapp:late  st .\nEtiquetar la Imagen: sh docker tag myapp:latest your-dockerhub-username/myapp:latest\nIniciar Sesión en Docker Hub: sh docker login\nSubir la Imagen: sh docker push your-dockerhub-username/myapp:latest\nCompartir el Enlace: Comparte el enlace https://hub.docker.com/r/your-dockerhub-username/myapp con otros desarrolladores.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
     ]
   },
   {
     "objectID": "sharing_containers_used_docker_hub.html#consideraciones-de-seguridad",
     "href": "sharing_containers_used_docker_hub.html#consideraciones-de-seguridad",
-    "title": "9  Compartir Contenedores Usando Docker Hub",
-    "section": "9.5 Consideraciones de Seguridad",
-    "text": "9.5 Consideraciones de Seguridad\n\nImágenes Privadas: Si no deseas que tus imágenes sean públicas, puedes configurar repositorios privados en Docker Hub.\nAutenticación: Asegúrate de usar autenticación segura y gestionar tus credenciales de Docker Hub de manera adecuada.\nActualizaciones: Mantén tus imágenes actualizadas para incluir las últimas mejoras y parches de seguridad.\n\nAl finalizar este capítulo, tendrás las habilidades necesarias para compartir tus contenedores con otros desarrolladores y utilizar imágenes de contenedores de la comunidad, mejorando así tu flujo de trabajo y la colaboración en proyectos.",
+    "title": "10  Compartir Contenedores Usando Docker Hub",
+    "section": "10.5 Consideraciones de Seguridad",
+    "text": "10.5 Consideraciones de Seguridad\n\nImágenes Privadas: Si no deseas que tus imágenes sean públicas, puedes configurar repositorios privados en Docker Hub.\nAutenticación: Asegúrate de usar autenticación segura y gestionar tus credenciales de Docker Hub de manera adecuada.\nActualizaciones: Mantén tus imágenes actualizadas para incluir las últimas mejoras y parches de seguridad.\n\nAl finalizar este capítulo, tendrás las habilidades necesarias para compartir tus contenedores con otros desarrolladores y utilizar imágenes de contenedores de la comunidad, mejorando así tu flujo de trabajo y la colaboración en proyectos.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Compartir Contenedores Usando Docker Hub</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html",
+    "href": "source_control_management_devops.html",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "",
+    "text": "14.1 ¿Qué es Source Control Management (SCM)?\nEl control de versiones es una parte fundamental del desarrollo de software, ya que permite gestionar, rastrear y proteger los cambios en el código fuente. Azure DevOps proporciona herramientas potentes para la gestión del código, permitiendo la colaboración entre equipos y garantizando la estabilidad del código en entornos de desarrollo, prueba y producción.\nEn esta sección, aprenderás cómo Azure DevOps Repos ayuda a gestionar el código fuente de manera segura y eficiente, desde la creación de repositorios hasta el manejo de ramas y estrategias de trabajo en equipo.\nSCM (Source Control Management) es una práctica esencial para cualquier empresa o equipo de desarrollo, ya que proporciona un método seguro y organizado para almacenar y gestionar el código fuente. SCM permite:\nEl uso de SCM dentro de Azure DevOps se realiza a través de Azure Repos, que admite dos tipos principales de control de versiones:\nPara comenzar con SCM, los pasos básicos son:",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "",
+    "text": "8.1 Ejecutar Docker en Producción: Muchas Rutas, Escoge Sabiamente\nIntroduce a las numerosas formas en las que se pueden desplegar aplicaciones basadas en Docker en entornos de producción. A medida que la tecnología de contenedores ha madurado, las opciones para implementarlas han crecido significativamente.\nLa ejecución de Docker en producción requiere analizar las diversas rutas disponibles, que van desde configuraciones básicas en un solo servidor hasta soluciones distribuidas con Kubernetes.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejecutar-docker-en-producción-muchas-rutas-escoge-sabiamente",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejecutar-docker-en-producción-muchas-rutas-escoge-sabiamente",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "",
+    "text": "8.1.1 Aspectos importantes\n\nOrquestación de contenedores:\n\nHerramientas como Kubernetes permiten distribuir contenedores en un clúster, aumentando la tolerancia a fallos y la escalabilidad.\nGoogle desarrolló Kubernetes basándose en su experiencia con Borg, un sistema interno de orquestación.\n\nComplejidad operativa:\n\nAunque Kubernetes y otras soluciones gestionadas simplifican la orquestación, su implementación inicial puede ser desafiante.\n\nServicios gestionados como alternativa:\n\nMuchas empresas prefieren delegar la gestión de la infraestructura a proveedores en la nube para reducir la carga operativa.\n\n\nEl despliegue de Docker en producción puede variar desde configuraciones básicas hasta sistemas distribuidos complejos. La elección depende de las necesidades y prioridades del proyecto.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#cuál-es-el-entorno-de-producción-mínimo-realista",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#cuál-es-el-entorno-de-producción-mínimo-realista",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.2 ¿Cuál es el Entorno de Producción Mínimo Realista?",
+    "text": "8.2 ¿Cuál es el Entorno de Producción Mínimo Realista?\nDescribe lo mínimo necesario para ejecutar una aplicación basada en Docker: un solo host con Docker y Docker Compose.\n\n8.2.1 Detalles clave\n\nConfiguración mínima:\n\nUn servidor físico o virtual que soporte Docker.\n\nCompatibilidad con sistemas operativos como Linux (Ubuntu, CentOS), macOS o Windows.\n\nLimitaciones:\n\nVulnerabilidad a fallos de hardware o conectividad.\nMenor tolerancia a fallos y escalabilidad limitada.\n\nRecomendaciones:\n\nImplementar monitoreo externo.\nTener un plan de respaldo y restauración para mitigar riesgos.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#servicios-gestionados-en-la-nube",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#servicios-gestionados-en-la-nube",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.3 Servicios Gestionados en la Nube",
+    "text": "8.3 Servicios Gestionados en la Nube\nLos servicios gestionados en la nube ofrecen soluciones completas para ejecutar contenedores sin preocuparse por la infraestructura subyacente.\n\n8.3.1 Opciones destacadas\n\nGoogle Kubernetes Engine (GKE):\n\nKubernetes gestionado con soporte de Google.\nCosto competitivo y buena integración con servicios de Google Cloud.\n\nAWS Elastic Beanstalk y EKS:\n\nBeanstalk es una solución simple para principiantes, mientras que EKS es más robusto y adecuado para cargas pesadas.\n\nAzure Kubernetes Service (AKS):\n\nIntegración profunda con herramientas de Microsoft como Visual Studio Code.\n\nDigitalOcean Docker Swarm:\n\nUna solución más simple, aunque su futuro soporte es incierto.\n\n\n\n\n8.3.2 Ventajas de los servicios gestionados\n\nEscalabilidad automática.\nAlta disponibilidad.\nReducción de la complejidad operativa.\n\n\n\n8.3.3 Desafíos\n\nDependencia tecnológica (vendor lock-in).\nCostos recurrentes mayores comparados con configuraciones locales.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejecutar-tu-propio-clúster-de-kubernetes",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejecutar-tu-propio-clúster-de-kubernetes",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.4 Ejecutar tu Propio Clúster de Kubernetes",
+    "text": "8.4 Ejecutar tu Propio Clúster de Kubernetes\nPara empresas que buscan mayor personalización o control, ejecutar Kubernetes en infraestructura propia es una opción viable.\n\n8.4.1 Beneficios\n\nControl completo sobre actualizaciones y configuraciones.\nIntegración con soluciones híbridas o privadas como OpenStack o VMware Tanzu.\nPosibilidad de ejecutar Kubernetes en entornos especializados (bare-metal o Raspberry Pi).\n\n\n\n8.4.2 Desafíos\n\nComplejidad técnica y operativa significativa.\nRequiere mayor inversión inicial y habilidades avanzadas.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#decidiendo-la-configuración-de-producción-más-adecuada",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#decidiendo-la-configuración-de-producción-más-adecuada",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.5 Decidiendo la Configuración de Producción Más Adecuada",
+    "text": "8.5 Decidiendo la Configuración de Producción Más Adecuada\nEsta sección proporciona una guía para elegir la mejor estrategia de despliegue según factores clave.\n\n8.5.1 Factores a considerar\n\nFacilidad de configuración:\n\nQué tan rápido se puede implementar desde un entorno de desarrollo local.\n\nCostos:\n\nCostos iniciales y recurrentes.\n\nElasticidad:\n\nCapacidad para escalar de manera automática o manual según la demanda.\n\nSoporte:\n\nAcceso a asistencia técnica, ya sea comercial o comunitaria.\n\nDisponibilidad:\n\nRobustez frente a fallos de hardware, red o servicio.\n\nAdhesividad:\n\nFacilidad para cambiar la infraestructura a otra solución si es necesario.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejemplo-de-aplicación-shipit-clicker",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejemplo-de-aplicación-shipit-clicker",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.6 Ejemplo de Aplicación: ShipIt Clicker",
+    "text": "8.6 Ejemplo de Aplicación: ShipIt Clicker\nEl prototipo del juego “ShipIt Clicker” sirve como ejemplo práctico para experimentar con Docker y Docker Compose.\n\n8.6.1 Componentes del juego\n\nFrontend: Una interfaz simple basada en HTML.\nBackend: Un servidor Node.js con Express.\nBase de datos: Redis para manejar datos.\n\n\n\n8.6.2 Tareas sugeridas\n\nEjecutar docker-compose up para probarlo en un entorno local.\nIdentificar mejoras para optimizar su despliegue en producción.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejercicios-propuestos",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#ejercicios-propuestos",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.7 Ejercicios Propuestos",
+    "text": "8.7 Ejercicios Propuestos\n\n8.7.1 Evaluar Alternativas Razonables de Despliegue\nComparar configuraciones iniciales con soluciones más avanzadas, estimar costos y beneficios a corto y largo plazo.\n\n\n8.7.2 Evaluar Dockerfile y docker-compose.yml\nRevisar configuraciones actuales para optimizar la aplicación, ajustando la base del contenedor (FROM) y mejorando escalabilidad y seguridad.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#conclusion",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#conclusion",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.8 Conclusion",
+    "text": "8.8 Conclusion\n\nLas estrategias de despliegue tienen compensaciones entre costos, complejidad y capacidades.\nLas configuraciones mínimas son útiles para comenzar, pero deben evolucionar con el tiempo.\nComprender las ventajas y desventajas de cada solución es esencial para elegir la estrategia adecuada.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#tema-de-la-exposición-qué-es-docker-swarm",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#tema-de-la-exposición-qué-es-docker-swarm",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.9 Tema de la exposición, ¿Qué es Docker Swarm?",
+    "text": "8.9 Tema de la exposición, ¿Qué es Docker Swarm?\nDocker Swarm es una herramienta de orquestación de contenedores que permite gestionar y escalar aplicaciones distribuidas en varios nodos mediante la creación de clústeres. Sus características principales incluyen:\n\nAlta disponibilidad y tolerancia a fallos.\nEscalabilidad vertical y horizontal.\nBalanceo de carga para distribuir el tráfico uniformemente.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#arquitectura",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#arquitectura",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.10 Arquitectura",
+    "text": "8.10 Arquitectura\n\n8.10.1 Clúster\nConjunto de nodos que trabajan juntos.\n\n\n8.10.2 Nodos\n\nManager: Coordina servicios y gestiona configuraciones.\nWorker: Ejecuta tareas asignadas.\n\n\n\n8.10.3 Servicios\nDefinen las aplicaciones y políticas de estado.\n\n\n8.10.4 Tareas\nInstancias de servicios ejecutadas en nodos.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#comandos-básicos",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#comandos-básicos",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.11 Comandos básicos",
+    "text": "8.11 Comandos básicos\n\n8.11.1 Crear un clúster\ndocker swarm init --advertise-addr &lt;IP-del-host&gt;\n\n\n8.11.2 Agregar nodos al clúster\ndocker swarm join --token &lt;token&gt; &lt;IP-del-host&gt;\n\n\n8.11.3 Revisar nodos\ndocker node ls\n\n\n8.11.4 Desplegar servicios\ndocker service create --name &lt;nombre_servicio&gt; --replicas &lt;número&gt; -p &lt;puerto:puerto&gt; &lt;imagen&gt;\n\n\n8.11.5 Gestionar máquinas virtuales con Docker Machine\n\nCrear nodos virtuales:\ndocker-machine create --driver virtualbox &lt;nombre_nodo&gt;\nConectar a nodos:\ndocker-machine ssh &lt;nombre_nodo&gt;\nSalir del nodo:\nexit",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#comparativa-docker-swarm-vs.-kubernetes",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#comparativa-docker-swarm-vs.-kubernetes",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.12 Comparativa Docker Swarm vs. Kubernetes",
+    "text": "8.12 Comparativa Docker Swarm vs. Kubernetes\n\n\n\n\n\n\n\n\nCaracterística\nKubernetes\nDocker Swarm\n\n\n\n\nEscalabilidad\nAlta\nMedia\n\n\nFacilidad de uso\nComplejo, amplio soporte\nSencillo y fácil\n\n\nGestión de despliegues\nAvanzada\nBásica\n\n\nGestión de redes\nComplejo, con plugins\nBásica\n\n\nIntegración con ecosistema\nAmplia\nIntegrada con Docker\n\n\nActualizaciones\nSoporte avanzado\nLimitado",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#casos-de-uso",
+    "href": "Alternatives_for_Deploying_and_Running_containers_in_Production.html#casos-de-uso",
+    "title": "8  Alternativas para implementar y ejecutar contenedores en producción",
+    "section": "8.13 Casos de uso",
+    "text": "8.13 Casos de uso\n\nAplicaciones web: Despliegue escalable y tolerante a fallos.\nMicroservicios: Gestión de aplicaciones complejas.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Alternativas para implementar y ejecutar contenedores en producción</span>"
+    ]
+  },
+  {
+    "objectID": "Docker_Security_Fundamentals_and_Best_Practices.html",
+    "href": "Docker_Security_Fundamentals_and_Best_Practices.html",
+    "title": "11  Seguridad de Docker, Fundamentos y Mejores prácticas",
+    "section": "",
+    "text": "11.1 Introducción\nEn el desarrollo moderno de software, Docker se ha convertido en una herramienta esencial para la creación y gestión de contenedores. Su capacidad para empaquetar aplicaciones junto con sus dependencias garantiza consistencia en entornos de desarrollo, pruebas y producción. Sin embargo, el uso de contenedores plantea desafíos relacionados con la seguridad y las buenas prácticas de implementación.\nEste documento explora los fundamentos de la seguridad en Docker y las mejores prácticas recomendadas para garantizar la protección de las imágenes y los contenedores. Se analizarán técnicas como el uso de imágenes base mínimas, restricciones de privilegios en contenedores y herramientas como DOCKER_CONTENT_TRUST para verificar la integridad de las imágenes. Además, se destacarán métodos para minimizar riesgos durante la construcción y despliegue de contenedores.\nEl objetivo es proporcionar una guía práctica para desarrollar y operar aplicaciones en entornos de contenedores de manera segura, optimizando el uso de Docker en escenarios reales.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Seguridad de Docker, Fundamentos y Mejores prácticas</span>"
+    ]
+  },
+  {
+    "objectID": "Docker_Security_Fundamentals_and_Best_Practices.html#fundamentos-de-la-seguridad-en-docker",
+    "href": "Docker_Security_Fundamentals_and_Best_Practices.html#fundamentos-de-la-seguridad-en-docker",
+    "title": "11  Seguridad de Docker, Fundamentos y Mejores prácticas",
+    "section": "11.2 Fundamentos de la Seguridad en Docker",
+    "text": "11.2 Fundamentos de la Seguridad en Docker\nLa seguridad en Docker se centra en proteger tanto las imágenes como los contenedores. Las imágenes son la base de los contenedores y, por lo tanto, su seguridad es primordial. Se recomienda utilizar imágenes base mínimas y firmadas para reducir la superficie de ataque. Docker Hub, como repositorio de imágenes, ofrece imágenes certificadas que han sido revisadas para garantizar su autenticidad. Sin embargo, es crucial que los desarrolladores verifiquen la fuente de las imágenes y estén atentos a las alertas de seguridad.\n\nSeguridad de Imágenes de Docker\nLas imágenes son el pilar sobre el cual se construyen los contenedores en Docker. Garantizar la seguridad de estas imágenes es esencial para evitar problemas de seguridad. Prácticas recomendadas:\n\nVerificación de Imágenes:Usar imágenes oficiales y certificadas de Docker Hub reduce la probabilidad de descargar imágenes comprometidas. En el pasado, se han identificado imágenes maliciosas que explotaban vulnerabilidades como el “cryptojacking”.\n\nRiesgos comunes: Las imágenes en Docker Hub pueden contener malware si no se validan. Ejemplo: en 2018, se detectaron imágenes maliciosas destinadas al cryptojacking.\nSe recomienda usar imágenes firmadas: Docker ofrece un mecanismo de firma que ayuda a verificar la autenticidad de las imágenes. Además, verificar los hashes (como sha256) de las imágenes asegura que no han sido modificadas.\n\n\nDocker Content Trust (DCT):Este mecanismo utiliza firmas digitales para garantizar que las imágenes no han sido alteradas. Aunque está deshabilitado por defecto, habilitar DCT asegura la autenticidad de las imágenes descargadas.\nUso de Imágenes Base Mínimas: A menudo, las imágenes completas incluyen muchos paquetes innecesarios que pueden contener vulnerabilidades no actualizadas.\n\nSe recomienda usar imágenes base mínimas, como Alpine, que tienen un tamaño reducido (alrededor de 5 MB) y contienen solo lo esencial para ejecutar la aplicación. Estas imágenes son más seguras porque limitan la cantidad de código vulnerable y permiten un control más detallado sobre lo que se incluye en el contenedor.\n\nArchivo .dockerignore:\n\nEste archivo excluye archivos innecesarios en el proceso de construcción, como binarios y configuraciones sensibles.\nEjemplo: Excluir claves privadas con reglas como **/*.pem o carpetas como .git.\n\n\nRestricción de Privilegios en Contenedores\nEl control de privilegios dentro de un contenedor es una de las mejores maneras de mejorar la seguridad. Docker permite configurar varios parámetros para limitar los privilegios de los contenedores, reduciendo la posibilidad de explotación.\n\nUso de –security-opt=no-new-privileges:Esta opción impide que los contenedores y sus procesos obtengan privilegios adicionales, lo cual ayuda a proteger el host subyacente y evitar que los atacantes escalen privilegios.\nSistema de archivos de solo lectura: Configurar volúmenes en modo de solo lectura protege contra modificaciones accidentales o maliciosas dentro del contenedor.\nUsuarios y grupos específicos: Asignar usuarios con permisos limitados en lugar de ejecutar procesos como usuario raíz.\n\nConstrucción Segura de Imágenes Cuando se crean imágenes personalizadas para aplicaciones, es esencial seguir ciertas prácticas para evitar posibles riesgos.\n\nUso de COPY en lugar de ADD: Mientras que ADD permite descargar archivos remotos y descomprimirlos automáticamente, esto aumenta el riesgo de incluir contenido inseguro. COPY es más seguro y controlado.\n\nRiesgo de ADD: Descargar archivos desde URLs no verificadas puede comprometer la seguridad.\n\nArchivo .dockerignore: Este archivo ayuda a excluir archivos sensibles, como claves privadas o tokens de API, durante el proceso de construcción.\nCopias recursivas: Evitar incluir accidentalmente archivos sensibles al usar copias recursivas.\n\nSolución: Actualizar .dockerignore para excluir archivos como .env o secretos de API.\n\nLimitar el Tamaño de las Imágenes: Utilizar imágenes base mínimas y eliminar paquetes o dependencias innecesarias es clave para reducir la superficie de ataque. Menos código implica menos riesgo de vulnerabilidades.\nEvitar incluir datos confidenciales: Las claves y configuraciones sensibles deben ser gestionadas mediante herramientas externas como HashiCorp Vault o servicios en la nube.\n\nMitigación de Vulnerabilidades\nEl monitoreo y la prevención son esenciales para mantener un entorno seguro:\n\nAuditorías regulares: Revisar continuamente las imágenes y contenedores para identificar vulnerabilidades.\nSistemas de detección y protección: Utilizar herramientas como escáneres de seguridad para detectar configuraciones incorrectas o imágenes maliciosas.\nCapacidades limitadas: Restringir las funciones del contenedor para que solo accedan a los recursos necesarios.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Seguridad de Docker, Fundamentos y Mejores prácticas</span>"
+    ]
+  },
+  {
+    "objectID": "Docker_Security_Fundamentals_and_Best_Practices.html#conclusión",
+    "href": "Docker_Security_Fundamentals_and_Best_Practices.html#conclusión",
+    "title": "11  Seguridad de Docker, Fundamentos y Mejores prácticas",
+    "section": "11.3 Conclusión",
+    "text": "11.3 Conclusión\nImplementar prácticas de seguridad en Docker protege los entornos de desarrollo y producción. Verificar imágenes, limitar privilegios, y optimizar construcciones reduce la exposición a vulnerabilidades. Estas medidas, junto con la restricción de recursos, aseguran un despliegue seguro y eficiente, estableciendo una base sólida para una gestión confiable de contenedores.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Seguridad de Docker, Fundamentos y Mejores prácticas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html",
+    "href": "advanced_docker_security.html",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "",
+    "text": "12.1 Introducción\nEn este capítulo, exploraremos temas avanzados de seguridad en Docker, enfocándonos en la gestión segura de datos sensibles y etiquetado de metadatos. Los temas clave incluyen: - Almacenamiento seguro de secrets en Docker - El concepto y utilidad del registro Raft - Cómo agregar, inspeccionar y eliminar secrets - Uso efectivo de etiquetas para imágenes seguras - Implementación de etiquetas de metadatos y el archivo security.txt",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#almacenamiento-seguro-de-secrets-en-docker",
+    "href": "advanced_docker_security.html#almacenamiento-seguro-de-secrets-en-docker",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.2 Almacenamiento Seguro de Secrets en Docker",
+    "text": "12.2 Almacenamiento Seguro de Secrets en Docker\n\n12.2.1 ¿Qué son los Secrets?\nLos secrets se refieren a datos sensibles como:\n\nTokens de API\nCredenciales de bases de datos\nClaves privadas (por ejemplo, SSH, Azure, etc)\n\nAlmacenar secrets de manera segura evita que los atacantes accedan a ellos. La funcionalidad de secrets en Docker cifra estos datos y los comparte de manera segura con los contenedores en un Swarm.\n\n\n12.2.2 Registro Raft\nEl registro Raft asegura consenso y tolerancia a fallos entre los nodos de Swarm. Los secrets se almacenan de manera segura en este registro y se comparten entre nodos. Por ejemplo, un secret puede ser accedido a través del sistema de archivos temporal:\n/run/secrets/&lt;nombre_del_secret&gt;\nSe puede habilitar el bloqueo automático de Swarm para mayor seguridad con:\ndocker swarm init --autolock",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#agregar-inspeccionar-y-eliminar-secrets",
+    "href": "advanced_docker_security.html#agregar-inspeccionar-y-eliminar-secrets",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.3 Agregar, Inspeccionar y Eliminar Secrets",
+    "text": "12.3 Agregar, Inspeccionar y Eliminar Secrets\n\n12.3.1 Agregar Secrets\nCrea un secret utilizando el siguiente comando:\ndocker secret create &lt;nombre_del_secret&gt; &lt;ruta_del_archivo&gt;\nComo ejemplo de ello:\ndocker secret create my_key ./id_rsa\n\n\n12.3.2 Inspeccionar Secrets\nLista todos los secrets:\ndocker secret ls\nInspeccionar un secret especifico:\ndocker secret inspect &lt;nombre_del_secret&gt;\n\n\n12.3.3 Eliminar Secrets\nElimina un secret:\ndocker secret rm &lt;nombre_del_secret&gt;\nElimina un secreto de un servicio en ejecución:\ndocker service update --secret-rm &lt;nombre_del_secret&gt; &lt;nombre_del_servicio&gt;",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#secrets-en-acción-ejemplo",
+    "href": "advanced_docker_security.html#secrets-en-acción-ejemplo",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.4 Secrets en Acción – Ejemplo",
+    "text": "12.4 Secrets en Acción – Ejemplo\n\n12.4.1 Ejemplo de Flujo de Trabajo\n\nInicializa un Swarm:\n\ndocker swarm init\n\nCrea un secret:\n\ndocker secret create ssh_key ~/.ssh/id_rsa\n\nVerifica el secret:\n\ndocker secret ls\n\nUsa el secret en un servicio:\n\ndocker service create --name my_service \\ --secret ssh_key &lt;nombre_de_la_imagen&gt;\n\nAccede al secret dentro del contenedor:\n\ncat /run/secrets/ssh_key",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#etiquetas-de-docker-para-seguridad",
+    "href": "advanced_docker_security.html#etiquetas-de-docker-para-seguridad",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.5 Etiquetas de Docker para Seguridad",
+    "text": "12.5 Etiquetas de Docker para Seguridad\nLas etiquetas son esenciales para identificar y usar la imagen correcta de Docker. Para mejorar la seguridad se debe seguir los siguientes consejos:\n\nUsa etiquetas específicas para cada entorno (por ejemplo, 1.0.0-dev, 1.0.0-prod).\nEmplea versionado semántico.\n\nSi no tiene conocimiento sobre versionado semantico puede acceder a Información sobre versionado semántico.\nEjemplo de creación de un secret con etiquetas de versión:\ndocker secret create --label env=dev --label ver=1.0.0 ssh_key ~/.ssh/id_rsa",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#uso-de-etiquetas-para-la-aplicación-de-metadatos",
+    "href": "advanced_docker_security.html#uso-de-etiquetas-para-la-aplicación-de-metadatos",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.6 Uso de Etiquetas para la Aplicación de Metadatos",
+    "text": "12.6 Uso de Etiquetas para la Aplicación de Metadatos\nLas etiquetas anotan contenedores con metadatos para una gestión más sencilla. Agrega etiquetas en un Dockerfile:\nLABEL \"version\"=\"1.0.0\"\nLABEL \"description\"=\"Contenedor de desarrollo.\"\nLABEL \"security.txt\"=\"https://example.com/security.txt\"\nVisualizar etiquetas:\ndocker inspect &lt;id_del_contenedor&gt;",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "advanced_docker_security.html#resumen-final",
+    "href": "advanced_docker_security.html#resumen-final",
+    "title": "12  Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas",
+    "section": "12.7 Resumen Final",
+    "text": "12.7 Resumen Final\nEn este capítulo, cubrimos:\n\nEl almacenamiento seguro y la gestión de secrets utilizando Docker Swarm.\nEl rol del registro Raft en mantener consistencia y seguridad.\nLa importancia de las etiquetas de Docker y los metadatos para la gestión eficiente y segura de imágenes.\n\nAl finalizar esta seccion deberias ser capaz de manejar los secrets de tus aplicaciones correctamente, sin embargo si deseas ampliar tu conocimiento sobre el tema tratado, se recomienda ingresar a:\n\nDocumentación de Secrets de Docker.\nVersionado Semántico.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Seguridad Avanzada en Docker – Secrets, Comandos Secretos y Etiquetas</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "",
+    "text": "13.1 Registro de Docker y registro de tiempo de ejecución de contenedores\nPara entender el comportamiento de una aplicación en producción, los desarrolladores y operadores confían en herramientas de registro, monitoreo y alertas, las cuales permiten identificar si el sistema funciona correctamente y facilitan la solución de problemas cuando surgen inconvenientes. Con la creciente complejidad de los sistemas, aumenta la necesidad de una observabilidad más profunda sin alterar el código, en este apartado se vera el cómo instrumentar aplicaciones y entornos para mejorar la observabilidad, incluyendo el uso de Kubernetes, CloudWatch, S3, Prometheus y Grafana para gestionar registros, métricas y alertas, así como explorar datos específicos de código y base de datos con Jaeger.\nCada contenedor Docker, ya sea que se ejecute localmente o en la nube, produce sus propios registros los cuales se puede consultar. en el caso de Kubernetes cada contenedor Docker en un pod genera registros, que el sistema almacena temporalmente hasta 10 MB por contenedor, estos registros se pueden consultar con la herramienta kubectl logs, pero son eliminados cuando un pod se elimina o un contenedor se reinicia, lo que impide su retención permanente, esto puede dificultar la solución de problemas si los registros necesarios ya no están disponibles. Por ello, es importante considerar soluciones que superen estas limitaciones y mejoren la gestión y retención de registros.\nUn sistema de gestión de registros ideal debe incluir características como la visualización centralizada de mensajes, baja latencia para acceder a eventos recientes, recopilación de registros de diversas fuentes (pods, nodos, despliegues y contenedores Docker en Kubernetes), una interfaz de búsqueda intuitiva con opciones para guardar consultas, visualización de histogramas interactivos para explorar datos, alertas basadas en el contenido de los registros y la posibilidad de configurar el tiempo de retención de los mensajes.\nAlgunos de los sistemas de gestion de registros de terceros, son:\nEn cuanto a proveedores en la nube, existen:",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#registro-de-docker-y-registro-de-tiempo-de-ejecución-de-contenedores",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#registro-de-docker-y-registro-de-tiempo-de-ejecución-de-contenedores",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "",
+    "text": "Splunk\nElasticsearch\nLoggly\nPapertrail\n\n\n\nAWS CloudWatch\nGoogle Cloud Logging\nMicrosoft Azure Monitor Logs",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#uso-de-las-sondas-de-liveness-readiness-y-startup-en-kubernetes",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#uso-de-las-sondas-de-liveness-readiness-y-startup-en-kubernetes",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "13.2 Uso de las sondas de Liveness, Readiness y Startup en Kubernetes",
+    "text": "13.2 Uso de las sondas de Liveness, Readiness y Startup en Kubernetes\nKubernetes tiene varios tipos de controles de salud, llamados sondas , para garantizar que los contenedores que maneja Docker están en condiciones de procesar el tráfico. Los tipos de sondas abordan inquietudes como:\n\nLiveness: Determina si una aplicación puede procesar solicitudes\nReadiness: Determina si un contenedor está listo para recibir tráfico real, especialmente si depende de recursos externos que tienen que ser accesibles.\nStartup: Determina si un contenedor está listo para empezar a tomar los otros dos tipos de tráfico, destinado a aplicaciones heredadas de inicio lento para darles tiempo para iniciarse.\n\n\n13.2.1 Usar una sonda Liveness para ver si un contenedor puede responder\nA continuación, se muestra un fragmento de configuración YAML, el cual define una sonda de “liveness” para un contenedor en Kubernetes, utilizada para verificar si el contenedor está funcionando correctamente\nlivenessProbe:\nhttpGet:\npath: /\nport: http\nUna sonda de liveness es importante porque permite que Kubernetes detecte si el contenedor está en un estado no funcional. Si la sonda falla, Kubernetes reiniciará el contenedor automáticamente para intentar restaurar su funcionalidad.\n\n\n13.2.2 Usar una sonda Readiness para garantizar que un servicio pueda recibir trafico\nEl uso de una sonda de readiness en Kubernetes asegura que una aplicación esté completamente lista para manejar tráfico antes de ser incluida en el balanceador de carga del clúster.\nreadinessProbe:\nhttpGet:\npath: /api/v2/games/ready\nport: http\nEste fragmento de configuración YAML define una sonda de “readiness” en Kubernetes, que se utiliza para determinar si un contenedor está listo para aceptar tráfico.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#recopilación-de-métricas-y-envío-de-alertas-con-prometheus",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#recopilación-de-métricas-y-envío-de-alertas-con-prometheus",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "13.3 Recopilación de métricas y envío de alertas con Prometheus",
+    "text": "13.3 Recopilación de métricas y envío de alertas con Prometheus\nPrometheus es una herramienta clave en Kubernetes para recopilar y analizar métricas del sistema. Recoge datos sobre el uso de CPU, almacenamiento y estado de las aplicaciones, entre otros, a través de endpoints como /metrics. Funciona consultando estos puntos y almacenando la información con etiquetas y marcas de tiempo para facilitar su búsqueda, también permite crear alertas y visualizar el rendimiento, ayudando a los operadores a monitorear y mejorar la salud del sistema. Si bien Prometheus puede representar gráficamente los resultados de las consultas por sí solo, los usuarios de Kubernetes suelen utilizar Grafana en conjunto con Prometheus para proporcionar gráficos más sofisticados y tableros de instrumentos.\n\n13.3.1 Recopilación de métricas\n\nModelo de recolección (Pull): Prometheus utiliza un modelo de “pull” para obtener datos, es decir, periódicamente consulta endpoints HTTP expuestos por las aplicaciones y servicios para recopilar métricas.\nEndpoint estándar: Generalmente, las métricas están disponibles en el endpoint /metrics.\nDatos recopilados: Incluyen el uso de CPU, memoria, almacenamiento, estado de las aplicaciones, entre otros.\nInstrumentación de aplicaciones Las aplicaciones se instrumentan para exponer sus métricas, esto se logra utilizando bibliotecas específicas de Prometheus disponibles para varios lenguajes de programación como Python, Java, entre otros.\nIntegración con Kubernetes: En un clúster de Kubernetes: Anotaciones: Recursos como pods y DaemonSets usan anotaciones para indicar a Prometheus qué endpoints consultar.\nNode Exporter: Un DaemonSet llamado node_exporter se ejecuta en cada nodo para exponer métricas específicas del sistema, como el uso del disco o la carga del CPU.\nEtiquetas y almacenamiento: Prometheus asocia cada métrica con: Un nombre descriptivo. Etiquetas en formato clave-valor Una marca de tiempo precisa a nivel de milisegundos.\n\nEstas características permiten almacenar métricas de manera eficiente y realizar consultas rápidas en su base de datos de series temporales.\n\n\n13.3.2 Envío de alertas\n\nAdministrador de alertas: Prometheus incluye Alertmanager, un componente que gestiona las alertas generadas a partir de las reglas definidas en Prometheus.\nReglas de alerta: Se configuran en archivos YAML y definen condiciones específicas para generar alertas.\nCanales de notificación: Alertmanager puede enviar alertas a múltiples canales, como correo electrónico, Slack, Microsoft Teams o PagerDuty.\nFlujo de trabajo de alertas Prometheus evalúa las métricas recolectadas en tiempo real según las reglas definidas, cuando una condición se cumple, Prometheus envía la alerta a Alertmanager, el cual agrupa, silencia o enruta las alertas a los destinatarios según las configuraciones definidas.\nVisualización de métricas para prevenir alertas: Herramientas como Grafana suelen integrarse con Prometheus para proporcionar dashboards interactivos, estos permiten monitorear tendencias y detectar posibles problemas antes de que se generen alertas.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#visualización-de-datos-operativos-con-grafana",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#visualización-de-datos-operativos-con-grafana",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "13.4 Visualización de datos operativos con Grafana",
+    "text": "13.4 Visualización de datos operativos con Grafana\nGrafana se instala y está disponible a través de un LoadBalancer en Kubernetes, que en EKS utiliza un Elastic Load Balancer de AWS. Una vez que se ingresa a la consola de Grafana, se puede explorar los paneles y consultar datos con Prometheus, aunque algunos paneles, como el de “Kubernetes All nodes”, podrían no mostrar toda la información, para solucionar eso se puede agregar paneles de la comunidad con estadísticas más completas, para ello es necesario revisar el panel de “Kubernetes pods”, aqui se puede ajustae el rango de tiempo para observar datos de un día o una semana, además, se puede hacer zoom en áreas específicas para analizar detalles.\nGrafana ofrece una variedad de paneles tanto oficiales como de la comunidad en su sitio web, para añadir uno, se puede usar la opción “Importar” e ingresar un ID de panel o una URL. Algunos paneles recomendados son:\n\nCluster Monitoring para Kubernetes : Muestra el consumo de CPU, memoria y recursos de red por los pods.\nKubernetes Cluster (Prometheus) : Presenta métricas críticas del clúster.\n1 Node Exporter for Prometheus Dashboard ES : Proporciona métricas detalladas de CPU, disco y red del clúster.\nNode Exporter Full : Muestra todas las métricas posibles de Prometheus.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#monitoreo-del-rendimiento-de-aplicaciones-con-jaeger",
+    "href": "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html#monitoreo-del-rendimiento-de-aplicaciones-con-jaeger",
+    "title": "13  Monitoreo de Docker usando Prometheus, Grafana y Jaeger",
+    "section": "13.5 Monitoreo del rendimiento de aplicaciones con Jaeger",
+    "text": "13.5 Monitoreo del rendimiento de aplicaciones con Jaeger\nJaeger es un marco de seguimiento de aplicaciones de código abierto que permite a los desarrolladores y operadores del sistema recopilar información de una aplicación en ejecución y determinar cómo la aplicación pasa su tiempo y cómo interactúa con otros componentes del sistema distribuido, utilizando la API OpenTracing.\n\n13.5.1 Componentes de Jaeger\nAlgunos de los componentes importantes que conforman el ecosistema de Jaeger son los siguientes:\n\nLas librerías cliente disponibles como paquetes o directamente desde GitHub\nLos agentes Jaeger, utilizados para escuchar los spans\nEl recolector, encargado de agregar los datos enviados desde los agentes\nJaeger query, para analizar los datos a través de una interfaz de usuario\nEl Ingester, que nos permite recopilar datos de temas Kafka y luego escribir los datos a servicios como AWS Elasticsearch.\n\nLo que vimos anteriormente es cómo instalar Jaeger localmente, sin embargo, también es posible desplegarlo en un entorno de Kubernetes utilizando Kubernetes Operator, que es un recurso especializado para gestionar la instalación y operación de aplicaciones complejas. Para instalar Jaeger en Kubernetes, se puede seguir las instrucciones del repositorio oficial y ejecutar los comandos kubectl proporcionados. Esto incluye la creación del espacio de nombres del operador y la configuración de los permisos adecuados a través de una vinculación de roles, lo que garantiza que Jaeger funcione correctamente en todos los espacios de nombres del clúster.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Monitoreo de Docker usando Prometheus, Grafana y Jaeger</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#qué-es-source-control-management-scm",
+    "href": "source_control_management_devops.html#qué-es-source-control-management-scm",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "",
+    "text": "Centralización del código fuente en un repositorio seguro y accesible.\nColaboración en equipo, asegurando que todos los desarrolladores trabajen con la misma versión del código.\nSeguimiento de cambios, permitiendo revertir modificaciones y mantener un historial completo del desarrollo.\nEstrategias de ramas, asegurando que los cambios sean probados antes de ser integrados en la versión principal.\n\n\n\nGit (Distribuido): Cada desarrollador tiene una copia completa del repositorio y puede trabajar de manera independiente, fusionando cambios cuando sea necesario.\nTeam Foundation Version Control (TFVC - Centralizado): Todo el código se almacena en un servidor central y los desarrolladores trabajan con una única versión de cada archivo.\n\n\n\nSeleccionar un sistema de control de versiones (Azure Repos Git o TFVC).\nAlmacenar el código en un repositorio centralizado.\nClonar el repositorio localmente para desarrollo.\nRealizar cambios y enviarlos al repositorio central mediante commits y push.\nUsar ramas para el desarrollo paralelo sin afectar el código principal.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#flujo-de-trabajo-en-scm-con-git",
+    "href": "source_control_management_devops.html#flujo-de-trabajo-en-scm-con-git",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.2 Flujo de Trabajo en SCM con Git",
+    "text": "14.2 Flujo de Trabajo en SCM con Git\nAzure DevOps Repos utiliza Git como su sistema de control de versiones predeterminado. El flujo de trabajo con Git sigue estos pasos:\n\nClonar el repositorio desde Azure DevOps a tu máquina local.\nCrear una nueva rama para trabajar en nuevas funcionalidades sin afectar la rama principal.\nHacer cambios y realizar commits, almacenándolos en el historial de versiones.\nSincronizar los cambios con el repositorio central mediante git pull para obtener actualizaciones.\nSubir los cambios al repositorio remoto con git push.\nFusionar cambios en la rama principal mediante Pull Requests.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#algunas-acciones-clave-en-git-incluyen",
+    "href": "source_control_management_devops.html#algunas-acciones-clave-en-git-incluyen",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.3 Algunas acciones clave en Git incluyen:",
+    "text": "14.3 Algunas acciones clave en Git incluyen:\nClonar un repositorio git clone https://dev.azure.com/mi-organizacion/mi-proyecto/_git/mi-repositorio\nCrear una nueva rama git checkout -b “nueva-rama”\nAgregar cambios al área de preparación y realizar un commit git add . git commit -m “Descripción de los cambios”\nSubir los cambios al repositorio remoto git push origin nueva-rama",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#estrategias-de-ramificación-branching",
+    "href": "source_control_management_devops.html#estrategias-de-ramificación-branching",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.4 Estrategias de Ramificación (Branching)",
+    "text": "14.4 Estrategias de Ramificación (Branching)\nEl uso de ramas en Git permite trabajar en diferentes funcionalidades sin afectar la versión principal del código. Existen diferentes estrategias de branching, cada una con ventajas y desventajas.\nGitHub Flow - La rama main siempre contiene el código listo para producción. - Se crean ramas temporales para nuevas características y se fusionan mediante Pull Requests. - Es útil para proyectos con despliegues continuos.\nGitLab Flow - Se agregan ramas adicionales como staging y production para manejar diferentes entornos de despliegue. - Útil para proyectos que requieren pruebas antes de la implementación final.\nGit Flow - Se utilizan ramas permanentes: main, develop, y ramas temporales como feature, release y hotfix. - Ideal para proyectos con ciclos de desarrollo organizados y versiones planificadas.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#administración-del-código-con-azure-repos",
+    "href": "source_control_management_devops.html#administración-del-código-con-azure-repos",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.5 Administración del Código con Azure Repos",
+    "text": "14.5 Administración del Código con Azure Repos\nAzure Repos permite la gestión de repositorios con funcionalidades avanzadas. Para crear un repositorio en Azure DevOps:\n\nIr a Repos en el portal de Azure DevOps.\nHacer clic en Nuevo Repositorio.\nSeleccionar Git como sistema de control de versiones.\nClonar el repositorio en el equipo local.\n\nAzure Repos también permite importar repositorios desde GitHub, lo que facilita la migración de código.\nTrabajando con Commits, Pushes y Pull Requests\nUna vez clonado el repositorio, los desarrolladores pueden modificar archivos y registrar cambios mediante commits.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#flujo-de-trabajo-de-cambios-en-azure-devops",
+    "href": "source_control_management_devops.html#flujo-de-trabajo-de-cambios-en-azure-devops",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.6 Flujo de trabajo de cambios en Azure DevOps",
+    "text": "14.6 Flujo de trabajo de cambios en Azure DevOps\n\nModificar archivos en el repositorio local.\nRealizar un commit con un mensaje descriptivo.\nSubir los cambios al repositorio remoto mediante git push.\nAbrir un Pull Request para fusionar los cambios con la rama principal.\nRevisar y aprobar el Pull Request antes de integrar los cambios.\n\nDesde Azure DevOps, los Pull Requests permiten realizar revisiones de código y evitar la introducción de errores en la rama principal.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
+    ]
+  },
+  {
+    "objectID": "source_control_management_devops.html#conclusión",
+    "href": "source_control_management_devops.html#conclusión",
+    "title": "14  Gestión de Código Fuente con Azure DevOps",
+    "section": "14.7 Conclusión",
+    "text": "14.7 Conclusión\nEl uso de Azure DevOps Repos proporciona un entorno seguro y organizado para la gestión del código fuente. Al aplicar buenas prácticas de control de versiones, los equipos pueden mejorar la calidad del código, minimizar errores y optimizar el flujo de trabajo de desarrollo. Implementar estrategias adecuadas de ramas y protección de código asegura que los proyectos se mantengan estables y escalables.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>**Gestión de Código Fuente con Azure DevOps**</span>"
     ]
   }
 ]

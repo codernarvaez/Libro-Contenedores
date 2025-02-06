@@ -46,5 +46,20 @@
   },
   "sharing_containers_used_docker_hub.qmd": {
     "sharing_containers_used_docker_hub.html": "b9519ba9"
+  },
+  "source_control_management_devops.qmd": {
+    "source_control_management_devops.html": "00fa3ebe"
+  },
+  "Alternatives_for_Deploying_and_Running_containers_in_Production.qmd": {
+    "Alternatives_for_Deploying_and_Running_containers_in_Production.html": "6819fe7d"
+  },
+  "Docker_Security_Fundamentals_and_Best_Practices.qmd": {
+    "Docker_Security_Fundamentals_and_Best_Practices.html": "db0cf6f6"
+  },
+  "advanced_docker_security.qmd": {
+    "advanced_docker_security.html": "497ecca5"
+  },
+  "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd": {
+    "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html": "99afcb01"
   }
 }
