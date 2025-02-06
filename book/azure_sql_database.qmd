@@ -1,0 +1,111 @@
+## Azure SQL Database
+
+### ¿Qué es Azure SQL Database?
+Es un servicio de base de datos relacional completamente gestionado e inteligente ofrecido por Microsoft Azure. Este servicio proporciona la potencia y la familiaridad de SQL Server, una base de datos robusta y ampliamente reconocida, sin la necesidad de lidiar con la instalación y configuración de servidores, ya que Microsoft se encarga de toda la infraestructura que utiliza por detrás, permitiendo que los equipos y/o las empresas se enfoquen en la gestión de datos y el desarrollo de aplicaciones.
+
+Dado que Azure SQL Database opera como una plataforma como servicio (PaaS), simplifica significativamente las tareas del equipo de desarrollo, eliminando la necesidad de contar con expertos en administración de servidores y bases de datos, ya que las tareas operativas, como el mantenimiento del sistema operativo, las actualizaciones de SQL Server y la garantía de funcionamiento continuo, son gestionadas automáticamente. Además, Azure SQL Database ofrece una serie de características avanzadas, como la escalabilidad dinámica, la alta disponibilidad, la seguridad avanzada y la integración con otras herramientas y servicios de Azure, que permiten a las organizaciones desarrollar aplicaciones modernas y escalables de forma rápida y eficiente.
+
+Con Azure SQL Database, las organizaciones pueden confiar en una base de datos en la nube que está siempre disponible y es gestionada por profesionales, esto no solo garantiza la continuidad del servicio, sino que también proporciona una capa adicional de seguridad y eficiencia, permitiendo que las empresas se adapten rápidamente a las demandas cambiantes del mercado.
+
+
+### Características de Azure SQL Database
+- **Base de datos relacional en la nube:** Utiliza la tecnología SQL Server de Microsoft de forma totalmente gestionada por Microsoft.
+- **Administración automatizada:** Incluye actualizaciones automáticas, parches, respaldos y recuperación ante desastres.
+- **Modelos de implementación flexibles:** Permite elegir entre bases de datos individuales y pools elásticos para compartir recursos.
+- **Pools elásticos:** Permite compartir recursos entre múltiples bases de datos para optimizar costos y rendimiento.
+- **Seguridad avanzada:** Soporta encriptación de datos en reposo y en tránsito, autenticación multifactor y controles de acceso mediante roles y permisos granulares.
+- **Integración con herramientas de desarrollo:** Compatible con SQL Server Management Studio (SSMS), Visual Studio, Entity Framework y otras herramientas de desarrollo de Microsoft.
+- **Compatibilidad con lenguajes y plataformas:** Permite acceder a la base de datos desde aplicaciones .NET, Java, PHP, Python, Node.js y otros lenguajes y plataformas.
+- **Unidad de transacción de base de datos (DTU):** Proporciona una métrica de rendimiento que permiten el monitoreo del consumo de CPU, número de operaciones E/S y cantidad de espacio en memoria que utiliza la base de datos.
+
+### Niveles de servicio según la suscripción
+- **Básico:** Ofrece un rendimiento básico y es adecuado para aplicaciones de desarrollo y pruebas con cargas de trabajo ligeras.
+- **Estándar:** Proporciona un rendimiento equilibrado y es adecuado para aplicaciones de producción con cargas de trabajo moderadas.
+- **Premium:** Ofrece un rendimiento alto y es adecuado para aplicaciones críticas con cargas de trabajo intensivas.
+- **Premium-RS:** Proporciona un rendimiento alto y es adecuado para aplicaciones críticas con cargas de trabajo intensivas que requieren una alta disponibilidad y conmutación por error automática.
+
+### Escalabilidad en Azure SQL Database
+- **Escalabilidad vertical:** Permite aumentar o disminuir la capacidad de la base de datos (por ejemplo, CPU, memoria) de forma dinámica.
+- **Escalabilidad horizontal:** Permite distribuir la carga de trabajo entre múltiples instancias de base de datos para mejorar el rendimiento.
+- **Pools elásticos:** Permite compartir recursos entre múltiples bases de datos para optimizar costos y rendimiento.
+- **Autoescalado:** Permite configurar reglas de autoescalado para ajustar automáticamente la capacidad de la base de datos en función de la demanda de usuarios y la carga de trabajo.
+- **Escalabilidad manual:** Permite aumentar o disminuir manualmente la capacidad de la base de datos en función de las necesidades de rendimiento y almacenamiento.
+
+### Seguridad en Azure SQL Database	
+- **Cifrado de datos:** Cifra automáticamente las bases de datos, registros de transacciones y copias de seguridad en reposo.
+- **Autenticación multifactor:** Permite habilitar la autenticación multifactor para proteger el acceso a la base de datos.
+- **Firewall de red:** Permite configurar reglas de firewall para controlar el acceso a la base de datos desde direcciones IP específicas.
+- **Auditoría de seguridad:** Permite habilitar la auditoría de seguridad para registrar y supervisar las actividades de la base de datos.
+- **Roles y permisos:** Permite definir roles y permisos a nivel de base de datos, esquema, tabla y columna para controlar el acceso a los datos.
+- **Protección avanzada de amenazas:** Proporciona detección y prevención de amenazas avanzadas para proteger la base de datos contra ataques maliciosos.
+- **Cumplimiento normativo:** Cumple con los estándares de seguridad y privacidad, como GDPR, HIPAA y PCI DSS, para garantizar la protección de los datos sensibles.
+- **Permisos granulares:** Permite definir roles y permisos a nivel de base de datos, esquema, tabla y columna para controlar el acceso a los datos.
+
+
+### Monitoreo y alertas en Azure SQL Database
+- **Métricas de rendimiento:** Proporciona métricas de rendimiento, como CPU, E/S y memoria, para supervisar el rendimiento de la base de datos.
+- **Monitorización de consultas:** Proporciona información detallada sobre las consultas en ejecución, incluidos los planes de ejecución y las estadísticas de rendimiento.
+- **Alertas personalizables:** Permite configurar alertas personalizables para recibir notificaciones sobre eventos importantes, como la falta de espacio en disco o el alto uso de CPU.
+- **Integración con Azure Monitor:** Se integra con Azure Monitor para proporcionar una visión unificada del rendimiento y la disponibilidad de la base de datos.
+- **Historial de rendimiento:** Proporciona un historial de rendimiento para analizar tendencias y identificar problemas de rendimiento a lo largo del tiempo.
+- **Diagnósticos avanzados:** Proporciona diagnósticos avanzados, como el seguimiento de consultas y la supervisión de bloqueos, para identificar y solucionar problemas de rendimiento.
+
+### Ventajas de Azure SQL Database
+- **Reducción de la carga administrativa:** No es necesario gestionar hardware, instalaciones o actualizaciones de sistema.
+- **Alta disponibilidad:** Implementa replicación geográfica y tolerancia a fallos.
+- **Pago por uso:** Opera bajo un modelo de precios de "pago por uso", también conocido como modelo OPEX (Gastos Operativos), esto significa que solo se paga por los recursos de base de datos que se consume, es un modelo basado en la demanda.
+- **Integración con el ecosistema Azure:** Facilita la conexión con otras soluciones y servicios de Azure, como Visual Studio y Entity Framework.
+- **Facilidad para realizar backups y restauraciones:** Automatización de respaldos y posibilidad de restaurar a puntos específicos en el tiempo.
+- **Cifrado de datos transparente:** Cifra automáticamente las bases de datos, registros de transacciones y copias de seguridad en reposo.
+- **Conmutación por error automática:** Proporciona alta disponibilidad y conmutación por error automática en caso de fallos, utilizando réplicas de base de datos.
+- **Escalabilidad dinámica:** Permite ajustar la capacidad de la base de datos en función de la demanda de usuarios y la carga de trabajo.
+- **Seguridad avanzada:** Ofrece controles de acceso granulares, autenticación multifactor y auditoría de seguridad para proteger los datos.
+- **Compatibilidad con SQL Server:** Permite migrar fácilmente bases de datos locales de SQL Server a Azure SQL Database sin cambios significativos en el código.
+- **Soporte técnico:** Ofrece soporte técnico de Microsoft para resolver problemas y dudas relacionadas con la base de datos.  
+
+### Desventajas de Azure SQL Database
+- **Limitaciones de configuración:** Menor control sobre el sistema operativo y el hardware que utiliza en comparación con instalaciones que utiliza la arquitectura onPremise.
+- **Costos potencialmente elevados:** En escenarios de alta demanda o mal configurados, los costos pueden incrementarse significativamente.
+- **Dependencia de la conectividad:** Requiere una conexión estable a internet para acceder a la base de datos.
+- **Restricciones en personalización avanzada:** Algunas configuraciones específicas de SQL Server pueden no estar disponibles en las suscripciones de nivel básico, por lo que para acceder a estas opciones avanzadas, se recomienda optar por una suscripción de nivel superior que ofrezca un mayor número de funcionalidades.
+- **Curva de aprendizaje:** La gestión de escalabilidad y optimización en la nube puede requerir un mayor tiempo de aprendizaje.
+- **Limitaciones de almacenamiento:** Las bases de datos individuales tienen un límite de almacenamiento, por lo que si se requiere un almacenamiento mayor, se debe optar por un plan de almacenamiento superior o por la opción de pools elásticos.
+- **Rendimiento variable:** El rendimiento de la base de datos puede verse afectado por la carga de trabajo de otras bases de datos en el mismo servidor físico, especialmente en el caso de los pools elásticos.
+- **Dependencia de la infraestructura de Azure:** La disponibilidad y el rendimiento de la base de datos están sujetos a la infraestructura de Azure, por lo que cualquier problema en la nube puede afectar la disponibilidad de la base de datos.
+- **Migración de datos:** La migración de bases de datos existentes a Azure SQL Database puede requerir ajustes y pruebas adicionales para garantizar la compatibilidad y el rendimiento óptimo.
+
+### Ejemplo de uso de Azure SQL Database
+En el presente ejemplo se está desarrollando una aplicación web de gestión de tareas llamada **TaskZilla**. Esta aplicación requiere almacenar información sobre usuarios, tareas y el estado de cada tarea. En lugar de gestionar un servidor físico o virtual, el equipo de desarrollo ha decidido utilizar Azure SQL Database para manejar la base de datos de la aplicación, asegurando así la escalabilidad, la alta disponibilidad y la seguridad de los datos.
+
+A continuación, se describen los principales pasos para implementar la base de datos de **TaskZilla** en Azure SQL Database:
+
+1. **Creación de la base de datos:**
+   - Accede al [Portal de Azure](https://portal.azure.com).
+   - Selecciona **"Crear un recurso"** y elige **"SQL Database"**.
+   - Configura el nombre de la base (por ejemplo, `TaskZillaDB`), el grupo de recursos y crea un nuevo servidor SQL con sus credenciales.
+   - Selecciona el nivel de rendimiento adecuado (por ejemplo, Standard S0) y configura las reglas de firewall para permitir el acceso desde tu IP o desde la aplicación.
+
+2. **Diseño e implementación del esquema:**
+   - Utiliza **SQL Server Management Studio (SSMS)** para conectarte a la base de datos y crear las tablas necesarias (por ejemplo, `Usuarios` y `Tareas`).
+   - Alternativamente, usa **Entity Framework Core** con la estrategia Code First en tu aplicación ASP.NET Core para definir el modelo de datos y generar las migraciones que se aplicarán automáticamente.
+
+3. **Integración con la aplicación web:**
+   - En tu aplicación ASP.NET Core, configura la cadena de conexión en el archivo `appsettings.json` para apuntar a la base de datos en Azure.
+   ```json
+   "CadenasDeConexion": {
+   "ConexionPredeterminada": "Server=tcp:nombre_servidor.database.windows.net,1433;
+   Initial Catalog=TaskZillaDB;
+   Persist Security Info=False;
+   User ID=nombre_usuario;
+   Password=clave;
+   MultipleActiveResultSets=False;
+   Encrypt=True;
+   TrustServerCertificate=False;
+   Connection Timeout=30;"
+   }
+   ```
+   - Inyecta el contexto de datos en los controladores y utiliza Entity Framework para realizar operaciones CRUD (crear, leer, actualizar y eliminar datos).
+
+4. **Publicación y escalado:**
+   - Publica la aplicación en un **Azure App Service**.
+   - Monitorea el rendimiento y, si es necesario, utiliza las opciones de escalado automático para ajustar la capacidad de la base de datos y de la aplicación en función de la demanda.
