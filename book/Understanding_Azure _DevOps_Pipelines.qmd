@@ -1,0 +1,186 @@
+# Azure DevOps Pipelines 
+
+## Introducción
+Azure DevOps Pipelines es una solución de automatización para la construcción, prueba e implementación de aplicaciones en entornos de desarrollo, prueba y producción. Su objetivo es optimizar el flujo de trabajo de desarrollo de software mediante la integración y entrega continua (CI/CD), reduciendo errores y acelerando los despliegues.
+
+Este informe explora los conceptos esenciales de Azure DevOps Pipelines, su implementación y mejores prácticas, proporcionando una guía detallada para comprender y utilizar eficazmente esta herramienta.
+
+## Implementación CI/CD
+
+El CI/CD (Integración y Entrega Continua) es un conjunto de prácticas de desarrollo de software que busca automatizar la integración de código, la ejecución de pruebas y el despliegue en producción.
+
+### Integración Continua (CI)
+La integración continua (CI) es una práctica de ingeniería de software en la que los desarrolladores de un
+equipo integran modificaciones de código en un repositorio central varias veces al día. Cuando una modificación
+de código se integra en una rama en particular (normalmente con una solicitud de incorporación de cambios,
+como se explicó en el capítulo anterior), se activa una nueva compilación para comprobar el código y detectar
+errores de integración rápidamente. Además, durante esta fase se ejecutan pruebas automáticas (si están disponibles)
+para comprobar si hay errores.
+
+1. **Beneficios de CI:**
+- Detectar y corregir errores de integración de manera temprana.
+- Facilitar la colaboración en equipos grandes.
+- Mantener un código base siempre en estado funcional.
+
+### Entrega Continua (CD)
+El CD es el proceso que viene después del proceso de CI. En este proceso, el resultado de la fase de CI se
+empaqueta y se entrega a la etapa de producción sin errores. Esto es extremadamente útil para que siempre
+tengamos una rama maestra que esté probada, sea consistente y esté lista para implementarse.
+
+1. **Fases clave de CD:**
+- Despliegue en Pre-Producción: Se ejecutan pruebas en un entorno similar al de producción.
+- Pruebas Automatizadas: Validaciones adicionales para prevenir errores en producción.
+- Despliegue en Producción: Publicación final de la aplicación para los usuarios finales.
+
+**Etapas Claves del CI/CD**
+
+Un pipeline de CI/CD estándar incluye las siguientes fases:
+
+- Commit: Los desarrolladores integran sus cambios al repositorio.
+- Build: Se compila el código y se generan artefactos ejecutables.
+- Test: Se ejecutan pruebas unitarias y de integración.
+- Despliegue en Producción: Se implementa el código en un entorno de producción estable.
+
+**Beneficios del CI/CD:**
+Entre los beneficios que ofrece CI/CD son los siguientes: 
+
+- Calidad de código mejorada y detección temprana de errores: al adoptar pruebas automatizadas, puede descubrir
+errores y problemas en una etapa temprana y solucionarlos en consecuencia.
+- Trazabilidad completa: se realiza un seguimiento de todo el proceso de compilación, prueba e
+implementación y se puede analizar más adelante. Esto garantiza que pueda inspeccionar qué
+cambios se incluyen en una compilación en particular y el impacto que pueden tener en las pruebas
+o el lanzamiento finales.
+- Fases de prueba y lanzamiento más rápidas: automatización de la creación y prueba de su código base en cada nueva confirmación (o antes de un lanzamiento).
+
+## Azure DevOps Pipelines
+Azure Pipelines es un servicio basado en la nube que automatiza el proceso de construcción, prueba y despliegue de aplicaciones. Es compatible con cualquier lenguaje de programación y plataforma, lo que lo convierte en una solución flexible para cualquier equipo de desarrollo.
+
+1. **Características Principales:**
+
+- Es independiente de la plataforma y del lenguaje, lo que significa que puedes crear código en cualquier
+plataforma utilizando la base de código que desees
+- Se puede integrar con diferentes tipos de repositorios como Azure Repos, GitHub, GitHub Enterprise, BitBucket, etc
+- Integración con contenedores Docker y Kubernetes.
+- Definición de pipelines mediante YAML o interfaz gráfica.
+- Soporte para agentes alojados y auto-hospedados.
+
+## Tipos de Agentes de Compilacion en Azure Pipelines
+Un agente es un servicio que ejecuta los trabajos definidos en su canalización. La ejecución de estos trabajos puede ocurrir directamente en la máquina host del agente o en contenedores.. Existen dos tipos de agentes en Azure Pipelines:
+
+### Agentes Microsoft-Hosted
+Proporcionados por Microsoft, se ejecutan en entornos aislados y garantizan un entorno limpio para cada ejecución.
+
+1. **Ventajas:**
+- No requiere configuración adicional.
+- Incluye herramientas preinstaladas.
+- Adecuado para proyectos sin dependencias personalizadas.
+
+2. **Limitaciones:**
+- No se pueden instalar herramientas personalizadas.
+- Se restablece en cada ejecución.
+
+### Agentes Self-Hosted
+Son agentes personalizados que se configuran en máquinas virtuales o servidores propios.
+En un agente autoalojado, puede instalar todo el software que necesita para sus compilaciones, y esto se conserva en cada ejecución de canalización. Un agente autoalojado puede estar en Windows, Linux, macOs o en un contenedor Docker.
+
+1. **Ventajas:**
+- Control total sobre el entorno.
+- Soporte para configuraciones avanzadas.
+- Puede ejecutarse en Docker.
+
+2. **Desventajas:**
+- Mayor complejidad de configuración y mantenimiento.
+
+## Cuándo utilizar un agente alojado por Microsoft o uno autoalojado
+
+1. Los agentes hospedados por Microsoft suelen ser útiles cuando se tiene una base de código estándar y no
+se necesita un software o una configuración de entorno específicos para compilar el código. Si se encuentra
+en esta situación, se recomienda utilizar un agente hospedado por Microsoft, ya que no tiene que preocuparse por crear entornos. 
+
+2. Los agentes alojados en servidores propios son la mejor opción cuando se necesita una
+configuración de entorno particular, cuando se necesita instalar un software o una herramienta en particular en el agente y cuando se necesita más potencia para las compilaciones. Los agentes alojados en servidores propios también son la mejor opción cuando se necesita preservar el entorno entre cada ejecución de las compilaciones.
+
+## Descripción general del lenguaje YAML
+
+YAML, acrónimo de YAML Ain't Markup Language, es un lenguaje de programación legible para humanos que
+se utiliza para la serialización de datos y normalmente para gestionar definiciones de configuraciones
+para aplicaciones. Puede considerarse un superconjunto de JSON.
+
+Con Azure DevOps, YAML es extremadamente importante porque permite definir una canalización mediante
+una definición de script en lugar de una interfaz gráfica (que no se puede transferir entre proyectos)
+
+## Creación de un Pipeline en Azure DevOps
+Los pipelines en Azure DevOps pueden definirse de dos maneras:
+
+1. **Interfaz Clásica:** El Editor Clásico de Azure DevOps permite a los usuarios configurar un pipeline mediante una interfaz gráfica, sin necesidad de escribir código YAML. Es una opción ideal para principiantes o proyectos donde se requiere una configuración rápida sin necesidad de versionamiento de los archivos del pipeline.
+
+**Pasos para crear un pipeline con el Editor Clásico**
+
+1. **Acceder a Azure DevOps:** Iniciar sesión en Azure DevOps y seleccionar el proyecto en el que se desea crear el pipeline.
+
+2. **Ir a la sección de Pipelines:** Navegar a Pipelines en el menú lateral y hacer clic en New Pipeline.
+
+3. **Seleccionar la opción 'Use the classic editor':** Esta opción permite la configuración visual del pipeline.
+
+4. **Elegir el repositorio:** Seleccionar la fuente de código (Azure Repos, GitHub, BitBucket, etc.).
+
+5. **Seleccionar una plantilla de pipeline:** Se pueden elegir plantillas predefinidas para proyectos .NET, Node.js, Python, entre otros.
+
+6. **Configurar los pasos del pipeline:** Agregar tareas como compilación, pruebas, despliegue y definir variables necesarias.
+
+7. **Guardar y ejecutar el pipeline:** Guardar la configuración y ejecutar el pipeline manualmente o configurar disparadores automáticos.
+
+**Un ejemplo de pipeline en YAML:**
+
+trigger:
+main
+
+pool:
+vmImage: 'ubuntu-latest'
+
+steps:
+script: echo "Ejecutando pipeline en Azure DevOps"
+
+Este pipeline se ejecuta cuando hay cambios en la rama main, utilizando una máquina virtual con Ubuntu.
+
+
+## Ejecución de trabajos en paralelo en una canalización de Azure
+Dentro de Azure Pipeline, también se puede ejecutar trabajos en paralelo. Cada trabajo puede ser
+independiente de otros trabajos y también puede ejecutarse en un agente diferente. Esto permitirá acelerar el tiempo de compilación y mejorar el rendimiento del pipeline.
+
+Como ejemplo de cómo manejar trabajos paralelos en una canalización, considere una canalización simple
+donde debe ejecutar tres scripts de PowerShell llamados Tarea 1, Tarea 2 y Tarea final.La Tarea 1 y la Tarea 2 se pueden ejecutar en paralelo, mientras que la Tarea Final solo se puede ejecutar
+cuando se hayan completado las dos tareas anteriores
+
+## Integración con GitHub
+GitHub es una de las plataformas más populares para la gestión de control de código fuente y, a menudo, es
+bastante común tener escenarios en los que el código se almacena dentro de un repositorio de GitHub y
+desea utilizar Azure DevOps para administrar CI/CD.
+Al usar Azure DevOps y el servicio Azure Pipeline, también puede crear canalizaciones para un repositorio
+almacenado en GitHub, lo que activa una canalización de compilación en cada confirmación en una rama
+dentro del repositorio de GitHub. Para ello, seguiremos estos pasos:
+
+**Pasos:**
+
+1. Instalar la extensión Azure Pipelines en GitHub.
+
+2. Autorizar la conexión con Azure DevOps.
+
+3. Configurar un pipeline que se active en cada commit.
+
+## Uso de Contenedores en Azure Pipelines
+Azure Pipelines permite ejecutar tareas dentro de contenedores para garantizar entornos de ejecución consistentes. Esto es particularmente útil para garantizar que las dependencias y configuraciones del entorno sean uniformes en todas las ejecuciones.
+
+1. **Ventajas del uso de contenedores en Azure Pipelines**
+
+- Proporciona un entorno aislado y reproducible.
+
+- Permite definir dependencias específicas sin afectar la máquina anfitriona.
+
+- Compatible con Docker, Kubernetes y Azure Container Registry.
+
+- Facilita la ejecución de pruebas y despliegues en entornos idénticos a producción.
+
+## Conclusión
+
+Azure DevOps Pipelines es una solución completa para la automatización de CI/CD, proporcionando herramientas para despliegues rápidos y confiables. Su integración con GitHub, soporte para contenedores y pipelines multietapa lo convierten en una opción ideal para proyectos modernos de desarrollo de software.
