@@ -46,5 +46,20 @@
   },
   "sharing_containers_used_docker_hub.qmd": {
     "sharing_containers_used_docker_hub.html": "b9519ba9"
+  },
+  "Hosting_Your_Own_Azure_Pipeline_Agent.qmd": {
+    "Hosting_Your_Own_Azure_Pipeline_Agent.html": "c8f24dac"
+  },
+  "Alternatives_for_Deploying_and_Running_containers_in_Production.qmd": {
+    "Alternatives_for_Deploying_and_Running_containers_in_Production.html": "d7e1b635"
+  },
+  "Docker_Security_Fundamentals_and_Best_Practices.qmd": {
+    "Docker_Security_Fundamentals_and_Best_Practices.html": "22d6271f"
+  },
+  "advanced_docker_security.qmd": {
+    "advanced_docker_security.html": "19d62823"
+  },
+  "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd": {
+    "Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.html": "6f7774f4"
   }
 }

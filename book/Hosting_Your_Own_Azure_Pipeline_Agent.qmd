@@ -1,0 +1,234 @@
+# Hospedaje de su propio agente de Azure Pipeline
+
+## Descripción general del agente de Azure Pipeline
+
+Un agente de pipeline de Azure es el componente encargado de ejecutar las tareas definidas en la configuración del pipeline, generalmente, el agente se ejecuta en una máquina virtual o contenedor y tiene los requisitos previos necesarios para que el pipeline se ejecute correctamente. En la mayoría de los casos, es necesario tener al menos un agente para ejecutar el pipeline, a medida que crece el tamaño del proyecto y el número de desarrolladores, será necesario contar con más agentes para soportar la escala. Cada ejecución de un pipeline inicia un trabajo en uno de los agentes, y cada agente puede ejecutar solo un trabajo a la vez. 
+
+Los agentes de pipeline de Azure pueden estar alojados en la nube o en servidores locales, y pueden estar en infraestructuras como:
+
+- Servidores o clientes (físicos o virtuales) 
+- Contenedores 
+- Escalas de máquinas virtuales en Azure
+
+Los agentes se agrupan en grupos llamados agent pools, y se pueden crear tantos como sea necesario.
+
+
+## Comprender los tipos de agentes en Azure Pipeline
+
+Azure Pipelines ofrece dos tipos de agentes:
+
+- **Agentes alojados en Microsoft** 
+
+Los agentes hospedados por Microsoft son máquinas virtuales completamente gestionadas, implementadas y mantenidas por Microsoft, se puede optar por utilizar un agente hospedado sin necesidad de configuraciones adicionales o requisitos previos, estos agentes son los más sencillos de usar y no tienen costo adicional, cada vez que ejecutas un pipeline, se asigna una nueva máquina virtual para realizar el trabajo, la cual se descarta después de su uso.
+
+-  **Agentes autohospedados** 
+
+Los agentes autohospedados son servidores que son de propiedad del usuario y pueden ejecutarse en cualquier plataforma en la nube o centro de datos que controle un usuario, se prefieren los agentes autohospedados por diversas razones, como la seguridad, escalabilidad y rendimiento, se puede configurar un agente autohospedado para que tenga preinstaladas las dependencias necesarias, lo que ayudará a reducir el tiempo de ejecución del pipeline.
+
+
+La elección entre un agente alojado por Microsoft y un agente autohospedado depende de varios factores, como el tamaño del código, el número de desarrolladores, la frecuencia de compilaciones y liberaciones, las dependencias necesarias, los requisitos de seguridad y el rendimiento. Si la base de código es pequeña y el pipeline está optimizado, los agentes alojados por Microsoft son la mejor opción, ya que no llevará mucho tiempo descargar las dependencias, sin embargo, si se tiene una base de código grande con muchas dependencias, un agente autohospedado será más adecuado, ya que se puede preinstalar las dependencias y acelerar la ejecución. Los agentes autohospedados también son necesarios para pipelines personalizados que interactúan con otros servicios en la red o si se necesita más CPU y memoria, se recomienda empezar con agentes alojados por Microsoft y luego pasar a agentes autohospedados si estos últimos se convierten en un cuello de botella en el proceso de compilación y liberación.
+
+## Planificación y configuración de su propio agente de Azure Pipeline
+
+Para usar un agente autohospedado con Azure Pipelines, se debe configurar una máquina según los requisitos del pipeline, normalmente, se eligiria la versión del sistema operativo que mejor se adapte al proyecto, considerando la compatibilidad con el marco, las bibliotecas y las herramientas de compilación. A continuacion, se configurara una máquina virtual en Azure y configurarla para usar un agente autohospedado, aunque también puedes optar por alojar el servidor de agente en cualquier entorno en la nube o local.
+
+### Elegir el sistema operativo/imagen adecuado para el agente VM
+
+Al configurar un agente de Azure Pipelines, lo primero es elegir el sistema operativo adecuado para la VM, dependiendo de si la implementación es local o en la nube. Para entornos locales, puedes seleccionar una versión compatible de Windows Server o instalar el software necesario. En la nube, se tiene opciones de imágenes con combinaciones de sistemas operativos y herramientas preinstaladas. Se recomienda planificar las especificaciones de la VM con los desarrolladores para que sean las más adecuadas para las necesidades del proyecto, es importante identificar la plataforma de la aplicación (Windows, Linux o MacOS), las dependencias necesarias y elegir la última versión del sistema operativo compatible con ellas.
+
+Además de elegir el sistema operativo adecuado, es necesario cumplir con los requisitos previos para instalar el agente de Azure pipelines. Dependiendo del sistema operativo, los requisitos incluyen versiones específicas de PowerShell, .NET Framework, Git y otros componentes, para Linux y ARM, se incluye un script que instala automáticamente las dependencias necesarias. Los sistemas operativos compatibles con el agente incluyen diversas versiones de Windows, Linux, macOS y ARM, y es importante asegurarse de que el sistema elegido sea compatible con las dependencias del proyecto antes de continuar con la configuración.
+
+
+### Creación de una VM en Azure para su proyecto
+
+Para crear una VM en Azure para un proyecto que utiliza .NET Framework 4.5 y Visual Studio, inicia sesión en el portal de Azure y selecciona "Crear un recurso". Busca "Visual Studio" y elige la opción de imágenes de Visual Studio para Azure, como "Visual Studio Community 2017 en Windows Server 2016 (x64)". Tras elegir la imagen, personaliza la configuración de la VM, como suscripción, grupo de recursos y red virtual, y crea la máquina. Una vez creada, accede a la VM e instala los requisitos previos necesarios para configurarla como agente de Pipelines de Azure para el proyecto
+
+### Configuracion del Agente de Compilacion
+
+1. Creación del grupo de agentes
+
+    Se crea un grupo de agentes en Piscinas de Agentes dentro de Azure DevOps.
+    Se le asigna un nombre significativo para su referencia futura.
+
+2. Creación de un token de acceso personal (PAT)
+
+Para que la VM del agente pueda autenticarse con Azure DevOps:
+
+    Iniciar sesión en Azure DevOps con una cuenta de administración.
+    Ir a Perfil de usuario > Tokens de acceso personal y generar un nuevo token con:
+        Nombre: "Token de agente autohospedado".
+        Organización: La de Azure DevOps.
+        Vencimiento: Se elige una fecha según necesidad.
+        Alcance: Se asignan permisos Leer y Leer y administrar en la piscina de agentes.
+    Guardar el token generado en un lugar seguro, ya que si se pierde, deberá generarse uno nuevo.
+
+3. Instalación del agente en la máquina virtual
+
+    Iniciar sesión en la VM mediante Escritorio remoto.
+    En Azure DevOps > Configuración de organización > Piscinas de Agentes, seleccionar el grupo creado y hacer clic en Nuevo Agente.
+    Descargar el agente según el sistema operativo y arquitectura de la VM (ejemplo: Windows Server 2016 x64).
+    Si la descarga falla en Internet Explorer, se recomienda desactivar la configuración mejorada de seguridad.
+
+4. Configuración del agente en la VM
+
+    Abrir PowerShell como administrador.
+
+    Crear un directorio en D: y extraer los archivos del agente con:
+```powershell
+mkdir D:\agent; cd D:\agent
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::ExtractToDirectory("$home\Downloads\vsts-agent-win-x64-2.171.1.zip", "$pwd")
+```
+
+    Dentro del directorio del agente, hay dos modos de ejecución:
+        Ejecutar una vez: Se inicia manualmente con run.cmd, pero requiere autenticación interactiva.
+        Ejecutar como servicio (recomendado): Permite que el agente se mantenga activo automáticamente.
+
+    Configuración del agente como servicio:
+        Ejecutar . \config.cmd y responder las preguntas:
+            URL de Azure DevOps: https://dev.azure.com/TuOrganización
+            Método de autenticación: Token de acceso personal (PAT)
+            Ingresar el token generado previamente.
+            Seleccionar el grupo de agentes creado.
+            Definir un nombre para el agente.
+            Establecer un directorio de trabajo.
+            Confirmar ejecución como servicio (Y).
+            Usar la cuenta predeterminada para el servicio.
+        Una vez finalizada la configuración, el agente debería estar disponible en la piscina de agentes en Azure DevOps.
+
+5. Verificación y uso del agente
+
+    El agente aparecerá en Piscinas de Agentes en Azure DevOps.
+    Puede utilizarse en pipelines para ejecutar trabajos.
+    Se pueden agregar más agentes siguiendo el mismo proceso.
+    También es posible configurar agentes en Linux o macOS según la documentación de Microsoft.
+
+Ahora el agente está listo para ejecutar pipelines de Azure DevOps y optimizar despliegues en la infraestructura.
+
+
+## Actualización de Azure Pipeline para usar su agente autohospedado
+
+Este proceso adapta el proyecto PartsUnlimited para ejecutarse en un agente autohospedado en lugar de usar los agentes de Microsoft.
+1. Preparación del agente autohospedado
+
+Antes de ejecutar la Pipeline, es necesario instalar las dependencias requeridas en la máquina virtual:
+
+    Iniciar sesión en la VM del agente autohospedado.
+    Descargar e instalar las herramientas de compilación de Visual Studio desde:
+        Visual Studio Build Tools
+        Seleccionar ASP.NET y desarrollo web y Desarrollo de Azure, luego hacer clic en Modificar.
+    Instalar .NET Core 2.2 desde:
+        Descarga de .NET Core
+        Se pueden encontrar otras versiones en: Página de descargas de .NET.
+    
+Instalar Azure PowerShell ejecutando en PowerShell:
+
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
+Install-Module AzureRM -AllowClobber
+```
+
+    Descargar e instalar Node.js 6.x desde:
+        Node.js 6.12.3
+        Instalar el archivo node-v6.12.3-x64.msi.
+
+Con esto, el agente está listo para compilar el proyecto PartsUnlimited.
+2. Configuración de la Pipeline para usar el agente autohospedado
+
+    Iniciar sesión en Azure DevOps y abrir el proyecto PartsUnlimited.
+    Ir a Pipelines y seleccionar la Pipeline existente PartsUnlimited.
+    Hacer clic en Editar el Pipeline.
+    En la configuración de la Pipeline, cambiar la opción Piscina de agentes y seleccionar el grupo de agentes recién creado.
+    Guardar la Pipeline y, opcionalmente, ejecutarla seleccionando Guardar y Cola.
+
+3. Ejecución de la Pipeline en el agente autohospedado
+
+    Hacer clic en Ejecutar la Pipeline.
+    Bajo Piscina de agentes, seleccionar el grupo de agentes autohospedados configurado.
+    Iniciar la ejecución y monitorear los registros en tiempo real.
+
+Una vez completada la configuración, la Pipeline se ejecutará en el agente autohospedado, optimizando el control y rendimiento de los despliegues.
+
+## Uso de contenedores como agentes autohospedados
+
+Azure Pipelines permite ejecutar trabajos de CI/CD en contenedores Docker, tanto en Windows (Server Core/Nano Server) como en Linux (Ubuntu). Para conectar el contenedor a Azure DevOps, es necesario proporcionar variables de entorno como el nombre del grupo de agentes y un token de acceso personal (PAT).
+Configuración de contenedores Windows como agentes
+
+    Construcción de la imagen del contenedor:
+        Crear un directorio:
+
+```powershell
+mkdir C:\dockeragent
+cd C:\dockeragent
+```
+
+Crear un Dockerfile con el siguiente contenido:
+
+```Dockerfile
+FROM mcr.microsoft.com/windows/servercore:ltsc2019  
+WORKDIR /AZP  
+COPY start.ps1 .  
+CMD powershell .\start.ps1  
+```
+
+Descargar start.ps1 desde este repositorio.
+Construir la imagen:
+```powershell
+docker build -t dockeragent:latest .
+```
+
+Ejecutar el contenedor como agente de Azure Pipelines:
+```powershell
+docker run -e AZP_URL=<Azure DevOps Instance> -e AZP_TOKEN=<PAT> -e AZP_AGENT_NAME=myDockerAgent dockeragent:latest
+```
+        Se puede usar la opción --once para que el contenedor se recree automáticamente tras completar un trabajo.
+
+Configuración de contenedores Linux como agentes
+
+    Se puede utilizar la imagen oficial de Microsoft desde Docker Hub:
+
+```powershell
+    docker run -e VSTS_ACCOUNT=<name> -e VSTS_TOKEN=<PAT> -it mcr.microsoft.com/azure-pipelines/vsts-agent
+```
+
+    También es posible construir una imagen personalizada, similar al proceso en Windows.
+
+Para más detalles: Documentación oficial.
+Uso de Azure Container Instances (ACI) como agentes
+
+Si no se cuenta con infraestructura propia, se pueden usar Azure Container Instances (ACI) para ejecutar agentes en la nube:
+
+```powershell
+az container create -g <resource_group_name> -n <container_name> \
+--image mcr.microsoft.com/azure-pipelines/vsts-agent \
+--cpu 1 --memory 7 \
+--environment-variables VSTS_ACCOUNT=<Azure_devops_account_name> \
+VSTS_TOKEN=<personal_access_token> VSTS_AGENT=<agent_name> VSTS_POOL=default
+```
+
+    ACI permite iniciar/detener agentes con az container stop y az container start para optimizar costos.
+
+Variables de entorno clave:
+
+    AZP_URL: URL de Azure DevOps
+    AZP_TOKEN: Token de acceso personal
+    AZP_AGENT_NAME: Nombre del agente
+    AZP_POOL: Nombre del pool de agentes
+    AZP_WORK: Directorio de trabajo (por defecto _work)
+
+## Planificación de escala: utilizando conjuntos de escala Azure VM como agentes autohospedados
+
+Los Azure VM Scale Sets permiten escalar automáticamente máquinas virtuales para usarlas como agentes de Azure Pipelines, optimizando costos y rendimiento según la demanda. Son útiles cuando se necesita mayor capacidad de cómputo, ejecución prolongada o agentes reutilizables sin costos fijos.
+Creación de un Scale Set para Azure Pipelines:
+
+    Crear el Scale Set en el portal de Azure, configurando suscripción, grupo de recursos, región, imagen del SO, autenticación y tamaño de VM.
+    Configurar redes, asegurando que no use un balanceador de carga.
+    Definir reglas de escalado, manteniendo la política de escala en manual inicialmente.
+    Finalizar la creación y esperar la implementación.
+
+Configurar los agentes en Azure DevOps:
+
+    En Configuración del proyecto > Agente Pools, agregar un nuevo pool de tipo Scale Set VM.
+    Seleccionar la suscripción de Azure, Scale Set y configurar valores como eliminación tras ejecución y cantidad de agentes en espera.
+    Autorizar y crear el pool de agentes.
+    Esperar aprox. 15 minutos hasta que los agentes estén activos y listos para ejecutar trabajos en la pipeline.
