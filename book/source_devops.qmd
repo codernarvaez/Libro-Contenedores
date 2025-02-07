@@ -1,0 +1,101 @@
+### **Gestión de Código Fuente con Azure DevOps**
+
+El control de versiones es una parte fundamental del desarrollo de software, ya que permite gestionar, rastrear y proteger los cambios en el código fuente. *Azure DevOps* proporciona herramientas potentes para la gestión del código, permitiendo la colaboración entre equipos y garantizando la estabilidad del código en entornos de desarrollo, prueba y producción.
+
+En esta sección, aprenderás cómo *Azure DevOps Repos* ayuda a gestionar el código fuente de manera segura y eficiente, desde la creación de repositorios hasta el manejo de ramas y estrategias de trabajo en equipo.
+
+## **¿Qué es Source Control Management (SCM)?**
+
+*SCM (Source Control Management)* es una práctica esencial para cualquier empresa o equipo de desarrollo, ya que proporciona un método seguro y organizado para almacenar y gestionar el código fuente. *SCM* permite:
+
+- Centralización del código fuente en un repositorio seguro y accesible.
+- Colaboración en equipo, asegurando que todos los desarrolladores trabajen con la misma versión del código.
+- Seguimiento de cambios, permitiendo revertir modificaciones y mantener un historial completo del desarrollo.
+- Estrategias de ramas, asegurando que los cambios sean probados antes de ser integrados en la versión principal.
+
+El uso de *SCM* dentro de *Azure DevOps* se realiza a través de *Azure Repos*, que admite dos tipos principales de control de versiones:
+
+- *Git (Distribuido)*: Cada desarrollador tiene una copia completa del repositorio y puede trabajar de manera independiente, fusionando cambios cuando sea necesario.
+- *Team Foundation Version Control (TFVC - Centralizado)*: Todo el código se almacena en un servidor central y los desarrolladores trabajan con una única versión de cada archivo.
+
+Para comenzar con *SCM*, los pasos básicos son:
+
+1. Seleccionar un sistema de control de versiones (*Azure Repos Git* o *TFVC*).
+2. Almacenar el código en un repositorio centralizado.
+3. Clonar el repositorio localmente para desarrollo.
+4. Realizar cambios y enviarlos al repositorio central mediante commits y push.
+5. Usar ramas para el desarrollo paralelo sin afectar el código principal.
+
+## **Flujo de Trabajo en SCM con Git**
+
+*Azure DevOps Repos* utiliza *Git* como su sistema de control de versiones predeterminado. El flujo de trabajo con *Git* sigue estos pasos:
+
+1. Clonar el repositorio desde *Azure DevOps* a tu máquina local.
+2. Crear una nueva rama para trabajar en nuevas funcionalidades sin afectar la rama principal.
+3. Hacer cambios y realizar commits, almacenándolos en el historial de versiones.
+4. Sincronizar los cambios con el repositorio central mediante git pull para obtener actualizaciones.
+5. Subir los cambios al repositorio remoto con git push.
+6. Fusionar cambios en la rama principal mediante Pull Requests.
+
+## **Algunas acciones clave en *Git* incluyen:**
+
+
+*Clonar un repositorio*
+git clone https://dev.azure.com/mi-organizacion/mi-proyecto/_git/mi-repositorio
+
+*Crear una nueva rama*
+git checkout -b "nueva-rama"
+
+*Agregar cambios al área de preparación y realizar un commit*
+git add .
+git commit -m "Descripción de los cambios"
+
+*Subir los cambios al repositorio remoto*
+git push origin nueva-rama
+
+
+## **Estrategias de Ramificación (Branching)**
+
+El uso de ramas en *Git* permite trabajar en diferentes funcionalidades sin afectar la versión principal del código. Existen diferentes estrategias de *branching*, cada una con ventajas y desventajas.
+
+*GitHub Flow*
+- La rama main siempre contiene el código listo para producción.
+- Se crean ramas temporales para nuevas características y se fusionan mediante Pull Requests.
+- Es útil para proyectos con despliegues continuos.
+
+*GitLab Flow*
+- Se agregan ramas adicionales como staging y production para manejar diferentes entornos de despliegue.
+- Útil para proyectos que requieren pruebas antes de la implementación final.
+
+*Git Flow*
+- Se utilizan ramas permanentes: main, develop, y ramas temporales como feature, release y hotfix.
+- Ideal para proyectos con ciclos de desarrollo organizados y versiones planificadas.
+
+## **Administración del Código con Azure Repos**
+
+*Azure Repos* permite la gestión de repositorios con funcionalidades avanzadas. Para crear un repositorio en *Azure DevOps*:
+
+1. Ir a *Repos* en el portal de *Azure DevOps*.
+2. Hacer clic en *Nuevo Repositorio*.
+3. Seleccionar *Git* como sistema de control de versiones.
+4. Clonar el repositorio en el equipo local.
+
+*Azure Repos* también permite importar repositorios desde *GitHub*, lo que facilita la migración de código.
+
+*Trabajando con Commits, Pushes y Pull Requests*
+
+Una vez clonado el repositorio, los desarrolladores pueden modificar archivos y registrar cambios mediante commits.
+
+## **Flujo de trabajo de cambios en Azure DevOps**
+
+1. Modificar archivos en el repositorio local.
+2. Realizar un commit con un mensaje descriptivo.
+3. Subir los cambios al repositorio remoto mediante git push.
+4. Abrir un Pull Request para fusionar los cambios con la rama principal.
+5. Revisar y aprobar el Pull Request antes de integrar los cambios.
+
+Desde *Azure DevOps*, los Pull Requests permiten realizar revisiones de código y evitar la introducción de errores en la rama principal.
+
+## **Conclusión**
+
+El uso de *Azure DevOps Repos* proporciona un entorno seguro y organizado para la gestión del código fuente. Al aplicar buenas prácticas de control de versiones, los equipos pueden mejorar la calidad del código, minimizar errores y optimizar el flujo de trabajo de desarrollo. Implementar estrategias adecuadas de ramas y protección de código asegura que los proyectos se mantengan estables y escalables.

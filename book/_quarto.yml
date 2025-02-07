@@ -35,6 +35,7 @@ book:
     - advanced_docker_security.qmd
     - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd #Narvaez
     - running_quality_tests_in_a_build_pipelines.qmd
+    - azure_sql_database.qmd 
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
