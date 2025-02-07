@@ -40,5 +40,14 @@
   },
   "deploying_docker_compose.qmd": {
     "deploying_docker_compose.html": "6020ae07"
+  },
+  "sharing_containers_used_docker_hub.qmd": {
+    "sharing_containers_used_docker_hub.html": "247dba77"
+  },
+  "advanced_docker_security.qmd": {
+    "advanced_docker_security.html": "da70d573"
+  },
+  "Using Artifacts with Azure DevOps.qmd": {
+    "Using Artifacts with Azure DevOps.html": "730187ab"
   }
 }

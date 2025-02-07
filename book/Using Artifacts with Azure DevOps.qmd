@@ -1,0 +1,72 @@
+# Using Artifacts with Azure DevOps
+
+En este capítulo se detalla el uso de **artifacts** en Azure DevOps para mejorar la gestión de dependencias, el intercambio de paquetes y la detección de vulnerabilidades en proyectos de desarrollo. Los artifacts son componentes esenciales que pueden facilitar la reutilización de código, ahorrar tiempo y asegurar la consistencia en los proyectos.
+
+## ¿Qué son los artifacts y por qué son importantes?
+
+En el desarrollo de software, es común utilizar paquetes o bibliotecas de terceros para agregar funcionalidades adicionales a nuestras aplicaciones. Estos paquetes pueden ser desarrollados internamente o ser parte de la comunidad de código abierto. Azure Artifacts ofrece una solución integral para almacenar, compartir y consumir estos paquetes de forma segura y eficiente.
+
+### Ventajas de usar Azure Artifacts:
+- **Centralización y organización:** Permite a los equipos mantener un repositorio centralizado de todas las dependencias, reduciendo la duplicación y mejorando la visibilidad.  
+- **Control de versiones:** Facilita el uso de versiones específicas de paquetes para evitar incompatibilidades.  
+- **Seguridad mejorada:** Los permisos de acceso pueden configurarse para proteger los paquetes de modificaciones no autorizadas.  
+- **Soporte para múltiples tipos de paquetes:** Compatible con NuGet (.NET), npm (JavaScript), Maven (Java), Python y Universal Packages.  
+
+## Creación de un feed en Azure Artifacts
+
+Un feed es un contenedor dentro de Azure Artifacts donde se agrupan y organizan paquetes. Es el primer paso para empezar a trabajar con artifacts.
+
+### ¿Cómo crear un feed en Azure DevOps?
+1. **Acceder a Azure DevOps:** Inicia sesión en [Azure DevOps](https://dev.azure.com).  
+2. **Seleccionar la opción Artifacts:** Desde el menú lateral, haz clic en **Artifacts**.  
+3. **Crear un nuevo feed:** Haz clic en **+ Create Feed** y configura las siguientes opciones:  
+   - **Nombre del feed:** Asigna un nombre como `PartsUnlimited_Feed`.  
+   - **Visibilidad:** Decide si será un feed privado o accesible a toda la organización.  
+   - **Upstream sources:** Desactívalo para este ejemplo.  
+4. **Crear el feed:** Haz clic en **Create** y el feed estará listo para almacenar paquetes.  
+
+## Producción de un paquete mediante un pipeline de build
+
+Después de crear el feed, el siguiente paso es crear un pipeline de build para generar un paquete NuGet y almacenarlo en el feed. Un pipeline automatiza el proceso de compilación, empaquetado y publicación del código.
+
+### Importar el proyecto de muestra
+1. **Acceder a Repos:** En Azure DevOps, navega a **Repos > Files** y selecciona **Import repository**.  
+2. **Especificar la URL del repositorio:** Introduce la URL del repositorio de GitHub para el proyecto `PartsUnlimited.Models`.  
+3. **Asignar un nombre:** Por ejemplo, `PartsUnlimited.Models`.  
+
+### Configuración del pipeline de build
+1. **Crear un nuevo pipeline:** Selecciona **Pipelines > New pipeline**.  
+2. **Seleccionar el repositorio:** Elige `PartsUnlimited.Models`.  
+3. **Configurar el pipeline:**  
+   - Selecciona la plantilla **ASP.NET**.  
+   - Añade una tarea **NuGet pack** para empaquetar el proyecto.  
+   - Configura el versionado automático con **Semantic Versioning** (por ejemplo, `1.0.0`).  
+4. **Guardar y ejecutar el pipeline:** Haz clic en **Save & queue** para iniciar la ejecución.  
+
+El resultado será un paquete NuGet almacenado en el feed, listo para ser consumido por otros proyectos.  
+
+## Publicación del paquete en el feed
+
+Para que el paquete esté disponible para otros desarrolladores, es necesario publicarlo en el feed.  
+
+### Configuración de permisos en el feed
+1. **Acceder a la configuración del feed:** Ve a **Artifacts > Settings**.  
+2. **Añadir permisos:** Otorga permisos de **Contributor** a la identidad del pipeline para que pueda publicar el paquete.  
+
+### Añadir la tarea NuGet push al pipeline
+1. **Editar el pipeline:** Añade una nueva tarea **NuGet push**.  
+2. **Configurar la tarea:**  
+   - **Ruta del paquete:** Especifica `$(Build.ArtifactStagingDirectory)/**/*.nupkg`.  
+   - **Feed de destino:** Selecciona `PartsUnlimited_Feed`.  
+3. **Guardar y ejecutar:** El paquete se publicará automáticamente en el feed.  
+
+## Consumo del paquete en Visual Studio
+
+Ahora que el paquete está publicado, puedes utilizarlo en tus proyectos de Visual Studio.
+
+### Pasos para consumir el paquete:
+1. **Crear una aplicación de consola:** En Visual Studio 2019, crea un nuevo proyecto .NET Core.  
+2. **Conectar al feed:** Ve a **Artifacts > Connect to feed** en Azure DevOps y copia la URL del feed.  
+3. **Configurar Visual Studio:** En **NuGet Package Manager**, añade la URL del feed como una nueva fuente de paquetes.  
+4. **Instalar el paquete:** Busca `PartsUnlimited.Models` e instálalo.  
+5. **Usar el paquete:** Importa el paquete y utiliza las clases del modelo en tu código.  
