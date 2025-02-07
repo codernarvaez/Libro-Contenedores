@@ -48,7 +48,7 @@ Los casos de prueba pueden vincularse con elementos de trabajo, priorizarse y ej
 1. Acceder a **Test Plans** en **Azure DevOps**.
 2. Crear una nueva suite de prueba estática.
 3. Importar casos de prueba desde un archivo CSV.
-4. Ejecutar las pruebas con la opción "Run with options".
+4. Ejecutar las pruebas con la opción "Run with options"
 5. Evaluar los resultados en **Azure DevOps**, documentando errores o fallos encontrados.
 
 
