@@ -1,0 +1,107 @@
+# Gestión de Proyectos con Azure DevOps Boards
+
+Para gestionar un proyecto de software de forma eficiente. **Azure DevOps Boards** es una plataforma que facilita la organización y seguimiento de tareas mediante tableros Kanban, backlogs y sprints, permitiendp planificar, rastrear y colaborar de manera eficiente en proyectos.
+
+## Creación y Organización de Proyectos en Azure DevOps
+
+### **Organizaciones en Azure DevOps**
+Azure DevOps agrupo proyectos en base a organizaciones, crear una organización permite tener acceso a la cadena de herramientas que Azure boards ofrece.
+
+### **Establecimiento de una Organización en Azure DevOps**
+Los pasos para crear una nueva organización son los siguientes:
+1. Ingresar a [dev.azure.com](http://dev.azure.com).
+2. Iniciar sesión y seleccionar "Crear Nueva Organización".
+3. Configurar el nombre y la ubicación de la organización.
+4. Establecer un proyecto dentro de la organización.
+
+### **Modelos de Trabajo en Azure DevOps**
+- **Básico:** Emplea epics, incidencias y tareas.
+- **Ágil:** Se basa en historias de usuario y características.
+- **Scrum:** Utiliza elementos de backlog como PBIs y tareas.
+- **CMMI:** Modelo formal para el seguimiento de requisitos.
+
+### **Planificación Organizacional**
+Asi como la estructura de la empresa se divide en distintos departamentos, podemos asignar unidades de negocio específicas con su grupo de usuarios dentro de la plataforma, es recomendable en caso de que se requiera distintas soluciones o restricciones para cada organización.
+
+
+## **Gestión de Proyectos en Azure DevOps**
+
+### **Categorías de Proyectos**
+- **Proyecto único:** Todos los equipos operan dentro de un solo proyecto.
+- **Proyectos múltiples:** Cada equipo tiene su propio espacio, lo que permite mayor independencia y control de acceso.
+
+### **Establecimiento de un Proyecto en Azure DevOps**
+1. Acceder a la organización en Azure DevOps.
+2. Hacer clic en "Crear Proyecto".
+3. Definir el nombre, la visibilidad y el proceso de trabajo.
+
+## **Entender los procesos del proyecto**
+
+### Items de trabajo
+Utilizado para medir el cumplimiento del trabajo en el proyecto, esta basado en el proceso que se seleccionó al crear el proyecto
+
+### Pasos para crear un Ítem de Trabajo
+
+1.Acceder a la organización y seleccionar el proyecto correspondiente.
+2.Dirigirse a "Boards" y seleccionar "Work Items".
+3.Hacer clic en "New Work Item" y elegir el tipo de ítem (Epic, Issue, Task, Bug, etc.).
+4.Completar los detalles del ítem de trabajo:
+    - Título: Breve descripción de la tarea.
+    - Descripción: Detalles sobre la tarea a realizar.
+    - Prioridad: Nivel de importancia del ítem.
+    - Estado: Asignar un estado inicial como "To Do", "Doing" o "Done".
+    - Asignado a: Seleccionar el responsable de la tarea.
+    - Guardar y rastrear el progreso del ítem en el tablero de trabajo.
+
+### backlogs
+Son listas que simbolizan la planificación del proyecto, estos pueden ser compartidos entre otras organizaciones para una mejor integración.
+
+### Pasos para gestionar un backlog
+1. Ir a la Sección de Backlogs
+2. En la barra lateral izquierda, selecciona "Boards". Luego, elige la opción "Backlogs".
+4. Seleccionar el Nivel de Backlog. En la parte superior, elige entre "Stories", "Features" o "Epics" según el nivel que deseas gestionar.
+5. Agregar Elementos al Backlog
+6. Haz clic en el botón "New Work Item" o "Agregar un nuevo elemento". Escribe el título del elemento (Ejemplo: "Diseñar la interfaz de usuario").
+7. Asigna una prioridad y un responsable. Agrega una descripción y detalles adicionales.
+8. Guarda los cambios.
+
+**Organizar y Priorizar**
+
+Arrastra los elementos de la lista para ordenarlos según prioridad.
+Puedes agregar tareas dentro de cada historia de usuario.
+
+**Asignar Elementos a un Sprint (Opcional)**
+
+Si usas Scrum, selecciona un Sprint desde la opción "Sprints".
+Arrastra los elementos del Backlog al Sprint correspondiente.
+
+### Boards
+Nos permite visualizar los items de trabajo en un tablero. Aquí podrás marcar los items de acurdo a su compleción (por hacer, en progreso, terminado).
+
+### Sprints
+Permiten dividir el proyecto en periodos específicos, donde se define un tiempo para la completación de actividades.
+
+### Queries.
+Permite gestionar los items de trabajo de cada participante de la organización, similar al Tablero Kanban de Boards, pero este permite filtrar los items por medio de un criterio específico.
+
+### Plans.
+Despliega una vista general del cronograma de trabajo de los diferentes equipos en la organización. permite a los administradores tomar desiciones mas eficientemente basado en en tiempo de entrega y las dependencias en la planificación.
+
+### Integración de Azure Boards con Github
+Azure Boards puede vincularse directamente con github para rastrear los items mediante los cambios en el repositorio:
+
+1. Accede a Azure DevOps y selecciona tu organización.
+2. Ve a Project Settings > Service Connections.
+3. Haz clic en New Service Connection y elige GitHub.
+4. Autoriza Azure DevOps para acceder a tu cuenta de GitHub.
+5. Selecciona el repositorio que quieres conectar y guarda la configuración.
+6. Ve a GitHub Marketplace.
+7. Instala la extensión en el repositorio conectado.
+8. Autoriza la integración con Azure DevOps.
+
+Después de conectar los servicios, usa estas convenciones en los mensajes de commit, nombres de branch y pull requests para vincular Work Items:
+    - Fix login issue AB#<id_item>
+
+o en caso de vincular un branch:
+    - git checkout -b feature/AB#<id_item>
+
