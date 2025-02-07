@@ -1,0 +1,92 @@
+# Cosmos DB
+
+## Introducción
+
+Cosmos DB es una base de datos NoSQL distribuida globalmente, desarrollada por Microsoft para aplicaciones que requieren alta disponibilidad, baja latencia y escalabilidad ilimitada. Lanzada inicialmente como DocumentDB en 2014, fue renombrada como Cosmos DB en 2017, expandiendo sus capacidades para soportar múltiples modelos de datos. Su diseño está orientado a satisfacer las necesidades de aplicaciones modernas que manejan grandes volúmenes de datos en entornos distribuidos.
+
+## Ventajas de Cosmos DB
+
+- **Escalabilidad Global:** Permite replicar datos en múltiples regiones de Azure con solo unos clics, mejorando la disponibilidad y reduciendo la latencia.
+- **Soporte Multimodelo:** Compatible con modelos DocumentDB, MongoDB, Table y Graph, lo que permite elegir el más adecuado según la necesidad del proyecto.
+- **Sin Esquema Fijo:** Al ser NoSQL, permite almacenar datos con diferentes estructuras, lo que facilita la adaptación a cambios en los requisitos de la aplicación.
+- **Indexación Automática:** Todos los datos se indexan por defecto para consultas rápidas, sin necesidad de configuraciones adicionales.
+- **Almacenamiento y Rendimiento Ilimitados:** Escalable en almacenamiento y capacidad de procesamiento (medido en RU/s), permitiendo manejar cargas de trabajo variables.
+
+![Figura 1: Arquitectura de Cosmos DB](./content/images/replicacionCosmos.png)
+*Figura 1: Ejemplo de replicación global en Cosmos DB.*
+
+## Modelo de Recursos de Cosmos DB
+
+El modelo de recursos de Cosmos DB está diseñado para ofrecer flexibilidad y control sobre cómo se almacenan y gestionan los datos:
+
+1. **Cuenta de Base de Datos:** Contenedor principal que agrupa bases de datos. Proporciona un punto de entrada para la gestión de recursos.
+2. **Base de Datos:** Contiene colecciones de documentos y define un límite lógico para la organización de los datos.
+3. **Colecciones:** Agrupan documentos JSON, procedimientos almacenados y funciones definidas por el usuario. Cada colección puede tener su propia configuración de rendimiento.
+4. **Documentos:** Almacenan los datos en formato JSON, lo que facilita la integración con aplicaciones modernas.
+
+![Figura 2: Jerarquía de Recursos en Cosmos DB](./content/images/jerarquiaCosmosDB.png) 
+*Figura 2: Estructura de cuenta, base de datos, colecciones y documentos.*
+
+## Modelado de Datos
+
+El modelado de datos en Cosmos DB es flexible, permitiendo adaptarse a diferentes escenarios de uso:
+
+- **Documentos Embebidos:** Ideal para relaciones uno a uno o conjuntos de datos pequeños. Mejora el rendimiento al reducir la necesidad de consultas adicionales.
+- **Documentos Referenciados:** Útil para datos que crecen indefinidamente, como comentarios o reseñas de productos. Facilita la gestión de datos grandes y evita el crecimiento descontrolado de documentos individuales.
+
+### Ejemplo de Documento JSON
+```json
+{
+  "id": "1",
+  "doctype": "product",
+  "productname": "American Stratocaster",
+  "price": 1350,
+  "attributes": [
+    {"attribute": "Manufacturer", "value": "Fender"},
+    {"attribute": "Model", "value": "Stratocaster"}
+  ]
+}
+```
+
+## Particiones en Cosmos DB
+
+Cosmos DB utiliza particiones para distribuir datos y escalar horizontalmente, garantizando un rendimiento óptimo incluso con grandes volúmenes de datos.
+
+- **Clave de Partición:** Determina cómo se distribuyen los datos. Es fundamental elegir una clave que permita una distribución equilibrada de la carga.
+- **Particiones Lógicas y Físicas:** Los datos se almacenan en particiones lógicas que se asignan a particiones físicas, optimizando el acceso y la escalabilidad.
+- **Gestión Transparente:** Cosmos DB gestiona automáticamente la distribución y el reequilibrio de particiones, reduciendo la complejidad para el desarrollador.
+
+![Figura 3: Esquema de Particionamiento](./content/images/esquemaParticionamiento.png)
+*Figura 3: Distribución de documentos en particiones lógicas y físicas.*
+
+## Consultas en Cosmos DB
+
+Cosmos DB soporta un subconjunto de SQL para realizar consultas, lo que facilita la transición para desarrolladores familiarizados con bases de datos relacionales:
+
+```sql
+SELECT * FROM c WHERE c.productname = 'Stratocaster'
+```
+Esta consulta devuelve documentos donde el nombre del producto sea "Stratocaster".
+
+Además, soporta consultas complejas con filtros, proyecciones, agregaciones y ordenamientos.
+
+## Rendimiento y Consistencia
+
+Cosmos DB ofrece diferentes niveles de consistencia para adaptarse a las necesidades de la aplicación:
+
+- **Consistencia Fuerte:** Garantiza que todas las réplicas muestran los mismos datos en todo momento.
+- **Consistencia Eventual:** Las réplicas pueden diferir temporalmente, pero eventualmente se sincronizan.
+- **Consistencias Intermedias:** Como la prefijada, por sesión y consistente por solicitud, que ofrecen un equilibrio entre rendimiento y precisión.
+
+## Casos de Uso Comunes
+
+- **E-commerce:** Para gestionar catálogos de productos dinámicos y de gran tamaño.
+- **Aplicaciones IoT:** Alta velocidad de escritura para dispositivos conectados en tiempo real.
+- **Análisis de Datos en Tiempo Real:** Bajo nivel de latencia para consultas rápidas y eficientes.
+- **Juegos en Línea:** Gestión de perfiles de usuario y datos de juego con alta disponibilidad.
+- **Redes Sociales:** Manejo de relaciones complejas y volúmenes masivos de datos.
+
+## Conclusión
+
+Cosmos DB es una solución potente para aplicaciones modernas que requieren escalabilidad global, flexibilidad en el modelado de datos y un rendimiento óptimo en consultas distribuidas. Su capacidad para manejar múltiples modelos de datos y ofrecer consistencia configurable lo convierte en una opción ideal para una amplia variedad de escenarios empresariales.
+
