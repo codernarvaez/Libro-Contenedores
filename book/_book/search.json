@@ -328,5 +328,175 @@
     "crumbs": [
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>CONCLUSIÓN – FIN DE EL CAMINO, PERO NO EL VIAJE</span>"
     ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "",
+    "text": "11 Introducción a DevOps\n#Autor:Cristian Yaguana # Azure DevOps Descripción General\nDurante un largo período, el desarrollo y las operaciones se mantuvieron separados en módulos independientes, cada uno con sus propias responsabilidades y enfoques. Los desarrolladores se encargaban de escribir el código y garantizar su correcto funcionamiento en sus entornos de desarrollo, mientras que los administradores de sistemas asumían la tarea de implementar e integrar dicho código en la infraestructura de TI de la organización.\nEste enfoque se alineaba perfectamente con la metodología en cascada, ampliamente utilizada en la mayoría de los proyectos. La metodología en cascada se basa en el Ciclo de Vida del Desarrollo de Software, el cual establece procesos claramente definidos para la creación de software. Consiste en la división del proyecto en fases secuenciales y lineales, en las que cada etapa depende directamente de los resultados obtenidos en la fase anterior. La secuencia de estos eventos puede representarse de la siguiente manera:",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-1-acción-centrada-en-el-cliente",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-1-acción-centrada-en-el-cliente",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.1 Principio 1 – Acción centrada en el cliente",
+    "text": "12.1 Principio 1 – Acción centrada en el cliente\nEn la actualidad, los proyectos de desarrollo de software deben contar con ciclos cortos y bucles de retroalimentación, integrando a los usuarios finales y clientes reales dentro del equipo.\nLos equipos y organizaciones que adoptan DevOps deben invertir de manera constante en productos y servicios que maximicen el valor para el cliente. Al mismo tiempo, deben mantener la eficiencia necesaria para fomentar la innovación continua y ajustar su estrategia cuando esta deje de ser efectiva.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-2-crear-con-el-fin-en-mente",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-2-crear-con-el-fin-en-mente",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.2 Principio 2 – Crear con el fin en mente",
+    "text": "12.2 Principio 2 – Crear con el fin en mente\nEl enfoque principal debe estar en desarrollar productos funcionales y comercializables para clientes reales. Para lograrlo, es fundamental que todos los miembros de la organización adopten una mentalidad de ingeniería compartida, permitiéndoles contribuir de manera efectiva a la materialización de estos productos.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-3-responsabilidad-de-extremo-a-extremo",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-3-responsabilidad-de-extremo-a-extremo",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.3 Principio 3 – Responsabilidad de extremo a extremo",
+    "text": "12.3 Principio 3 – Responsabilidad de extremo a extremo\nEn los proyectos de desarrollo de software tradicionales, una vez finalizado el proceso de desarrollo, el software y los servicios creados se transfieren al departamento de operaciones, que se encarga de su implementación y mantenimiento. Sin embargo, en un enfoque DevOps, los equipos asumen la responsabilidad total del ciclo de vida del software, garantizando su calidad, estabilidad y evolución continua desde el desarrollo hasta la producción.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-4-equipos-autónomos-multifuncionales",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-4-equipos-autónomos-multifuncionales",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.4 Principio 4 – Equipos autónomos multifuncionales",
+    "text": "12.4 Principio 4 – Equipos autónomos multifuncionales\nLas organizaciones que adoptan equipos verticales y con plena responsabilidad deben garantizar que estos puedan operar de manera totalmente autónoma a lo largo de todo el ciclo de vida del desarrollo. Para lograr esta independencia, es fundamental contar con un equipo compuesto por un conjunto diverso y equilibrado de habilidades, permitiendo así la autogestión y la toma de decisiones eficiente sin depender de otras áreas.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-5-mejora-continua",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-5-mejora-continua",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.5 Principio 5 – Mejora continua",
+    "text": "12.5 Principio 5 – Mejora continua\nLas organizaciones deben adaptarse constantemente a los cambios, ya sea por nuevas tecnologías o ajustes en los requisitos del cliente. En DevOps, la mejora continua es clave para optimizar costos, acelerar la entrega y perfeccionar el software y los servicios de manera constante.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-6-automatizar-todo",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#principio-6-automatizar-todo",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "12.6 Principio 6 – Automatizar todo",
+    "text": "12.6 Principio 6 – Automatizar todo\nPara adoptar una cultura de mejora continua, las organizaciones deben eliminar desperdicios y optimizar el uso de tecnología avanzada. La automatización permite manejar ciclos de desarrollo rápidos, procesar retroalimentación en tiempo real y mejorar la entrega de servicios. Es clave para renovar la forma en que los equipos ofrecen valor a sus clientes.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#fases-del-ciclo-de-vida-de-la-aplicación",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#fases-del-ciclo-de-vida-de-la-aplicación",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "13.1 Fases del ciclo de vida de la aplicación",
+    "text": "13.1 Fases del ciclo de vida de la aplicación\nLas fases del ciclo de vida de la aplicación incluyen:\n\nPlan → Planificar\nDevelop → Desarrollar\nDeliver → Entregar\nOperate → Operar\n\n\n13.1.1 1. Planificación\nEn esta fase, los equipos pueden usar Azure Boards para definir, rastrear y organizar el trabajo a través de tableros Kanban y registros de tareas pendientes. También es posible utilizar GitHub para gestionar el flujo de trabajo y la colaboración.\n\n\n13.1.2 2. Desarrollo\nEl desarrollo está respaldado por herramientas como Visual Studio Code (editor multiplataforma) y Visual Studio (IDE para Windows y Mac). Azure DevOps permite realizar pruebas automatizadas y utilizar Azure Pipelines para generar compilaciones automáticas del código fuente.\n\n\n13.1.3 3. Entrega\nEsta fase implica la implementación de aplicaciones y servicios en entornos específicos. Azure Pipelines facilita la entrega automatizada del código a Azure o entornos locales. Para la creación de entornos de infraestructura, se pueden usar Azure Resource Manager o Terraform.\n\n\n13.1.4 4. Operación\nAquí se implementa la supervisión de pila completa para rastrear el rendimiento de las aplicaciones y servicios. Se pueden usar herramientas como Azure Automation o Chef para administrar entornos en la nube. La seguridad de las aplicaciones también es una prioridad en esta etapa, con funciones integradas accesibles desde cualquier navegador web.\nAzure DevOps ofrece un conjunto de herramientas flexibles y soluciones que permiten personalizar flujos de trabajo en cada fase del ciclo de vida de la aplicación, optimizando el desarrollo, la entrega y la operación del software.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#integración-continua-y-entrega-continua-cicd-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#integración-continua-y-entrega-continua-cicd-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "13.2 Integración Continua y Entrega Continua (CI/CD) en Azure DevOps",
+    "text": "13.2 Integración Continua y Entrega Continua (CI/CD) en Azure DevOps\nAzure DevOps permite automatizar cada proceso de DevOps mediante Integración Continua (CI) y Entrega Continua (CD), junto con la Implementación Continua.\n\nIntegración Continua (CI) se aplica en la fase de desarrollo y automatiza la creación y prueba del código. Cada vez que se realizan cambios en la rama principal, estos se validan automáticamente y se empaquetan en un artefacto de compilación.\nEntrega Continua (CD) extiende la automatización al proceso de implementación. Con Azure Pipelines, es posible automatizar desde la confirmación del código hasta su despliegue en producción, reduciendo errores manuales y acelerando la entrega de software.\n\nEste enfoque garantiza ciclos de desarrollo más ágiles, con mayor estabilidad y eficiencia en la entrega de aplicaciones y servicios.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#soporte-de-desarrollo-ágil-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#soporte-de-desarrollo-ágil-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "13.3 Soporte de Desarrollo Ágil en Azure DevOps",
+    "text": "13.3 Soporte de Desarrollo Ágil en Azure DevOps\nAzure DevOps ofrece herramientas para planificación, seguimiento y generación de informes, ayudando a los equipos que adoptan metodologías ágiles. Esto permite ciclos de lanzamiento más cortos y una mayor visibilidad en el proceso de desarrollo.\n\nSe pueden utilizar análisis avanzados e informes para evaluar el progreso.\nEs posible crear paneles personalizados para monitorear el estado del proyecto en tiempo real.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#control-de-versiones-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#control-de-versiones-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "13.4 Control de Versiones en Azure DevOps",
+    "text": "13.4 Control de Versiones en Azure DevOps\nEl control de versiones es fundamental para la colaboración entre desarrolladores y el seguimiento de cambios en el código. Permite revertir versiones anteriores en caso de errores y facilita el desarrollo en equipo.\nAzure DevOps admite dos tipos de control de versiones:\n\nGit (Distribuido) – Cada desarrollador tiene una copia completa del repositorio, incluidas ramas e historial. Los cambios se sincronizan entre el repositorio local y el de origen de manera independiente.\nTeam Foundation Version Control (TFVC) – Solo se almacena una versión del archivo en la máquina local, mientras que el historial y las ramas permanecen en el servidor.\n\nAmbas opciones permiten a los equipos gestionar eficientemente el código y garantizar la integridad del desarrollo.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#infraestructura-como-código-iac-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#infraestructura-como-código-iac-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "13.5 Infraestructura como Código (IaC) en Azure DevOps",
+    "text": "13.5 Infraestructura como Código (IaC) en Azure DevOps\nAzure DevOps permite administrar la infraestructura de un proyecto, incluyendo redes, máquinas virtuales y balanceadores de carga, utilizando las mismas herramientas de control de versiones que el código fuente.\nCuando se combina con la entrega continua (CD), la Infraestructura como Código (IaC) garantiza que cada implementación genere un entorno idéntico y reproducible.\n\n13.5.1 Ventajas de IaC:\n\nAutomatiza la configuración y gestión de entornos.\nReduce el riesgo de errores manuales y diferencias entre entornos.\nAcelera la implementación y mantenimiento de la infraestructura.\n\nSin IaC, los equipos deben configurar manualmente cada entorno, lo que consume tiempo y aumenta la probabilidad de errores. Con IaC, los entornos se despliegan de manera consistente y eficiente, optimizando todo el ciclo de vida del desarrollo.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#planes-de-pruebas-de-azure",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#planes-de-pruebas-de-azure",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "17.1 Planes de Pruebas de Azure",
+    "text": "17.1 Planes de Pruebas de Azure\nAzure Test Plans ayuda a mejorar la calidad del código mediante servicios de pruebas exploratorias y planificadas dentro de Azure DevOps. Ofrece herramientas para pruebas manuales, pruebas exploratorias, pruebas de aceptación del usuario y recopilación de comentarios de las partes interesadas.\nLas pruebas manuales permiten a los evaluadores y líderes de pruebas organizar y estructurar pruebas en planes y suites. Los equipos pueden ejecutarlas desde tableros Kanban o directamente en Work Hub. Las pruebas de aceptación del usuario garantizan que el producto cumpla con los requisitos y aporte valor al cliente.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#artefactos-de-azure",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#artefactos-de-azure",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "17.2 Artefactos de Azure",
+    "text": "17.2 Artefactos de Azure\nAzure Artifacts permite gestionar y compartir paquetes como NuGet, npm, Python y Maven, tanto desde fuentes públicas como privadas, dentro de Azure DevOps. Estos paquetes pueden ser utilizados en el código fuente y estar disponibles en las canalizaciones CI/CD. Además, permite crear múltiples fuentes para organizar y controlar el acceso a los paquetes, facilitando la gestión de dependencias en los proyectos.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#mercado-de-extensiones",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#mercado-de-extensiones",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "17.3 Mercado de Extensiones",
+    "text": "17.3 Mercado de Extensiones\nEl Visual Studio Marketplace ofrece extensiones para personalizar y ampliar Azure DevOps. Estas extensiones permiten mejorar la planificación, el seguimiento de código, las pruebas, la integración continua y la colaboración en equipo. Desarrolladas por Microsoft y la comunidad, estas herramientas ayudan a optimizar los flujos de trabajo y la experiencia del usuario en Azure DevOps.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#creando-el-proyecto-inicial-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#creando-el-proyecto-inicial-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "17.4 Creando el Proyecto Inicial en Azure DevOps",
+    "text": "17.4 Creando el Proyecto Inicial en Azure DevOps\nPara generar el proyecto de escenario, se utilizará el generador de demostración de Azure DevOps, que permite crear proyectos de muestra de forma gratuita.\nAntes de iniciar, es necesario instalar dos extensiones desde el Visual Studio Marketplace, utilizadas en el proyecto Tailwind Traders:\n\nSalidas ARM: Lee los valores de salida de las implementaciones de Azure Resource Manager (ARM) y los configura como variables en Azure Pipelines.\nProyecto de Equipo de Salud: Proporciona una visualización del estado general de las compilaciones, similar a Codify Build Light, facilitando el monitoreo del estado del proyecto.\n\nUna vez instaladas estas extensiones en la organización de Azure DevOps, se podrá generar el proyecto de muestra automáticamente.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
+  },
+  {
+    "objectID": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#pasos-para-crear-el-proyecto-en-azure-devops",
+    "href": "AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.html#pasos-para-crear-el-proyecto-en-azure-devops",
+    "title": "10  Azure DevOps Descripción General",
+    "section": "17.5 Pasos para Crear el Proyecto en Azure DevOps",
+    "text": "17.5 Pasos para Crear el Proyecto en Azure DevOps\n\nAccede al sitio web del generador de demostración de Azure DevOps:\nAzure DevOps Demo Generator.\nHaz clic en Iniciar sesión. Si no tienes una cuenta de Azure, regístrate para una prueba gratuita seleccionando Empieza gratis.\nAsigna el nombre Comerciantes de Viento de Cola al proyecto, elige una organización y selecciona una plantilla haciendo clic en Elija una plantilla. Luego, selecciona Comerciantes de Viento de Cola de la lista y haz clic en Seleccionar plantilla.\nCompleta los datos requeridos y haz clic en Crear proyecto.\nUna vez creado el proyecto, ve a Azure DevOps, inicia sesión con tus credenciales y selecciona la organización donde creaste el proyecto. Luego, accede al proyecto Comerciantes de Viento de Cola para verificar que se haya generado correctamente.\nRepite estos pasos para crear el proyecto Piezas Ilimitadas en tu entorno de Azure DevOps.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Azure DevOps Descripción General</span>"
+    ]
   }
 ]

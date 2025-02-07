@@ -30,6 +30,7 @@ book:
     - deploying_docker_compose.qmd
     - sharing_containers_used_docker_hub.qmd
     - conclusionfindecamino.qmd
+    - AZURE_DEVOPS_DESCRIPCIÓN_GENERAL.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd
