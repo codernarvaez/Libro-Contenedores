@@ -34,6 +34,7 @@ book:
     - Docker_Security_Fundamentals_and_Best_Practices.qmd
     - advanced_docker_security.qmd
     - Monitoring_Docker_Using_Prometheus_Grafana_Jaeger.qmd #Narvaez
+    - Using_test_plans_with_azure_DevOps.qmd
 #    - data_manipulation.qmd
 #    - import_export.qmd
 #    - lazy_execution.qmd

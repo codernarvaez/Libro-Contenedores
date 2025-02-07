@@ -1,0 +1,54 @@
+# Uso de Planes de Prueba en Azure DevOps
+
+## Introducción
+En este capítulo, se explica cómo utilizar los planes de prueba en **Azure DevOps**, destacando su importancia en la entrega de software de calidad y una gran experiencia de usuario. Se cubren temas como la gestión de planes de prueba, suites y casos de prueba, la ejecución y análisis de pruebas, así como pruebas exploratorias y la instalación de la extensión **Test & Feedback**.
+
+## Temas principales
+- Introducción a **Azure Test Plans**
+- Pruebas exploratorias
+- Instalación y uso de la extensión **Test & Feedback**
+- Pruebas manuales planificadas
+- Gestión de planes, suites y casos de prueba
+- Ejecución y análisis de un plan de prueba manual
+
+## Requisitos técnicos
+Para seguir este capítulo, se necesita:
+- Una organización activa en **Azure DevOps**.
+- **Visual Studio 2019** instalado.
+- Acceso al repositorio de GitHub con ejemplos de prueba.
+
+## **Pruebas Exploratorias**
+Las pruebas exploratorias permiten descubrir defectos en la aplicación sin un enfoque estructurado previo. Se utilizan cuando se quiere evaluar la calidad del producto desde la perspectiva del usuario. Microsoft proporciona la extensión **Test & Feedback**, la cual se puede instalar en navegadores como **Chrome** y **Firefox** para documentar errores y proporcionar retroalimentación.
+
+### Instalación de la Extensión **Test & Feedback**
+1. Ir al **Visual Studio Marketplace** y buscar "Test & Feedback".
+2. Instalar la extensión en el navegador.
+3. Configurar la conexión con **Azure DevOps** proporcionando la URL del proyecto.
+4. Iniciar una sesión de prueba exploratoria y documentar errores con capturas de pantalla o grabaciones.
+5. Guardar y analizar los resultados en **Azure DevOps**.
+
+## **Pruebas Manuales Planificadas**
+Azure DevOps permite integrar pruebas manuales en procesos ágiles, vinculándolas con **Azure Boards** para visualizar el estado de las pruebas en el tablero Kanban. También se pueden administrar desde la pestaña **Test Plans**, que ofrece herramientas avanzadas para la gestión de pruebas.
+
+## **Gestión de Planes, Suites y Casos de Prueba**
+Los artefactos clave en **Azure DevOps Test Plans** son:
+- **Planes de prueba**: Agrupan diferentes suites y casos de prueba.
+- **Suites de prueba**: Dividen los casos de prueba en escenarios específicos.
+- **Casos de prueba**: Permiten validar funcionalidades individuales.
+
+Los casos de prueba pueden vincularse con elementos de trabajo, priorizarse y ejecutarse en distintos entornos configurados.
+
+### Creación de un Plan de Prueba
+1. Acceder a **Azure DevOps** y seleccionar el proyecto.
+2. Ir a **Test Plans** y crear un nuevo plan de prueba.
+3. Agregar suites de prueba (estáticas, basadas en requisitos o en consultas).
+4. Asignar configuraciones según dispositivos y navegadores.
+
+## **Ejecución y Análisis de una Prueba Manual**
+1. Acceder a **Test Plans** en **Azure DevOps**.
+2. Crear una nueva suite de prueba estática.
+3. Importar casos de prueba desde un archivo CSV.
+4. Ejecutar las pruebas con la opción "Run with options".
+5. Evaluar los resultados en **Azure DevOps**, documentando errores o fallos encontrados.
+
+
