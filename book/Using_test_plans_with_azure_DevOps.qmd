@@ -40,7 +40,7 @@ Los casos de prueba pueden vincularse con elementos de trabajo, priorizarse y ej
 
 ### Creación de un Plan de Prueba
 1. Acceder a **Azure DevOps** y seleccionar el proyecto.
-2. Ir a **Test Plans** y crear un nuevo plan de prueba.
+2. Ir a **Test Plans**, crear un nuevo plan de prueba.
 3. Agregar suites de prueba (estáticas, basadas en requisitos o en consultas).
 4. Asignar configuraciones según dispositivos y navegadores.
 
