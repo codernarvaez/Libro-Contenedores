@@ -1,0 +1,203 @@
+# Capítulo 11: Escenarios de CI/CD en el mundo real con Azure DevOps
+
+Este capítulo aborda la implementación de **pipelines de CI/CD (Integración y Entrega Continua)** en **Azure DevOps**, utilizando dos enfoques prácticos:
+
+- **Despliegue de una aplicación basada en .NET en Azure App Service.**
+- **Despliegue de una aplicación basada en contenedores en Azure Kubernetes Service (AKS).**
+
+Cada caso incluye la configuración de la infraestructura necesaria, la creación de pipelines en Azure DevOps y la validación del flujo automatizado de desarrollo.
+
+## Configuración de CI/CD para aplicaciones .NET
+
+Se usa una aplicación web desarrollada en **ASP.NET** con una base de datos **SQL Server** en Azure. La configuración sigue los siguientes pasos:
+
+### Preparación de la Infraestructura en Azure
+
+Antes de configurar la automatización, es necesario crear los recursos en Azure:
+
+- **Grupos de recursos**: Se crean dos grupos, uno para el entorno de puesta en escena y otro para producción. 
+
+:::{.center}
+![Figura 14.1 - Creación de grupos de recursos en Azure](images/figura11_1.png)
+:::
+
+- **Azure App Service**: Se crea un servicio de aplicaciones para alojar la aplicación web. 
+
+:::{.center}
+![Figura 14.2 - Creación de una aplicación web en Azure](images/figura11_3.png)
+:::
+
+- **Base de Datos SQL**: Se configura una base de datos en **Azure SQL Database**, asegurando que la aplicación pueda almacenar información. 
+
+:::{.center}
+![Figura 14.3 - Creación de una base de datos SQL en Azure](images/figura11_6.png)
+:::
+
+### Configuración del Proyecto en Azure DevOps
+
+Una vez creada la infraestructura, se configura un proyecto en **Azure DevOps** para gestionar el código fuente y las pipelines de automatización.
+
+- Se crea un **repositorio en Azure Repos** e importa el código desde GitHub. 
+
+:::{.center}
+![Figura 14.4 - Importar un repositorio](images/figura11_10.png)
+:::
+
+- Se configura una **pipeline de integración continua (CI)** para compilar automáticamente la aplicación cuando haya cambios en el código. 
+
+:::{.center}
+![Figura 14.5 - Creación de una pipeline](images/figura11_13.png)
+:::
+
+- Se habilita la opción de **ejecución automática** de la CI cuando se realicen cambios en el repositorio. 
+
+:::{.center}
+![Figura 14.6 - Habilitación de la integración continua](images/figura11_19.png)
+:::
+
+### Configuración de la Pipeline de Entrega Continua (CD)
+
+Después de la compilación, se configura la **pipeline de entrega continua (CD)** para desplegar la aplicación automáticamente en Azure:
+
+- Se crea una **conexión de servicio** en Azure DevOps para autenticarse con Azure. 
+
+:::{.center}
+![Figura 14.7 - Configuración de una conexión de servicio](images/figura11_20.png)
+:::
+
+- Se define una **pipeline de lanzamiento** que implementa la aplicación en los entornos de prueba y producción. 
+
+:::{.center}
+![Figura 14.8 - Creación de una pipeline de lanzamiento](images/figura11_23.png)
+:::
+
+- Se agregan **pasos de migración de base de datos** y **configuración de la aplicación** en Azure. 
+
+:::{.center}
+![Figura 14.9 - Configuración de la base de datos en la pipeline](images/figura11_31.png)
+:::
+
+- Se habilita una **aprobación manual antes de desplegar en producción** para evitar errores en el entorno final. 
+
+:::{.center}
+![Figura 14.10 - Configuración de aprobaciones en la pipeline](images/figura11_35.png)
+:::
+
+### Pruebas del Flujo de CI/CD
+
+Para validar que el proceso automatizado funciona correctamente:
+
+- Se realiza una **prueba de implementación** en el entorno de ensayo. 
+
+:::{.center}
+![Figura 14.11 - Aplicación ToDo funcionando en Azure](images/figura11_39.png)
+:::
+
+- Se aprueba la implementación en producción y se confirma que la aplicación opera correctamente. 
+
+:::{.center}
+![Figura 14.12 - Aprobación de la implementación en producción](images/figura11_40.png)
+:::
+
+---
+
+## Configuración de CI/CD para Aplicaciones Basadas en Contenedores
+
+Se utiliza una aplicación basada en **Python y Redis**, desplegada en **Azure Kubernetes Service (AKS)**.
+
+### Preparación de la Infraestructura
+
+Antes de crear la pipeline, se configuran los siguientes recursos en Azure:
+
+- **Grupos de recursos** para separar los entornos de prueba y producción.
+- **Azure Kubernetes Service (AKS)** para ejecutar los contenedores. 
+
+:::{.center}
+![Figura 14.13 - Verificación de los nodos del clúster AKS con kubectl](images/figura11_54.png)
+:::
+
+- **Azure Container Registry (ACR)** para almacenar las imágenes Docker necesarias. 
+
+:::{.center}
+![Figura 14.14 - Imagen de contenedor almacenada en ACR](images/figura11_45.png)
+:::
+
+### Configuración del Repositorio en Azure DevOps
+
+El código de la aplicación se importa a **Azure Repos** desde GitHub. 
+
+:::{.center}
+![Figura 14.15 - Importación del código de la aplicación de votación en Azure Repos](images/figura11_42.png)
+:::
+
+### Configuración de la Pipeline de Integración Continua (CI)
+
+Se configura una pipeline para construir automáticamente imágenes Docker y subirlas a **Azure Container Registry (ACR)**:
+
+- Se utiliza una **plantilla Docker** en Azure DevOps. 
+
+:::{.center}
+![Figura 14.16 - Configuración de pipeline para Docker](images/figura11_43.png)
+:::
+
+- Se compila la imagen del contenedor y se sube a **ACR**. 
+
+:::{.center}
+![Figura 14.17 - Sintaxis de imágenes en ACR](images/figura11_46.png)
+:::
+
+- Se habilita la **ejecución automática** al detectar cambios en el código. 
+
+:::{.center}
+![Figura 14.18 - Habilitación de integración continua](images/figura11_47.png)
+:::
+
+### Configuración de la Pipeline de Entrega Continua (CD)
+
+Después de la compilación, se configura la **pipeline de CD** para desplegar la aplicación en **AKS**:
+
+- Se actualiza el **archivo YAML de Kubernetes** para que utilice la imagen más reciente. 
+
+:::{.center}
+![Figura 14.19 - Selección del YAML de despliegue](images/figura11_51.png)
+:::
+
+- Se automatiza el despliegue en **AKS** con **kubectl**. 
+
+:::{.center}
+![Figura 14.20 - Configuración de conexión a Kubernetes en Azure DevOps](images/figura11_50.png)
+:::
+
+- Se habilita la **actualización automática** de las imágenes en AKS. 
+
+:::{.center}
+![Figura 14.21 - Habilitación de despliegue continuo en Kubernetes](images/figura11_53.png)
+:::
+
+### Validación del Flujo CI/CD
+
+Para comprobar que todo funciona correctamente:
+
+- Se prueba la **aplicación de votación** accediendo a su IP pública en AKS. 
+
+:::{.center}
+![Figura 14.22 - Aplicación de votación ejecutándose en Azure](images/figura11_55.png)
+:::
+
+- Se modifica el código fuente y se confirma que el **pipeline de CI/CD** actualiza automáticamente la aplicación. 
+
+:::{.center}
+![Figura 14.23 - Cambio de título en la aplicación de votación](images/figura11_56.png)
+:::
+
+---
+
+## Azure Architecture Center para DevOps
+
+Menciona el **Azure Architecture Center**, un recurso donde se pueden encontrar mejores prácticas y arquitecturas recomendadas para soluciones DevOps en Azure.
+
+---
+
+## **Como conclusión**
+
+El capítulo proporciona una **guía práctica para configurar pipelines de CI/CD en Azure DevOps**, utilizando dos enfoques distintos: **aplicaciones tradicionales en .NET** y **aplicaciones basadas en contenedores con Kubernetes**. A través de estos ejemplos, se demuestra cómo **automatizar el ciclo de vida del software**, optimizando los procesos de desarrollo y despliegue en entornos reales.
