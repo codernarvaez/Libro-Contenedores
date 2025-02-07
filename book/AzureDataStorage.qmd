@@ -1,0 +1,71 @@
+---
+title: "Azure Data Storage"
+format: html
+---
+
+## Introducción
+Centrado en los servicios de almacenamiento de datos ofrecidos por la plataforma de Azure, analizando y evaluando sus aplicaciones en el desarrollo de aplicaciones web. Se abordan tres escenarios clave de almacenamiento, con los cuales se responde a necesidades específicas de persistencia y escalabilidad de datos.
+
+## **Escenarios Principales de Almacenamiento**
+
+### 1. Datos de Sesión
+
+Estos datos necesitan persistir por tiempo definido mientras un usuario interactúa con la aplicación. Ejemplos comunes como carritos de compra o elementos recientemente vistos. 
+
+### 2. Datos Persistentes
+
+Los cuales se mantienen de manera indefinida, como historiales de compras o listas de deseos.
+
+### 3. Análisis de Datos
+
+El análisis de grandes volúmenes de datos a través del Machine Learning es un elemento fundamental en el almacenamiento de datos en Azure. **Azure Data Lake** alamacena datos a gran escala.
+
+## **Bases de Datos Relacionales y Azure SQL**
+
+### Sistemas Relacionales:
+
+Este tipo de sistemas (como SQL Server, MySQL y Oracle) guarda la data en tablas estructuradas, siguiendo esquemas fijos.
+
+### Azure SQL:
+
+Version Cloud de SQL Server, diseñada para atributos como la escalabilidad y opciones de pago por servicio, permitiendo a usuarios a escalar sus bases de datos sin necesidad de manejar infraestructura. 
+
+## **Escalabilidad y Almacenamiento NoSQL en Azure**
+
+### Escalabilidad de Azure SQL:
+
+Azure SQL ofrece dos métodos principales de escalabilidad, pdestinado a diferentes necesidades y tipos de aplicaciones.
+
+### 1. Escalado Vertical (Scaling Up)
+
+En donde se aumenta la capacidad de una BDD ubicando a una instancia más potente dentro del Azure Portal.  
+
+### 2. Fragmentación (Sharding) o Escalado Horizontal
+
+Se define en la dividición de datos en varias instancias de Azure SQL, distribuyéndolos en diferentes bases de datos.
+
+#### Desafíos comunes en el escalado horizontal:
+- Ser consistente en los cambios de esquema de las BDD.
+- Consultar datos distribuidos de manera eficiente.
+
+## **Almacenamiento NoSQL en Azure**
+
+A lo contrario de los datos relacionales, estas soluciones NoSQL permiten escalabilidad horizontal con una estructura de datos con flexibilidad, haciendolas aptas para manejar grandes volúmenes de información no estructurada. Se tiene varias opciones de almacenamiento NoSQL:
+
+### 1. Redis Cache
+
+ Servicio de almacenamiento en memoria basado en la herramienta de Redis, implementado principalmente para los siguientes casos:
+
+- Mantener el estado de sesión en aplicaciones que trabajen con múltiples servidores.
+- Construir una capa de caché para reducir la carga en bases de datos persistentes.
+
+### 2. Azure Table Storage
+
+ Consiste en un servicio NoSQL basado en entidades, similar a una tabla, pero sin soporte para relaciones ni joins. Se optimiza para escalabilidad y el bajo costo.
+
+Uso recomendado: Adecuado cuando es necesario almacenar grandes volúmenes de datos y realizar consultas rápidas basadas en claves.
+
+
+
+
+
