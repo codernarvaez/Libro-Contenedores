@@ -1,0 +1,82 @@
+---
+title: "Capítulo 2: Aplicaciones Web en Azure"
+author: "Basado en Rob Reagan (2018)"
+format: html
+---
+
+## Tabla de Contenidos
+- [Introducción](#introducción)
+- [Construcción de la Aplicación Verify](#construcción-de-la-aplicación-verify)
+- [Componentes principales](#componentes-principales)
+- [Despliegue en Azure](#despliegue-en-azure)
+- [Estrategias de Escalado](#estrategias-de-escalado)
+- [Pruebas de Carga](#pruebas-de-carga)
+- [Conclusión](#conclusión)
+
+## Introducción
+Microsoft App Service Web Apps es una solución PaaS que facilita la implementación de aplicaciones web en la nube. Permite a los desarrolladores desplegar y administrar aplicaciones web sin preocuparse por la infraestructura subyacente. Ofrece beneficios como escalabilidad automática, integración con otros servicios de Azure, seguridad incorporada y facilidad de despliegue.
+
+Las aplicaciones desplegadas en Azure Web Apps pueden ejecutarse en múltiples entornos de ejecución, incluyendo .NET, Node.js, Python, PHP y Java. Además, Azure proporciona herramientas avanzadas para la monitorización del rendimiento, seguridad y diagnóstico de errores en tiempo real. Estas herramientas permiten a los desarrolladores obtener información detallada sobre el uso de recursos, tiempos de respuesta y patrones de acceso, facilitando la optimización y mantenimiento de la aplicación.
+
+## Construcción de la Aplicación Verify
+Verify es una aplicación web construida en ASP.NET Core con una base de datos SQL en Azure. Su propósito es validar números de Seguro Social ingresados por empleadores y entidades financieras, garantizando rapidez y precisión en los resultados. La aplicación está diseñada para ser escalable y segura, integrando autenticación y autorización para proteger los datos sensibles.
+
+### Componentes principales
+- **Base de datos:** SQL Server con Entity Framework Core para la gestión y manipulación de datos, permitiendo realizar consultas eficientes y mantener la integridad de la información. La base de datos incluye procedimientos almacenados y restricciones de integridad para garantizar la precisión de los datos ingresados.
+- **Aplicación web:** Implementada en ASP.NET MVC, con una arquitectura basada en controladores y vistas, lo que facilita la gestión de rutas y la interacción con el usuario. Utiliza Bootstrap y JavaScript para mejorar la experiencia del usuario y hacer la interfaz más intuitiva.
+- **Servicio de datos:** Una capa de servicio que maneja la lógica de negocio y el acceso a datos, asegurando la separación de responsabilidades y facilitando la reutilización del código. Se implementan patrones de repositorio y unidad de trabajo para mejorar la mantenibilidad.
+- **Configuración:** Uso de `appsettings.json` para definir configuraciones clave como cadenas de conexión, parámetros de autenticación y políticas de seguridad. Se implementan secretos de usuario y claves administradas en Azure Key Vault para mejorar la seguridad de la aplicación.
+
+## Despliegue en Azure
+Para desplegar Verify en Azure, se siguen estos pasos:
+
+1. **Provisionar una base de datos Azure SQL**
+   - Crear una nueva instancia en Azure Portal.
+   - Configurar las reglas de firewall para permitir conexiones seguras.
+
+2. **Publicar la base de datos**
+   - Usar Visual Studio con SQL Server Database Projects.
+   - Asegurar compatibilidad con Azure SQL Database.
+   - Evitar inconsistencias en los datos.
+
+3. **Crear una Web App en Azure App Service**
+   - Seleccionar una región adecuada.
+   - Elegir un plan de servicio óptimo para minimizar la latencia.
+
+4. **Publicar la aplicación**
+   - Usar Visual Studio con Web Deploy o GitHub Actions.
+   - Automatizar el despliegue continuo para reducir el margen de error.
+
+5. **Configurar escalado automático**
+   - Ajustar la capacidad de la aplicación para manejar incrementos de tráfico sin intervención manual.
+   - Garantizar una disponibilidad constante del servicio.
+
+6. **Configurar monitoreo con Application Insights**
+   - Habilitar la recopilación de métricas en tiempo real.
+   - Analizar el rendimiento de la aplicación y detectar posibles fallos.
+
+## Estrategias de Escalado
+Para garantizar un rendimiento óptimo, se pueden aplicar varias estrategias de escalado:
+
+- **Escalado vertical:** Aumentar la capacidad de la instancia aumentando memoria, CPU o almacenamiento, útil para mejorar el rendimiento en cargas de trabajo pesadas.
+- **Escalado horizontal:** Agregar múltiples instancias con balanceo de carga automático para distribuir el tráfico y evitar cuellos de botella.
+- **Autoscaling:** Configurar reglas basadas en métricas como el uso de CPU, memoria o el número de solicitudes concurrentes, permitiendo una gestión eficiente de recursos.
+- **Uso eficiente de hilos:** Implementación de `async/await` en operaciones de E/S para optimizar la utilización de recursos y mejorar la capacidad de respuesta de la aplicación.
+- **Integración con Application Insights:** Utilizar herramientas de monitorización avanzadas para obtener métricas en tiempo real y ajustar la estrategia de escalado según sea necesario.
+- **Implementación de caché:** Uso de Azure Redis Cache para almacenar en caché respuestas frecuentes y reducir la carga en la base de datos, mejorando la velocidad de respuesta.
+
+## Pruebas de Carga
+Para validar el rendimiento de Verify, se realizan pruebas de carga utilizando Visual Studio Team Services:
+
+- **Simulación de tráfico real**, generando múltiples solicitudes concurrentes para evaluar el comportamiento de la aplicación bajo diversas condiciones.
+- **Métricas clave:** Se analizan tiempos de respuesta, tasa de errores, consumo de CPU y memoria, permitiendo identificar posibles cuellos de botella.
+- **Ajustes y optimización:** Basado en los resultados, se ajustan las reglas de escalado, configuración del servidor y optimización del código para mejorar la eficiencia y garantizar una respuesta óptima en escenarios de alta demanda.
+- **Estrategias de recuperación ante fallos:** Implementación de mecanismos de redundancia y recuperación automática para minimizar tiempos de inactividad en caso de fallos inesperados.
+- **Pruebas de resiliencia:** Uso de Chaos Engineering para simular fallos en la infraestructura y evaluar la capacidad de recuperación de la aplicación.
+
+## Conclusión
+El despliegue y escalado de aplicaciones web en Azure ofrece una infraestructura flexible y robusta para manejar diferentes cargas de trabajo. La combinación de App Services, SQL Azure y estrategias de escalado permite desarrollar aplicaciones web modernas con alta disponibilidad y óptimo rendimiento.
+
+Al aplicar buenas prácticas de desarrollo, monitorización continua y pruebas de carga, es posible garantizar una experiencia de usuario eficiente y escalable. Azure proporciona herramientas avanzadas para optimizar el rendimiento, reducir costos y mejorar la seguridad de las aplicaciones web en producción.
+
+Además, la integración con herramientas como Azure DevOps permite automatizar pruebas y despliegues, mejorando la eficiencia del ciclo de vida del desarrollo. La adopción de arquitecturas basadas en microservicios y contenedores con Azure Kubernetes Service también ofrece opciones avanzadas para escalar aplicaciones de manera más granular y eficiente.

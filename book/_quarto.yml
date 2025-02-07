@@ -38,7 +38,7 @@ book:
 #    - import_export.qmd
 #    - lazy_execution.qmd
 #    - benchmarking.qmd
-
+    - web-aplication-chapter-2.qmd
 format:
   html:
     theme:
